@@ -24,7 +24,7 @@ const AuthForm = () => {
         },
     });
 
-    return (<>
+    return (<form onSubmit={authForm.handleSubmit}>
         <TextField
             fullWidth
             id="name"
@@ -52,8 +52,8 @@ const AuthForm = () => {
             helperText={authForm.touched.password && authForm.errors.password}
             placeholder="Введите пароль"
         />
-        <Button variant="contained" type="submit">Войти</Button>
-    </>);
+        <Button variant="contained" type="submit" >Войти</Button>
+    </form>);
 }
 
 export default AuthForm;

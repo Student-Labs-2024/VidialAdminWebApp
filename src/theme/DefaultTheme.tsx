@@ -76,7 +76,7 @@ const DefaultTheme = createTheme({
                 root: {
                     fontSize: '18px',
                     fontWeight: 700,
-                    width: '100%',
+                    width: '75%',
                     borderRadius: '30px',
                     textTransform: 'none',
                 },

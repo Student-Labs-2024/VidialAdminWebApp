@@ -8,7 +8,7 @@ const AuthComponent = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
-            background: DefaultTheme.palette.background.default
+            background: "background.default"
         }}>
             <Box
                 sx={{
@@ -16,7 +16,7 @@ const AuthComponent = () => {
                     flexDirection: 'row',
                     width: 730,
                     height: 'auto',
-                    bgcolor: DefaultTheme.palette.secondary.main,
+                    bgcolor: 'secondary.main',
                     borderRadius: '20px',
                     overflow: 'hidden',
                     boxShadow: '6px 4px 4px 0px rgba(0, 0, 0, 0.10)',
