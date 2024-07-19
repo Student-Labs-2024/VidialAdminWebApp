@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom';
-import React from 'react';
 import MainPage from './MainPage/MainPage';
 import { Typography } from '@mui/material';
 import StocksPage from './ContentPage/StocksPage/StocksPage';

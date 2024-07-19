@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Drawer,
   List,
@@ -8,7 +8,7 @@ import {
   Divider,
   ListItemButton,
 } from '@mui/material';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import CollapsibleMenuItem from './CollapsibleMenuItem';
 import DefaultTheme from '../../theme/DefaultTheme';
 import IMenuItem from '../../types/IMenuItem';
@@ -71,6 +71,12 @@ const menuItems: IMenuItem[] = [
 
 const Sidebar: React.FC = () => {
   const colors = DefaultTheme.palette;
+  const location = useLocation();
+  const [activePath, setActivePath] = useState(location.pathname);
+
+  React.useEffect(() => {
+    setActivePath(location.pathname);
+  }, [location.pathname]);
 
   return (
     <Drawer
@@ -78,10 +84,11 @@ const Sidebar: React.FC = () => {
         '& .MuiDrawer-paper': {
           backgroundColor: colors.primary.main,
           color: colors.secondary.main,
+          position: 'relative',
         },
       }}
       anchor="left"
-      variant="temporary"
+      variant="permanent"
       open={true}
     >
       <Box
@@ -121,25 +128,27 @@ const Sidebar: React.FC = () => {
         >
           {menuItems.map((item, index) =>
             item.children ? (
-              <CollapsibleMenuItem key={index} item={item} index={index} />
+              <CollapsibleMenuItem key={index} item={item} index={index} currentPath={location.pathname} />
             ) : (
               <NavLink
                 to={item.path!}
                 key={index}
-                style={({ isActive }) => ({
-                  color: isActive ? colors.primary.main : 'inherit',
-                  backgroundColor: isActive ? colors.secondary.main : '',
-                  borderRadius: '30px',
-                  '.MuiListItemIcon-root': {
-                    color: isActive ? colors.primary.main : 'inherit',
-                  },
-                  textDecoration: isActive ? 'none' : 'none',
-                })}
+                style={{ textDecoration: 'none' }}
               >
-                <ListItemButton>
+                <ListItemButton
+                  sx={{
+                    color: activePath === item.path ? colors.primary.main : colors.secondary.main,
+                    backgroundColor: activePath === item.path ? colors.secondary.main : 'transparent',
+                    borderRadius: '30px',
+                    '& .MuiListItemIcon-root': {
+                      color: activePath === item.path ? colors.primary.main : colors.secondary.main,
+                    },
+                  }}
+                  onClick={() => setActivePath(item.path!)}
+                >
                   <ListItemIcon
                     sx={{
-                      color: colors.secondary.main,
+                      color: activePath === item.path ? colors.primary.main : colors.secondary.main,
                     }}
                   >
                     {item.icon}
