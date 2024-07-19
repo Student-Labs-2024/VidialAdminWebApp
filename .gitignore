@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Tests
+.babelrc.json
+jest.config.ts
+__mocks__/
