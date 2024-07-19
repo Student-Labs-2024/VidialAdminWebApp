@@ -27,12 +27,21 @@ const DefaultTheme = createTheme({
       fontSize: '30px',
       fontWeight: 700,
     },
+    h2: {
+      fontSize: '24px',
+      fontWeight: 700,
+    },
+    h3: {
+      fontSize: '20px',
+      fontWeight: 700,
+    }
   },
   components: {
     MuiContainer: {
       styleOverrides: {
         root: {
           minHeight: '100vh',
+          backgroundColor: 'primary.main',
         },
       },
     },
@@ -72,6 +81,37 @@ const DefaultTheme = createTheme({
           width: '75%',
           borderRadius: '30px',
           textTransform: 'none',
+        },
+      },
+    },
+
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#97001E',
+          width: '320px',
+        },
+      },
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'transparent',
+        },
+      },
+    },
+
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: '30px',
+          '&:hover': {
+            backgroundColor: 'white',
+            color: '#97001E',
+          },
+          '&:hover .MuiListItemIcon-root': {
+            color: '#97001E',
+          },
         },
       },
     },
