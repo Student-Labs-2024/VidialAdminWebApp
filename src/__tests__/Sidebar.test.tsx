@@ -6,37 +6,37 @@ import DefaultTheme from '../theme/DefaultTheme';
 import { ThemeProvider } from '@mui/material/styles';
 
 describe('Sidebar component', () => {
-    const renderSidebar = () =>
-        render(
-            <React.Fragment>
-                <ThemeProvider theme={DefaultTheme}>
-                    <BrowserRouter>
-                        <Sidebar />
-                    </BrowserRouter>
-                </ThemeProvider>
-            </React.Fragment>
-        );
+  const renderSidebar = () =>
+    render(
+      <React.Fragment>
+        <ThemeProvider theme={DefaultTheme}>
+          <BrowserRouter>
+            <Sidebar />
+          </BrowserRouter>
+        </ThemeProvider>
+      </React.Fragment>,
+    );
 
-    it('renders correctly', () => {
-        const { getByAltText, getByText } = renderSidebar();
+  it('renders correctly', () => {
+    const { getByAltText, getByText } = renderSidebar();
 
-        expect(getByAltText('Vidial_logo')).toBeTruthy();
+    expect(getByAltText('Vidial_logo')).toBeTruthy();
 
-        expect(getByText('Главная панель')).toBeTruthy();
-        expect(getByText('Контент')).toBeTruthy();
-        expect(getByText('Пользователи')).toBeTruthy();
-        expect(getByText('Выйти')).toBeTruthy();
-    });
+    expect(getByText('Главная панель')).toBeTruthy();
+    expect(getByText('Контент')).toBeTruthy();
+    expect(getByText('Пользователи')).toBeTruthy();
+    expect(getByText('Выйти')).toBeTruthy();
+  });
 
-    it('toggles content sub-items correctly', () => {
-        const { getByText } = renderSidebar();
+  it('toggles content sub-items correctly', () => {
+    const { getByText } = renderSidebar();
 
-        fireEvent.click(getByText('Контент'));
+    fireEvent.click(getByText('Контент'));
 
-        expect(getByText('Акции')).toBeTruthy();
-        expect(getByText('Услуги')).toBeTruthy();
-        expect(getByText('Товары')).toBeTruthy();
-        expect(getByText('Филиалы')).toBeTruthy();
-        expect(getByText('Доктора')).toBeTruthy();
-    });
+    expect(getByText('Акции')).toBeTruthy();
+    expect(getByText('Услуги')).toBeTruthy();
+    expect(getByText('Товары')).toBeTruthy();
+    expect(getByText('Филиалы')).toBeTruthy();
+    expect(getByText('Доктора')).toBeTruthy();
+  });
 });

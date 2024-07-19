@@ -1,5 +1,5 @@
 export default interface IMenuItem {
-  text: JSX.Element;
+  text: string;
   icon: JSX.Element;
   path?: string;
   children?: IMenuItem[];

@@ -5,56 +5,54 @@ import MedicalServicesOutlinedIcon from '@mui/icons-material/MedicalServicesOutl
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import { FaGlasses } from 'react-icons/fa';
-import CustomTypography from './CustomTypography';
-
 
 const menuItems: IMenuItem[] = [
-    {
-        text: <CustomTypography>Главная панель</CustomTypography>,
-        icon: <Home />,
-        path: '/',
-    },
-    {
-        text: <CustomTypography>Контент</CustomTypography>,
-        icon: <ContentPaste />,
-        children: [
-            {
-                text: <CustomTypography>Акции</CustomTypography>,
-                icon: <InventoryOutlinedIcon />,
-                path: '/stocks',
-            },
-            {
-                text: <CustomTypography>Услуги</CustomTypography>,
-                icon: <MedicalServicesOutlinedIcon />,
-                path: '/services',
-            },
-            {
-                text: <CustomTypography>Товары</CustomTypography>,
-                icon: <FaGlasses size={24} />,
-                path: '/items',
-            },
-            {
-                text: <CustomTypography>Филиалы</CustomTypography>,
-                icon: <PinDropOutlinedIcon />,
-                path: '/filials',
-            },
-            {
-                text: <CustomTypography>Доктора</CustomTypography>,
-                icon: <GroupsOutlinedIcon />,
-                path: '/doctors',
-            },
-        ],
-    },
-    {
-        text: <CustomTypography>Пользователи</CustomTypography>,
-        icon: <People />,
-        path: '/users',
-    },
-    {
-        text: <CustomTypography>Выйти</CustomTypography>,
-        icon: <ExitToApp />,
-        path: '/logout',
-    },
+  {
+    text: 'Главная панель',
+    icon: <Home />,
+    path: '/',
+  },
+  {
+    text: 'Контент',
+    icon: <ContentPaste />,
+    children: [
+      {
+        text: 'Акции',
+        icon: <InventoryOutlinedIcon />,
+        path: '/stocks',
+      },
+      {
+        text: 'Услуги',
+        icon: <MedicalServicesOutlinedIcon />,
+        path: '/services',
+      },
+      {
+        text: 'Товары',
+        icon: <FaGlasses size={24} />,
+        path: '/items',
+      },
+      {
+        text: 'Филиалы',
+        icon: <PinDropOutlinedIcon />,
+        path: '/filials',
+      },
+      {
+        text: 'Доктора',
+        icon: <GroupsOutlinedIcon />,
+        path: '/doctors',
+      },
+    ],
+  },
+  {
+    text: 'Пользователи',
+    icon: <People />,
+    path: '/users',
+  },
+  {
+    text: 'Выйти',
+    icon: <ExitToApp />,
+    path: '/logout',
+  },
 ];
 
 export default menuItems;

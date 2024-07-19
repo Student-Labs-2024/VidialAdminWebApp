@@ -34,7 +34,7 @@ const DefaultTheme = createTheme({
     h3: {
       fontSize: '20px',
       fontWeight: 700,
-    }
+    },
   },
   components: {
     MuiContainer: {

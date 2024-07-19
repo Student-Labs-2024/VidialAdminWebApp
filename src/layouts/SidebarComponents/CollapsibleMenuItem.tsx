@@ -14,7 +14,7 @@ import CollapsibleMenuItemProps from '../../types/CollapsibleMenuItemProps';
 const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   item,
   index,
-  currentPath
+  currentPath,
 }) => {
   const [open, setOpen] = useState<boolean>(() => {
     const savedState = localStorage.getItem(`menuOpenState-${index}`);
@@ -44,10 +44,11 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
           },
         }}
       >
-        <ListItemIcon sx={{ color: 'inherit' }}>
-          {item.icon}
-        </ListItemIcon>
-        <ListItemText primary={item.text} />
+        <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
+        <ListItemText
+          primary={item.text}
+          primaryTypographyProps={{ fontSize: '18px', fontWeight: 700 }}
+        />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse
@@ -66,18 +67,31 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
               to={subItem.path!}
               key={subIndex}
               style={{
-                color: currentPath === subItem.path ? colors.secondary.main : colors.grey[600],
-                backgroundColor: currentPath === subItem.path ? colors.secondary.main : '',
+                color:
+                  currentPath === subItem.path
+                    ? colors.secondary.main
+                    : colors.grey[600],
+                backgroundColor:
+                  currentPath === subItem.path ? colors.secondary.main : '',
                 textDecoration: 'none',
               }}
             >
               <ListItemButton
                 sx={{
                   borderRadius: '30px',
-                  backgroundColor: currentPath === subItem.path ? colors.secondary.main : 'transparent',
-                  color: currentPath === subItem.path ? colors.primary.main : 'inherit',
+                  backgroundColor:
+                    currentPath === subItem.path
+                      ? colors.secondary.main
+                      : 'transparent',
+                  color:
+                    currentPath === subItem.path
+                      ? colors.primary.main
+                      : 'inherit',
                   '.MuiListItemIcon-root': {
-                    color: currentPath === subItem.path ? colors.primary.main : colors.grey[600],
+                    color:
+                      currentPath === subItem.path
+                        ? colors.primary.main
+                        : colors.grey[600],
                   },
                 }}
               >
