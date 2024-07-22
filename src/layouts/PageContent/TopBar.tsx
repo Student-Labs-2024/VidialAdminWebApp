@@ -1,6 +1,7 @@
 import { Box, Typography } from '@mui/material';
-import DefaultTheme from '../../theme/DefaultTheme';
 import { useLocation } from 'react-router';
+
+import DefaultTheme from 'theme/DefaultTheme';
 
 const NavigationNameMap: { [key: string]: string } = {
   '/': 'Главная панель',

@@ -1,6 +1,7 @@
 import { Box } from '@mui/material';
-import Sidebar from '../../../layouts/SidebarComponents/Sidebar';
-import PageContent from '../../../layouts/PageContent/PageContent';
+
+import PageContent from 'layouts/PageContent/PageContent';
+import Sidebar from 'layouts/SidebarComponents/Sidebar';
 
 const ServicesPage = () => {
   return (

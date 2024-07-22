@@ -3,7 +3,8 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import authStore from '../stores/AuthStore';
+
+import authStore from 'stores/AuthStore';
 
 const validationSchema = yup.object({
   name: yup.string().required('Требуется логин'),

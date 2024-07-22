@@ -7,7 +7,7 @@ import MainPage from './MainPage/MainPage';
 import StocksPage from './ContentPage/StocksPage/StocksPage';
 import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
 import ItemPage from './ContentPage/ItemsPage/ItemsPage';
-import DepartmentPage from './ContentPage/DepartmentsPage/FilialsPage';
+import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 

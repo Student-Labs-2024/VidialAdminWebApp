@@ -7,9 +7,10 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import Sidebar from '../../layouts/SidebarComponents/Sidebar';
-import PageContent from '../../layouts/PageContent/PageContent';
-import DefaultTheme from '../../theme/DefaultTheme';
+
+import PageContent from 'layouts/PageContent/PageContent';
+import Sidebar from 'layouts/SidebarComponents/Sidebar';
+import DefaultTheme from 'theme/DefaultTheme';
 import mainPageBoxes from './MainPageBoxes';
 
 const MainPage: React.FC = () => {

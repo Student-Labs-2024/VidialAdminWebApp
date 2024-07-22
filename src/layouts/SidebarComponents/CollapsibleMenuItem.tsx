@@ -8,8 +8,9 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
-import DefaultTheme from '../../theme/DefaultTheme';
-import CollapsibleMenuItemProps from '../../types/CollapsibleMenuItemProps';
+
+import CollapsibleMenuItemProps from 'types/CollapsibleMenuItemProps';
+import DefaultTheme from 'theme/DefaultTheme';
 
 const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   item,

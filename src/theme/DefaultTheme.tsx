@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+
 import '../../public/fonts/fonts.css';
 
 const DefaultTheme = createTheme({
@@ -118,4 +119,9 @@ const DefaultTheme = createTheme({
   },
 });
 
+const colors = DefaultTheme.palette;
+const typography = DefaultTheme.typography;
+
 export default DefaultTheme;
+colors;
+typography;

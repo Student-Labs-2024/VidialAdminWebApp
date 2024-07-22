@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import MainPage from '../routes/MainPage/MainPage';
 import { MemoryRouter } from 'react-router-dom';
-import MainPageBoxes from '../routes/MainPage/MainPageBoxes';
+
+import MainPage from 'routes/MainPage/MainPage';
+import mainPageBoxes from 'routes/MainPage/MainPageBoxes';
 
 describe('MainPage', () => {
   const renderMainPage = () => {
@@ -23,7 +24,7 @@ describe('MainPage', () => {
   it('renders all main boxes with titles and texts', () => {
     renderMainPage();
 
-    MainPageBoxes.forEach((box) => {
+    mainPageBoxes.forEach((box) => {
       const titleElements = screen.getAllByText(box.title);
       expect(titleElements.length).toBeGreaterThan(0);
 

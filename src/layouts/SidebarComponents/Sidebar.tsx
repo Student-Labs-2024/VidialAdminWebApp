@@ -9,9 +9,10 @@ import {
   ListItemButton,
 } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
-import CollapsibleMenuItem from './CollapsibleMenuItem';
-import DefaultTheme from '../../theme/DefaultTheme';
+
+import DefaultTheme from 'theme/DefaultTheme';
 import menuItems from './SidebarMenuItems';
+import CollapsibleMenuItem from './CollapsibleMenuItem';
 
 const Sidebar: React.FC = () => {
   const colors = DefaultTheme.palette;
