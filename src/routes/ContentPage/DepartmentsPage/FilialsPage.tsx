@@ -11,7 +11,9 @@ const DepartmentPage = () => {
       }}
     >
       <Sidebar />
-      <PageContent />
+      <PageContent>
+        <Box />
+      </PageContent>
     </Box>
   );
 };
