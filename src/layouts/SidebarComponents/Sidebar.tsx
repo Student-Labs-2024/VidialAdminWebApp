@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Drawer,
   List,
@@ -128,7 +128,12 @@ const Sidebar: React.FC = () => {
         >
           {menuItems.map((item, index) =>
             item.children ? (
-              <CollapsibleMenuItem key={index} item={item} index={index} currentPath={location.pathname} />
+              <CollapsibleMenuItem
+                key={index}
+                item={item}
+                index={index}
+                currentPath={location.pathname}
+              />
             ) : (
               <NavLink
                 to={item.path!}
@@ -137,18 +142,30 @@ const Sidebar: React.FC = () => {
               >
                 <ListItemButton
                   sx={{
-                    color: activePath === item.path ? colors.primary.main : colors.secondary.main,
-                    backgroundColor: activePath === item.path ? colors.secondary.main : 'transparent',
+                    color:
+                      activePath === item.path
+                        ? colors.primary.main
+                        : colors.secondary.main,
+                    backgroundColor:
+                      activePath === item.path
+                        ? colors.secondary.main
+                        : 'transparent',
                     borderRadius: '30px',
                     '& .MuiListItemIcon-root': {
-                      color: activePath === item.path ? colors.primary.main : colors.secondary.main,
+                      color:
+                        activePath === item.path
+                          ? colors.primary.main
+                          : colors.secondary.main,
                     },
                   }}
                   onClick={() => setActivePath(item.path!)}
                 >
                   <ListItemIcon
                     sx={{
-                      color: activePath === item.path ? colors.primary.main : colors.secondary.main,
+                      color:
+                        activePath === item.path
+                          ? colors.primary.main
+                          : colors.secondary.main,
                     }}
                   >
                     {item.icon}

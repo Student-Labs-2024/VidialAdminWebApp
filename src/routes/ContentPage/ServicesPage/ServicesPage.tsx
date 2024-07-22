@@ -4,10 +4,12 @@ import PageContent from '../../../layouts/PageContent/PageContent';
 
 const ServicesPage = () => {
   return (
-    <Box sx={{
-      display: 'flex',
-      width: '100%'
-    }}>
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+      }}
+    >
       <Sidebar />
       <PageContent />
     </Box>

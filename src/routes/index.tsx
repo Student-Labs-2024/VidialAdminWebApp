@@ -9,47 +9,47 @@ import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 
 const Router = createBrowserRouter([
-    {
-        path: '/auth',
-    },
-    {
-        path: '/',
-        element: <MainPage />,
-    },
-    {
-        path: '/stocks',
-        element: <StocksPage />,
-    },
-    {
-        path: '/services',
-        element: <ServicesPage />,
-    },
-    {
-        path: '/items',
-        element: <ItemPage />,
-    },
-    {
-        path: '/filials',
-        element: <FilialsPage />,
-    },
-    {
-        path: '/doctors',
-        element: <DoctorsPage />,
-    },
-    {
-        path: '/users',
-        element: <UsersPage />,
-    },
-    {
-        path: '/logout',
-        element: (
-            <Typography
-                sx={{ textAlign: 'center', color: 'text.secondary', fontSize: '50px' }}
-            >
-                Вы вышли!
-            </Typography>
-        ),
-    },
+  {
+    path: '/auth',
+  },
+  {
+    path: '/',
+    element: <MainPage />,
+  },
+  {
+    path: '/stocks',
+    element: <StocksPage />,
+  },
+  {
+    path: '/services',
+    element: <ServicesPage />,
+  },
+  {
+    path: '/items',
+    element: <ItemPage />,
+  },
+  {
+    path: '/filials',
+    element: <FilialsPage />,
+  },
+  {
+    path: '/doctors',
+    element: <DoctorsPage />,
+  },
+  {
+    path: '/users',
+    element: <UsersPage />,
+  },
+  {
+    path: '/logout',
+    element: (
+      <Typography
+        sx={{ textAlign: 'center', color: 'text.secondary', fontSize: '50px' }}
+      >
+        Вы вышли!
+      </Typography>
+    ),
+  },
 ]);
 
 export default Router;

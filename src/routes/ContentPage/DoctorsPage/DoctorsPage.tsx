@@ -3,15 +3,17 @@ import Sidebar from '../../../layouts/SidebarComponents/Sidebar';
 import PageContent from '../../../layouts/PageContent/PageContent';
 
 const DoctorsPage = () => {
-    return (
-        <Box sx={{
-            display: 'flex',
-            width: '100%'
-        }}>
-            <Sidebar />
-            <PageContent />
-        </Box>
-    );
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        width: '100%',
+      }}
+    >
+      <Sidebar />
+      <PageContent />
+    </Box>
+  );
 };
 
 export default DoctorsPage;

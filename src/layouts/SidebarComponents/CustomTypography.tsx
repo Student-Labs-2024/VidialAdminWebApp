@@ -9,12 +9,18 @@ interface CustomTypographyProps {
 }
 
 const CustomTypography = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'fontWeight' && prop !== 'fontSize' && prop !== 'color' && prop !== 'textDecoration',
-})<CustomTypographyProps>(({ fontWeight, fontSize, color, textDecoration }) => ({
-  fontWeight: fontWeight ?? 700,
-  fontSize: fontSize ?? '18px',
-  color: color ?? 'inherit',
-  textDecoration: textDecoration ?? 'none',
-}));
+  shouldForwardProp: (prop) =>
+    prop !== 'fontWeight' &&
+    prop !== 'fontSize' &&
+    prop !== 'color' &&
+    prop !== 'textDecoration',
+})<CustomTypographyProps>(
+  ({ fontWeight, fontSize, color, textDecoration }) => ({
+    fontWeight: fontWeight ?? 700,
+    fontSize: fontSize ?? '18px',
+    color: color ?? 'inherit',
+    textDecoration: textDecoration ?? 'none',
+  }),
+);
 
 export default CustomTypography;
