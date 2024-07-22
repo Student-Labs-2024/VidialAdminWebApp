@@ -10,50 +10,60 @@ import ItemPage from './ContentPage/ItemsPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
+import Layout from 'layouts/Layout';
 
 const Router = createBrowserRouter([
   {
-    path: '/',
-    element: <MainPage />,
-  },
-  {
-    path: '/stocks',
-    element: <StocksPage />,
-  },
-  {
-    path: '/services',
-    element: <ServicesPage />,
-  },
-  {
-    path: '/items',
-    element: <ItemPage />,
-  },
-  {
-    path: '/filials',
-    element: <DepartmentPage />,
-  },
-  {
-    path: '/doctors',
-    element: <DoctorsPage />,
-  },
-  {
-    path: '/users',
-    element: <UsersPage />,
-  },
-  {
-    path: '/logout',
-    element: (
-      <Typography
-        sx={{ textAlign: 'center', color: 'text.secondary', fontSize: '50px' }}
-      >
-        Вы вышли!
-      </Typography>
-    ),
-  },
-  {
-    path: '/auth',
-    element: <AuthComponent />,
-    errorElement: <ErrorAuthComponent />,
+    element: <Layout />,
+    children: [
+      {
+        path: '/',
+        element: <MainPage />,
+      },
+      {
+        path: '/stocks',
+        element: <StocksPage />,
+      },
+      {
+        path: '/services',
+        element: <ServicesPage />,
+      },
+      {
+        path: '/items',
+        element: <ItemPage />,
+      },
+      {
+        path: '/filials',
+        element: <DepartmentPage />,
+      },
+      {
+        path: '/doctors',
+        element: <DoctorsPage />,
+      },
+      {
+        path: '/users',
+        element: <UsersPage />,
+      },
+      {
+        path: '/logout',
+        element: (
+          <Typography
+            sx={{
+              textAlign: 'center',
+              color: 'text.secondary',
+              fontSize: '50px',
+            }}
+          >
+            Вы вышли!
+          </Typography>
+        ),
+      },
+      {
+        path: '/auth',
+        element: <AuthComponent />,
+        errorElement: <ErrorAuthComponent />,
+      },
+    ],
   },
 ]);
 
