@@ -47,7 +47,10 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
         }}
       >
         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
-        <ListItemText primary={item.text} />
+        <ListItemText
+          primary={item.text}
+          primaryTypographyProps={{ fontSize: '18px', fontWeight: 700 }}
+        />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse

@@ -11,7 +11,9 @@ const UsersPage = () => {
       }}
     >
       <Sidebar />
-      <PageContent />
+      <PageContent>
+        <Box />
+      </PageContent>
     </Box>
   );
 };

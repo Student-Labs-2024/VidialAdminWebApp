@@ -11,7 +11,9 @@ const StocksPage = () => {
       }}
     >
       <Sidebar />
-      <PageContent />
+      <PageContent>
+        <Box />
+      </PageContent>
     </Box>
   );
 };

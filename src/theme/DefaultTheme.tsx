@@ -27,6 +27,14 @@ const DefaultTheme = createTheme({
       fontSize: '30px',
       fontWeight: 700,
     },
+    h2: {
+      fontSize: '24px',
+      fontWeight: 700,
+    },
+    h3: {
+      fontSize: '20px',
+      fontWeight: 700,
+    },
   },
   components: {
     MuiContainer: {

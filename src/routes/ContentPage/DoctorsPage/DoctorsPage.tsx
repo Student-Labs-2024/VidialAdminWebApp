@@ -11,7 +11,9 @@ const DoctorsPage = () => {
       }}
     >
       <Sidebar />
-      <PageContent />
+      <PageContent>
+        <Box />
+      </PageContent>
     </Box>
   );
 };

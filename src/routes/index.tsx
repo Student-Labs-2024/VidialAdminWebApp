@@ -1,17 +1,17 @@
 import { createBrowserRouter } from 'react-router-dom';
-import MainPage from './MainPage/MainPage';
 import { Typography } from '@mui/material';
+
+import AuthComponent from './AuthPage/AuthComponent';
+import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
+import MainPage from './MainPage/MainPage';
 import StocksPage from './ContentPage/StocksPage/StocksPage';
 import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
 import ItemPage from './ContentPage/ItemsPage/ItemsPage';
-import FilialsPage from './ContentPage/FilialsPage/FilialsPage';
+import DepartmentPage from './ContentPage/DepartmentsPage/FilialsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 
 const Router = createBrowserRouter([
-  {
-    path: '/auth',
-  },
   {
     path: '/',
     element: <MainPage />,
@@ -30,7 +30,7 @@ const Router = createBrowserRouter([
   },
   {
     path: '/filials',
-    element: <FilialsPage />,
+    element: <DepartmentPage />,
   },
   {
     path: '/doctors',
@@ -49,6 +49,11 @@ const Router = createBrowserRouter([
         Вы вышли!
       </Typography>
     ),
+  },
+  {
+    path: '/auth',
+    element: <AuthComponent />,
+    errorElement: <ErrorAuthComponent />,
   },
 ]);
 

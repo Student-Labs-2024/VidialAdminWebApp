@@ -11,7 +11,9 @@ const ItemPage = () => {
       }}
     >
       <Sidebar />
-      <PageContent />
+      <PageContent>
+        <Box />
+      </PageContent>
     </Box>
   );
 };

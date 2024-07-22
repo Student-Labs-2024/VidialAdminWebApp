@@ -2,7 +2,7 @@ import { Box } from '@mui/material';
 import Sidebar from '../../../layouts/SidebarComponents/Sidebar';
 import PageContent from '../../../layouts/PageContent/PageContent';
 
-const FilialsPage = () => {
+const DepartmentPage = () => {
   return (
     <Box
       sx={{
@@ -11,9 +11,11 @@ const FilialsPage = () => {
       }}
     >
       <Sidebar />
-      <PageContent />
+      <PageContent>
+        <Box />
+      </PageContent>
     </Box>
   );
 };
 
-export default FilialsPage;
+export default DepartmentPage;

@@ -1,8 +1,9 @@
 import { Box } from '@mui/material';
 import DefaultTheme from '../../theme/DefaultTheme';
 import TopBar from './TopBar';
+import PageContentProps from '../../types/PageContentProps';
 
-const PageContent: React.FC = () => {
+const PageContent: React.FC<PageContentProps> = ({ children }) => {
   const colors = DefaultTheme.palette;
 
   return (
@@ -15,6 +16,7 @@ const PageContent: React.FC = () => {
       }}
     >
       <TopBar />
+      {children}
     </Box>
   );
 };
