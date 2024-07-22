@@ -24,7 +24,9 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
 
   const handleClick = () => {
     const newOpenState = !open;
+
     setOpen(newOpenState);
+
     localStorage.setItem(
       `menuOpenState-${index}`,
       JSON.stringify(newOpenState),

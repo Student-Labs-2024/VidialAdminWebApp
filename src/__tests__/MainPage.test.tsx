@@ -5,23 +5,23 @@ import { MemoryRouter } from 'react-router-dom';
 import MainPageBoxes from '../routes/MainPage/MainPageBoxes';
 
 describe('MainPage', () => {
-  it('renders welcome message', () => {
+  const renderMainPage = () => {
     render(
       <MemoryRouter>
         <MainPage />
       </MemoryRouter>,
     );
+  };
+
+  it('renders welcome message', () => {
+    renderMainPage();
     expect(
       screen.getByText('Добро пожаловать в Административную Панель Vidial'),
     ).toBeInTheDocument();
   });
 
   it('renders all main boxes with titles and texts', () => {
-    render(
-      <MemoryRouter>
-        <MainPage />
-      </MemoryRouter>,
-    );
+    renderMainPage();
 
     MainPageBoxes.forEach((box) => {
       const titleElements = screen.getAllByText(box.title);

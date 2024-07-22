@@ -3,7 +3,7 @@ interface MainPageBoxesProps {
   text: { [key: string]: { [key: string]: string } };
 }
 
-const MainPageBoxes: MainPageBoxesProps[] = [
+const mainPageBoxes: MainPageBoxesProps[] = [
   {
     title: 'Контент',
     text: {
@@ -51,4 +51,4 @@ const MainPageBoxes: MainPageBoxesProps[] = [
   },
 ];
 
-export default MainPageBoxes;
+export default mainPageBoxes;

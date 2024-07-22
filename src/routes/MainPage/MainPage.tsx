@@ -10,12 +10,12 @@ import {
 import Sidebar from '../../layouts/SidebarComponents/Sidebar';
 import PageContent from '../../layouts/PageContent/PageContent';
 import DefaultTheme from '../../theme/DefaultTheme';
-import MainPageBoxes from './MainPageBoxes';
+import mainPageBoxes from './MainPageBoxes';
 
 const MainPage: React.FC = () => {
   const colors = DefaultTheme.palette;
   const typography = DefaultTheme.typography;
-  const mainBoxes = MainPageBoxes;
+  const mainBoxes = mainPageBoxes;
 
   return (
     <Box

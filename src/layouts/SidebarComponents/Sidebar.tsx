@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Drawer,
   List,
@@ -18,7 +18,7 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setActivePath(location.pathname);
   }, [location.pathname]);
 
