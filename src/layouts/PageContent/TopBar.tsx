@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useLocation } from 'react-router';
 
-import DefaultTheme from 'theme/DefaultTheme';
+import { colors } from 'theme/DefaultTheme';
 
 const NavigationNameMap: { [key: string]: string } = {
   '/': 'Главная панель',
@@ -14,7 +14,6 @@ const NavigationNameMap: { [key: string]: string } = {
 };
 
 const TopBar: React.FC = () => {
-  const colors = DefaultTheme.palette;
   const location = useLocation();
 
   return (

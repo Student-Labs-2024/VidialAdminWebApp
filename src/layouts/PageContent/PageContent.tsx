@@ -1,12 +1,10 @@
 import { Box } from '@mui/material';
 
 import PageContentProps from 'types/PageContentProps';
-import DefaultTheme from 'theme/DefaultTheme';
+import { colors } from 'theme/DefaultTheme';
 import TopBar from './TopBar';
 
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
-  const colors = DefaultTheme.palette;
-
   return (
     <Box
       sx={{

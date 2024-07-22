@@ -5,7 +5,7 @@ import { ThemeProvider } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
 
 import Router from './routes';
-import DefaultTheme from 'theme/DefaultTheme';
+import { DefaultTheme } from 'theme/DefaultTheme';
 
 ReactDOM.createRoot(document.getElementById('admin-panel-vidial')!).render(
   <ThemeProvider theme={DefaultTheme}>

@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ThemeProvider } from '@mui/material/styles';
 
-import DefaultTheme from 'theme/DefaultTheme';
+import { DefaultTheme } from 'theme/DefaultTheme';
 import ErrorAuthComponent from 'routes/AuthPage/ErrorAuthComponent';
 
 describe('ErrorAuthComponent', () => {

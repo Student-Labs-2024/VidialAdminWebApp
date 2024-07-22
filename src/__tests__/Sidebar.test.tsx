@@ -3,7 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 
-import DefaultTheme from 'theme/DefaultTheme';
+import { DefaultTheme } from 'theme/DefaultTheme';
 import Sidebar from 'layouts/SidebarComponents/Sidebar';
 
 describe('Sidebar component', () => {

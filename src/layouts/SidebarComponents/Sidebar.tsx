@@ -10,12 +10,11 @@ import {
 } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
 
-import DefaultTheme from 'theme/DefaultTheme';
+import { colors } from 'theme/DefaultTheme';
 import menuItems from './SidebarMenuItems';
 import CollapsibleMenuItem from './CollapsibleMenuItem';
 
 const Sidebar: React.FC = () => {
-  const colors = DefaultTheme.palette;
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
 

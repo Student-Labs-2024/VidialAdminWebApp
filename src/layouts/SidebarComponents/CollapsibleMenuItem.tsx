@@ -10,7 +10,7 @@ import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 
 import CollapsibleMenuItemProps from 'types/CollapsibleMenuItemProps';
-import DefaultTheme from 'theme/DefaultTheme';
+import { colors } from 'theme/DefaultTheme';
 
 const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   item,
@@ -21,7 +21,6 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     const savedState = localStorage.getItem(`menuOpenState-${index}`);
     return savedState ? JSON.parse(savedState) : false;
   });
-  const colors = DefaultTheme.palette;
 
   const handleClick = () => {
     const newOpenState = !open;

@@ -122,6 +122,4 @@ const DefaultTheme = createTheme({
 const colors = DefaultTheme.palette;
 const typography = DefaultTheme.typography;
 
-export default DefaultTheme;
-colors;
-typography;
+export { DefaultTheme, colors, typography };

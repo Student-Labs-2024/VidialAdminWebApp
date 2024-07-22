@@ -1,11 +1,9 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 
-import DefaultTheme from 'theme/DefaultTheme';
+import { colors } from 'theme/DefaultTheme';
 
 const ErrorAuthComponent = () => {
-  const colors = DefaultTheme.palette;
-
   return (
     <React.Fragment>
       <Container

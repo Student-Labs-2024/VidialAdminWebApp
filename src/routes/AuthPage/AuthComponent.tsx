@@ -1,13 +1,10 @@
 import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
 
-import DefaultTheme from 'theme/DefaultTheme';
+import { colors, typography } from 'theme/DefaultTheme';
 import AuthForm from 'forms/AuthForm';
 
 const AuthComponent = () => {
-  const colors = DefaultTheme.palette;
-  const typography = DefaultTheme.typography;
-
   return (
     <React.Fragment>
       <Container
