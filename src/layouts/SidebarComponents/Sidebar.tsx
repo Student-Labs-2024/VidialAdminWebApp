@@ -9,14 +9,77 @@ import {
   ListItemButton,
 } from '@mui/material';
 import { NavLink, useLocation } from 'react-router-dom';
-import CollapsibleMenuItem from './CollapsibleMenuItem';
-import DefaultTheme from '../../theme/DefaultTheme';
+import { makeStyles } from 'tss-react/mui';
+
 import menuItems from './SidebarMenuItems';
+import CollapsibleMenuItem from './CollapsibleMenuItem';
+
+const useStyles = makeStyles()((theme) => ({
+  drawerPaper: {
+    '& .MuiDrawer-paper': {
+      width: '320px',
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.secondary.main,
+      position: 'relative',
+    },
+  },
+  container: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '30px',
+  },
+  logo: {
+    maxWidth: '200px',
+    width: '100%',
+    height: 'auto',
+    textAlign: 'center',
+    paddingBottom: '22px',
+  },
+  divider: {
+    backgroundColor: theme.palette.secondary.main,
+    width: '90%',
+    margin: '5px',
+  },
+  listBtns: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '10px',
+  },
+  navLink: {
+    textDecoration: 'none',
+  },
+  listItemBtn: {
+    borderRadius: '30px',
+    '&.active': {
+      color: theme.palette.primary.main,
+      backgroundColor: theme.palette.secondary.main,
+      '& .MuiListItemIcon-root': {
+        color: theme.palette.primary.main,
+      },
+    },
+    '&.inactive': {
+      color: theme.palette.secondary.main,
+      backgroundColor: 'transparent',
+      '& .MuiListItemIcon-root': {
+        color: theme.palette.secondary.main,
+      },
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
+    },
+    '&:hover .MuiListItemIcon-root': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
 
 const Sidebar: React.FC = () => {
-  const colors = DefaultTheme.palette;
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
+
+  const { classes } = useStyles();
 
   useEffect(() => {
     setActivePath(location.pathname);
@@ -24,54 +87,23 @@ const Sidebar: React.FC = () => {
 
   return (
     <Drawer
-      sx={{
-        '& .MuiDrawer-paper': {
-          backgroundColor: colors.primary.main,
-          color: colors.secondary.main,
-          position: 'relative',
-        },
-      }}
+      className={classes.drawerPaper}
       anchor="left"
       variant="permanent"
       open={true}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          padding: '30px',
-        }}
-      >
+      <Box className={classes.container}>
         <Box
-          sx={{
-            maxWidth: '200px',
-            width: '100%',
-            height: 'auto',
-            textAlign: 'center',
-            paddingBottom: '22px',
-          }}
+          className={classes.logo}
           component="img"
           alt="Vidial_logo"
           src="img/logo.svg"
         />
 
-        <Divider
-          sx={{
-            backgroundColor: colors.secondary.main,
-            width: '90%',
-            margin: '5px',
-          }}
-        />
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-          }}
-        >
-          {menuItems.map((item, index) =>
-            item.children ? (
+        <Divider className={classes.divider} />
+        <List className={classes.listBtns}>
+          {menuItems.map((item, index) => {
+            return item.children ? (
               <CollapsibleMenuItem
                 key={index}
                 item={item}
@@ -79,41 +111,12 @@ const Sidebar: React.FC = () => {
                 currentPath={location.pathname}
               />
             ) : (
-              <NavLink
-                to={item.path!}
-                key={index}
-                style={{ textDecoration: 'none' }}
-              >
+              <NavLink to={item.path!} key={index} className={classes.navLink}>
                 <ListItemButton
-                  sx={{
-                    color:
-                      activePath === item.path
-                        ? colors.primary.main
-                        : colors.secondary.main,
-                    backgroundColor:
-                      activePath === item.path
-                        ? colors.secondary.main
-                        : 'transparent',
-                    borderRadius: '30px',
-                    '& .MuiListItemIcon-root': {
-                      color:
-                        activePath === item.path
-                          ? colors.primary.main
-                          : colors.secondary.main,
-                    },
-                  }}
+                  className={`${classes.listItemBtn} ${activePath === item.path ? 'active' : 'inactive'}`}
                   onClick={() => setActivePath(item.path!)}
                 >
-                  <ListItemIcon
-                    sx={{
-                      color:
-                        activePath === item.path
-                          ? colors.primary.main
-                          : colors.secondary.main,
-                    }}
-                  >
-                    {item.icon}
-                  </ListItemIcon>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
                   <ListItemText
                     primary={item.text}
                     primaryTypographyProps={{
@@ -123,16 +126,10 @@ const Sidebar: React.FC = () => {
                   />
                 </ListItemButton>
               </NavLink>
-            ),
-          )}
+            );
+          })}
         </List>
-        <Divider
-          sx={{
-            backgroundColor: colors.secondary.main,
-            width: '90%',
-            margin: '5px',
-          }}
-        />
+        <Divider className={classes.divider} />
       </Box>
     </Drawer>
   );

@@ -1,9 +1,10 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Sidebar from '../layouts/SidebarComponents/Sidebar';
-import DefaultTheme from '../theme/DefaultTheme';
 import { ThemeProvider } from '@mui/material/styles';
+
+import { DefaultTheme } from 'theme/DefaultTheme';
+import Sidebar from 'layouts/SidebarComponents/Sidebar';
 
 describe('Sidebar component', () => {
   const renderSidebar = () =>

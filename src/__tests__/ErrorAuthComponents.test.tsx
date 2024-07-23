@@ -1,9 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import ErrorAuthComponent from '../routes/AuthPage/ErrorAuthComponent';
-import DefaultTheme from '../theme/DefaultTheme';
 import { ThemeProvider } from '@mui/material/styles';
+
+import { DefaultTheme } from 'theme/DefaultTheme';
+import ErrorAuthComponent from 'routes/AuthPage/ErrorAuthComponent';
 
 describe('ErrorAuthComponent', () => {
   it('renders the error message', () => {

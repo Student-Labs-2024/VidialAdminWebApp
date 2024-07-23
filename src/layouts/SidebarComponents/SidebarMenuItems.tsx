@@ -1,10 +1,11 @@
-import IMenuItem from '../../types/IMenuItem';
 import { Home, ContentPaste, People, ExitToApp } from '@mui/icons-material';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import MedicalServicesOutlinedIcon from '@mui/icons-material/MedicalServicesOutlined';
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
 import GroupsOutlinedIcon from '@mui/icons-material/GroupsOutlined';
 import { FaGlasses } from 'react-icons/fa';
+
+import IMenuItem from 'types/IMenuItem';
 
 const menuItems: IMenuItem[] = [
   {

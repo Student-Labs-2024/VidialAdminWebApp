@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 
-const ItemPage = () => {
+const DepartmentPage = () => {
   return (
     <Box
       sx={{
@@ -11,4 +11,4 @@ const ItemPage = () => {
   );
 };
 
-export default ItemPage;
+export default DepartmentPage;

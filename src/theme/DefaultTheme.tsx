@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material';
+
 import '../../public/fonts/fonts.css';
 
 const DefaultTheme = createTheme({
@@ -36,12 +37,15 @@ const DefaultTheme = createTheme({
       fontWeight: 700,
     },
   },
+});
+
+const ExtendedDefaultTheme = createTheme(DefaultTheme, {
   components: {
     MuiContainer: {
       styleOverrides: {
         root: {
           minHeight: '100vh',
-          backgroundColor: 'primary.main',
+          backgroundColor: DefaultTheme.palette.primary.main,
         },
       },
     },
@@ -52,7 +56,7 @@ const DefaultTheme = createTheme({
             color: 'black',
             ':hover:not(.Mui-focused)': {
               '&:before': {
-                borderColor: 'grey',
+                borderColor: DefaultTheme.palette.grey[600],
                 borderWidth: '2px',
               },
             },
@@ -64,7 +68,7 @@ const DefaultTheme = createTheme({
             },
           },
           '& .MuiFormLabel-root': {
-            color: 'grey',
+            color: DefaultTheme.palette.grey[600],
             fontWeight: 700,
           },
           width: '100%',
@@ -72,7 +76,6 @@ const DefaultTheme = createTheme({
         },
       },
     },
-
     MuiButton: {
       styleOverrides: {
         root: {
@@ -84,38 +87,7 @@ const DefaultTheme = createTheme({
         },
       },
     },
-
-    MuiDrawer: {
-      styleOverrides: {
-        paper: {
-          backgroundColor: '#97001E',
-          width: '320px',
-        },
-      },
-    },
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          backgroundColor: 'transparent',
-        },
-      },
-    },
-
-    MuiListItemButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: '30px',
-          '&:hover': {
-            backgroundColor: 'white',
-            color: '#97001E',
-          },
-          '&:hover .MuiListItemIcon-root': {
-            color: '#97001E',
-          },
-        },
-      },
-    },
   },
 });
 
-export default DefaultTheme;
+export { ExtendedDefaultTheme as DefaultTheme };

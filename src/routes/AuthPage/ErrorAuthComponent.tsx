@@ -1,42 +1,38 @@
-import React from 'react';
 import { Box, Container, Typography } from '@mui/material';
-import DefaultTheme from '../../theme/DefaultTheme';
+import { makeStyles } from 'tss-react/mui';
+
+const useStyles = makeStyles()((theme) => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignContent: 'center',
+    backgroundColor: theme.palette.background.default,
+  },
+  infoBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: theme.palette.secondary.main,
+    width: '400px',
+    height: '200px',
+    borderRadius: '20px',
+  },
+  boxTypography: {
+    color: theme.palette.text.secondary,
+    fontWeight: 'bold',
+    fontSize: '50px',
+  },
+}));
 
 const ErrorAuthComponent = () => {
-  const colors = DefaultTheme.palette;
+  const { classes } = useStyles();
 
   return (
-    <React.Fragment>
-      <Container
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          backgroundColor: colors.grey[600],
-        }}
-      >
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: colors.secondary.main,
-            width: '400px',
-            height: '200px',
-            borderRadius: '20px',
-          }}
-        >
-          <Typography
-            sx={{
-              color: colors.text.secondary,
-              fontWeight: 'bold',
-              fontSize: '50px',
-            }}
-          >
-            Ошибка 404
-          </Typography>
-        </Box>
-      </Container>
-    </React.Fragment>
+    <Container className={classes.root}>
+      <Box className={classes.infoBox}>
+        <Typography className={classes.boxTypography}>Ошибка 404</Typography>
+      </Box>
+    </Container>
   );
 };
 
