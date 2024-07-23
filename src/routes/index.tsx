@@ -4,7 +4,7 @@ import { Typography } from '@mui/material';
 import AuthComponent from './AuthPage/AuthComponent';
 import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
 import MainPage from './MainPage/MainPage';
-import StocksPage from './ContentPage/StocksPage/StocksPage';
+import PromosPage from './ContentPage/PromosPage/PromosPage';
 import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
 import ItemPage from './ContentPage/ItemsPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
@@ -27,7 +27,7 @@ const Router = createBrowserRouter([
       },
       {
         path: '/stocks',
-        element: <StocksPage />,
+        element: <PromosPage />,
       },
       {
         path: '/services',
