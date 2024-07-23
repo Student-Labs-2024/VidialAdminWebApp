@@ -1,4 +1,4 @@
-import { Home, ContentPaste, People, ExitToApp } from '@mui/icons-material';
+import { Home, ContentPaste, People } from '@mui/icons-material';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import MedicalServicesOutlinedIcon from '@mui/icons-material/MedicalServicesOutlined';
 import PinDropOutlinedIcon from '@mui/icons-material/PinDropOutlined';
@@ -48,11 +48,6 @@ const menuItems: IMenuItem[] = [
     text: 'Пользователи',
     icon: <People />,
     path: '/users',
-  },
-  {
-    text: 'Выйти',
-    icon: <ExitToApp />,
-    path: '/auth',
   },
 ];
 
