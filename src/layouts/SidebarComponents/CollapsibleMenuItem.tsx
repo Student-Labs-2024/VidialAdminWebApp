@@ -8,9 +8,63 @@ import {
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
+import { makeStyles } from 'tss-react/mui';
 
 import CollapsibleMenuItemProps from 'types/CollapsibleMenuItemProps';
-import { colors } from 'theme/DefaultTheme';
+
+const useStyles = makeStyles()((theme) => ({
+  listMenuBtn: {
+    borderRadius: '30px',
+    '&.active': {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
+    },
+    '&.inactive': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.text.primary,
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
+    },
+    '&:hover .MuiListItemIcon-root': {
+      color: theme.palette.primary.main,
+    },
+  },
+  collapseBtn: {
+    backgroundColor: theme.palette.primary.dark,
+    borderRadius: '30px',
+    padding: '0 10px',
+  },
+  navLink: {
+    textDecoration: 'none',
+    color: theme.palette.grey[600],
+  },
+  listMenuItemBtn: {
+    borderRadius: '30px',
+    '&.active': {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
+      '.MuiListItemIcon-root': {
+        color: theme.palette.primary.main,
+      },
+    },
+    '$.inactive': {
+      backgroundColor: theme.palette.primary.main,
+      color: theme.palette.grey[600],
+      '.MuiListItemIcon-root': {
+        color: theme.palette.grey[600],
+      },
+    },
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.main,
+      color: theme.palette.primary.main,
+    },
+    '&:hover .MuiListItemIcon-root': {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
 
 const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   item,
@@ -21,6 +75,8 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     const savedState = localStorage.getItem(`menuOpenState-${index}`);
     return savedState ? JSON.parse(savedState) : false;
   });
+
+  const { classes } = useStyles();
 
   const handleClick = () => {
     const newOpenState = !open;
@@ -37,14 +93,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     <>
       <ListItemButton
         onClick={handleClick}
-        sx={{
-          borderRadius: '30px',
-          backgroundColor: open ? colors.secondary.main : '',
-          color: open ? colors.primary.main : '',
-          '.MuiListItemIcon-root': {
-            color: open ? colors.primary.main : '',
-          },
-        }}
+        className={`${classes.listMenuBtn} ${open ? 'active' : 'inactive'}`}
       >
         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
         <ListItemText
@@ -54,11 +103,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse
-        sx={{
-          backgroundColor: colors.primary.dark,
-          borderRadius: '30px',
-          padding: '0 10px',
-        }}
+        className={classes.collapseBtn}
         timeout={{ enter: 700, exit: 500 }}
         easing="dissolve-in-out"
         in={open}
@@ -68,34 +113,10 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
             <NavLink
               to={subItem.path!}
               key={subIndex}
-              style={{
-                color:
-                  currentPath === subItem.path
-                    ? colors.secondary.main
-                    : colors.grey[600],
-                backgroundColor:
-                  currentPath === subItem.path ? colors.secondary.main : '',
-                textDecoration: 'none',
-              }}
+              className={classes.navLink}
             >
               <ListItemButton
-                sx={{
-                  borderRadius: '30px',
-                  backgroundColor:
-                    currentPath === subItem.path
-                      ? colors.secondary.main
-                      : 'transparent',
-                  color:
-                    currentPath === subItem.path
-                      ? colors.primary.main
-                      : 'inherit',
-                  '.MuiListItemIcon-root': {
-                    color:
-                      currentPath === subItem.path
-                        ? colors.primary.main
-                        : colors.grey[600],
-                  },
-                }}
+                className={`${classes.listMenuItemBtn} ${currentPath === subItem.path ? 'active' : 'inactive'}`}
               >
                 <ListItemIcon sx={{ color: 'inherit' }}>
                   {subItem.icon}

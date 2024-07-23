@@ -14,6 +14,11 @@ import Layout from 'layouts/Layout';
 
 const Router = createBrowserRouter([
   {
+    path: '/auth',
+    element: <AuthComponent />,
+    errorElement: <ErrorAuthComponent />,
+  },
+  {
     element: <Layout />,
     children: [
       {
@@ -57,11 +62,6 @@ const Router = createBrowserRouter([
             Вы вышли!
           </Typography>
         ),
-      },
-      {
-        path: '/auth',
-        element: <AuthComponent />,
-        errorElement: <ErrorAuthComponent />,
       },
     ],
   },

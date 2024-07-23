@@ -1,19 +1,23 @@
 import { Box } from '@mui/material';
+import { makeStyles } from 'tss-react/mui';
 
 import PageContentProps from 'types/PageContentProps';
-import { colors } from 'theme/DefaultTheme';
 import TopBar from './TopBar';
 
+const useStyles = makeStyles()((theme) => ({
+  pageContent: {
+    backgroundColor: theme.palette.background.default,
+    width: '100%',
+    minHeight: '100vh',
+    padding: '23px 45px',
+  },
+}));
+
 const PageContent: React.FC<PageContentProps> = ({ children }) => {
+  const { classes } = useStyles();
+
   return (
-    <Box
-      sx={{
-        backgroundColor: colors.background.default,
-        width: '100%',
-        minHeight: '100vh',
-        padding: '23px 45px',
-      }}
-    >
+    <Box className={classes.pageContent}>
       <TopBar />
       {children}
     </Box>
