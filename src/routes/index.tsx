@@ -10,7 +10,7 @@ import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
-import PrivateRoute from './PrivateRouter';
+import PrivateRoute from './PrivateRoute';
 
 const Router = createBrowserRouter([
   {
@@ -53,10 +53,9 @@ const Router = createBrowserRouter([
             element: <UsersPage />,
           },
         ],
-      }
-    ]
+      },
+    ],
   },
-
 ]);
 
 export default Router;

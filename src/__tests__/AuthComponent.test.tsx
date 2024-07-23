@@ -12,7 +12,7 @@ describe('AuthComponent', () => {
         <ThemeProvider theme={DefaultTheme}>
           <AuthComponent />
         </ThemeProvider>
-      </MemoryRouter>
+      </MemoryRouter>,
     );
 
     expect(getByAltText('Vidial_logo')).toBeInTheDocument();
@@ -25,8 +25,7 @@ describe('AuthComponent', () => {
         <ThemeProvider theme={DefaultTheme}>
           <AuthComponent />
         </ThemeProvider>
-      </MemoryRouter>
-
+      </MemoryRouter>,
     );
 
     expect(getByText('Вход')).toBeInTheDocument();

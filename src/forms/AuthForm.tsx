@@ -30,7 +30,7 @@ const AuthForm = observer(() => {
     onSubmit: (values) => {
       authStore.login(values.name, values.password);
       if (authStore.isAuthenticated) {
-        navigate('/')
+        navigate('/');
         setLoginError('');
       } else {
         setLoginError('Неправильный логин или пароль');
