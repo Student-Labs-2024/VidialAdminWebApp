@@ -52,7 +52,7 @@ const menuItems: IMenuItem[] = [
   {
     text: 'Выйти',
     icon: <ExitToApp />,
-    path: '/logout',
+    path: '/auth',
   },
 ];
 

@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 
 import authStore from 'stores/AuthStore';
+import { useNavigate } from 'react-router';
 
 const validationSchema = yup.object({
   name: yup.string().required('Требуется логин'),
@@ -13,6 +14,7 @@ const validationSchema = yup.object({
 
 const AuthForm = observer(() => {
   const [loginError, setLoginError] = React.useState('');
+  const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginError('');
@@ -28,7 +30,7 @@ const AuthForm = observer(() => {
     onSubmit: (values) => {
       authStore.login(values.name, values.password);
       if (authStore.isAuthenticated) {
-        alert('Вы успешно вошли!');
+        navigate('/')
         setLoginError('');
       } else {
         setLoginError('Неправильный логин или пароль');
