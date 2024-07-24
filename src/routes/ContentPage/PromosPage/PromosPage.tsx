@@ -51,7 +51,7 @@ const useStyles = makeStyles()((theme) => ({
     },
   },
   promoCardImg: {
-    width: '100%',
+    width: '90%',
     height: 'auto',
     borderRadius: '20px',
   },
@@ -72,6 +72,7 @@ const useStyles = makeStyles()((theme) => ({
   promoCardBtn: {},
   promoCardEditBtn: {
     width: '80%',
+    padding: '7px 20px',
   },
 }));
 
@@ -143,6 +144,8 @@ const PromosPage = () => {
           img={selectedPromo.img}
           title={selectedPromo.title}
           fullDescription={selectedPromo.fullDescription}
+          startDate={selectedPromo.startDate}
+          endDate={selectedPromo.endDate}
         />
       )}
     </Box>

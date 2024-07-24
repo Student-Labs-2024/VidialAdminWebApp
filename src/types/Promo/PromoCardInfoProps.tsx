@@ -5,4 +5,6 @@ export default interface PromoCardInfoProps {
   img: string;
   title: string;
   fullDescription: string;
+  startDate: Date;
+  endDate: Date;
 }

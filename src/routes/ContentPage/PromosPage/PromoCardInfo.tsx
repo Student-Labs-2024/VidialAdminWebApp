@@ -18,16 +18,16 @@ const useStyles = makeStyles()((theme) => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '611px',
+    width: '550px',
     backgroundColor: theme.palette.secondary.main,
     boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10)',
-    padding: '80px',
+    padding: '30px 80px',
     borderRadius: '20px',
     display: 'flex',
     flexWrap: 'wrap',
     flexDirection: 'column',
     alignItems: 'center',
-    gap: '10px',
+    gap: '15px',
   },
   modalText: {
     color: theme.palette.text.secondary,
@@ -46,14 +46,15 @@ const useStyles = makeStyles()((theme) => ({
     width: '100%',
   },
   promoCardImg: {
-    width: '343px',
-    height: '192',
+    width: '200px',
+    height: '200px',
     borderRadius: '20px',
   },
   promoCardTitle: {
     color: theme.palette.text.secondary,
     fontSize: '18px',
     fontWeight: theme.typography.h2.fontWeight,
+    textAlign: 'center',
   },
   promoCardDivider: {
     color: theme.palette.grey[600],
@@ -64,6 +65,10 @@ const useStyles = makeStyles()((theme) => ({
     fontSize: '16px',
     fontWeight: theme.typography.body1.fontWeight,
   },
+  promoCardDate: {
+    color: theme.palette.text.secondary,
+    fontSize: '16px',
+  },
   promoCardCommonDescription: {
     color: theme.palette.grey[600],
   },
@@ -71,6 +76,21 @@ const useStyles = makeStyles()((theme) => ({
 
 const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
   const { classes } = useStyles();
+
+  const formattedStartDate = new Date(props.startDate).toLocaleDateString(
+    'ru-RU',
+    {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+    },
+  );
+
+  const formattedEndDate = new Date(props.endDate).toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 
   return (
     <Modal
@@ -81,16 +101,16 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
       slots={{ backdrop: Backdrop }}
       slotProps={{
         backdrop: {
-          timeout: 800,
+          timeout: 500,
         },
       }}
     >
-      <Fade in={props.open}>
+      <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
         <Box className={classes.modalBox}>
           <Box
             className={classes.promoCardImg}
             component="img"
-            src="/img/promoImg.jpg"
+            src={props.img}
             alt={`${props.img}`}
           />
           <Typography className={classes.promoCardTitle}>
@@ -100,6 +120,11 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
           <Typography className={classes.promoCardFullDescription}>
             {props.fullDescription}
           </Typography>
+          <Divider className={classes.promoCardDivider} />
+          <Typography
+            className={classes.promoCardDate}
+          >{`Акция проводится с ${formattedStartDate} по ${formattedEndDate}`}</Typography>
+          <Divider className={classes.promoCardDivider} />
           <Typography className={classes.promoCardCommonDescription}>
             Имеются противопоказания. Необходима консультация специалиста.
           </Typography>
