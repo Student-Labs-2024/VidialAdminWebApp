@@ -11,6 +11,7 @@ import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
+import PromoNewFormPage from './ContentPage/PromosPage/PromoNewFormPage';
 
 const Router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const Router = createBrowserRouter([
       {
         path: '/stocks',
         element: <PromosPage />,
+      },
+      {
+        path: '/stocks/add',
+        element: <PromoNewFormPage />,
       },
       {
         path: '/services',

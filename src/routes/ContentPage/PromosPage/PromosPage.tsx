@@ -2,19 +2,20 @@ import {
   Box,
   Divider,
   Grid,
-  IconButton,
-  Tooltip,
   Typography,
   Button,
+  Tooltip,
+  IconButton,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 
-import InputSearch from '../components/InputSearch';
 import { promoDataCards } from './PromoDataCard';
 import PromoCardInfo from './PromoCardInfo';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
+import InputSearch from '../components/InputSearch';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -77,21 +78,19 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const PromosPage = () => {
-  const [open, setOpen] = useState(false);
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
     null,
   );
   const { classes } = useStyles();
+  const navigate = useNavigate();
   const promosCards = promoDataCards;
 
-  const handleOpen = (promo: PromoDataCardProps) => {
+  const handleOpenPromo = (promo: PromoDataCardProps) => {
     setSelectedPromo(promo);
-    setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClosePromo = () => {
     setSelectedPromo(null);
-    setOpen(false);
   };
 
   return (
@@ -99,7 +98,10 @@ const PromosPage = () => {
       <Box className={classes.promosBtns}>
         <InputSearch />
         <Tooltip title="Добавить акцию" placement="bottom">
-          <IconButton sx={{ padding: 0 }}>
+          <IconButton
+            onClick={() => navigate('/stocks/add')}
+            sx={{ padding: 0 }}
+          >
             <Add className={classes.iconAdd} />
           </IconButton>
         </Tooltip>
@@ -122,7 +124,7 @@ const PromosPage = () => {
                 {promo.description}
               </Typography>
               <Button
-                onClick={() => handleOpen(promo)}
+                onClick={() => handleOpenPromo(promo)}
                 variant="text"
                 endIcon={<ArrowRightAltOutlined />}
                 className={classes.promoCardBtn}
@@ -138,8 +140,8 @@ const PromosPage = () => {
       </Grid>
       {selectedPromo && (
         <PromoCardInfo
-          open={open}
-          handleClose={handleClose}
+          open={Boolean(selectedPromo)}
+          handleClose={handleClosePromo}
           id={selectedPromo.id}
           img={selectedPromo.img}
           title={selectedPromo.title}
