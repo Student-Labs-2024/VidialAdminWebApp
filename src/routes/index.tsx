@@ -13,6 +13,7 @@ import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
 import PromoNewFormPage from './ContentPage/PromosPage/PromoNewFormPage';
 import PromoEditFormPage from './ContentPage/PromosPage/PromoEditFormPage';
+import ErrorContentComponent from './ContentPage/components/ErrorContentComponent';
 
 const Router = createBrowserRouter([
   {
@@ -22,6 +23,7 @@ const Router = createBrowserRouter([
   },
   {
     element: <Layout />,
+    errorElement: <ErrorContentComponent />,
     children: [
       {
         path: '/',

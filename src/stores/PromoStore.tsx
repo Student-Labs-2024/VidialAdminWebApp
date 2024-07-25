@@ -1,7 +1,6 @@
-// src/stores/PromoStore.ts
 import { makeAutoObservable } from 'mobx';
-import { initializePromoData } from 'routes/ContentPage/PromosPage/PromoDataCard';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
+import { initializePromoData } from 'routes/ContentPage/PromosPage/PromoDataCard';
 
 class PromoStore {
   promos: PromoDataCardProps[] = [];
@@ -17,7 +16,10 @@ class PromoStore {
       this.promos = JSON.parse(storedPromos);
     } else {
       const data = await initializePromoData();
-      this.promos = data;
+      this.promos = data.map((promo) => ({
+        ...promo,
+        img: this.createBlobURL(promo.img),
+      }));
       this.savePromos();
     }
   }
@@ -27,7 +29,11 @@ class PromoStore {
   }
 
   addPromo(promo: PromoDataCardProps) {
-    this.promos.push(promo);
+    const newPromo = {
+      ...promo,
+      img: this.createBlobURL(promo.img),
+    };
+    this.promos.push(newPromo);
     this.savePromos();
   }
 
@@ -36,7 +42,10 @@ class PromoStore {
       (promo) => promo.id === updatedPromo.id,
     );
     if (index !== -1) {
-      this.promos[index] = updatedPromo;
+      this.promos[index] = {
+        ...updatedPromo,
+        img: this.createBlobURL(updatedPromo.img),
+      };
       this.savePromos();
     }
   }
@@ -48,6 +57,12 @@ class PromoStore {
 
   getPromoById(id: number): PromoDataCardProps | undefined {
     return this.promos.find((promo) => promo.id === id);
+  }
+
+  private createBlobURL(imgPath: string): string {
+    return imgPath.startsWith('blob:')
+      ? imgPath
+      : URL.createObjectURL(new Blob([imgPath]));
   }
 }
 

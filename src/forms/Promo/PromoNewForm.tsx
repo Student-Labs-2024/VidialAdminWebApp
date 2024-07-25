@@ -1,4 +1,3 @@
-// src/forms/Promo/PromoNewForm.tsx
 import React, { useState } from 'react';
 import {
   Box,
