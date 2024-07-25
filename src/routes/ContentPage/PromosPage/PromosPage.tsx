@@ -10,12 +10,12 @@ import {
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { promoDataCards } from './PromoDataCard';
 import PromoCardInfo from './PromoCardInfo';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import InputSearch from '../components/InputSearch';
+import { initializePromoData } from './PromoDataCard';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -83,7 +83,7 @@ const PromosPage = () => {
   );
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const promosCards = promoDataCards;
+  const [promosCards, setPromoData] = useState<PromoDataCardProps[]>([]);
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
     setSelectedPromo(promo);
@@ -92,6 +92,15 @@ const PromosPage = () => {
   const handleClosePromo = () => {
     setSelectedPromo(null);
   };
+
+  useEffect(() => {
+    const loadPromoData = async () => {
+      const data = await initializePromoData();
+      setPromoData(data);
+    };
+
+    loadPromoData();
+  }, []);
 
   return (
     <Box>
@@ -131,7 +140,11 @@ const PromosPage = () => {
               >
                 Подробнее
               </Button>
-              <Button className={classes.promoCardEditBtn} variant="contained">
+              <Button
+                className={classes.promoCardEditBtn}
+                variant="contained"
+                onClick={() => navigate('/stocks/edit', { state: { promo } })}
+              >
                 Редактировать
               </Button>
             </Box>

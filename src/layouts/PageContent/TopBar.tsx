@@ -3,6 +3,11 @@ import { Box, Typography, Breadcrumbs, Link } from '@mui/material';
 import { useLocation, NavLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 
+interface Classes {
+  title: string;
+  link: string;
+}
+
 const useStyles = makeStyles()((theme) => ({
   topBar: {
     width: '100%',
@@ -44,9 +49,10 @@ const NavigationNameMap: { [key: string]: string } = {
   '/doctors': 'Доктора',
   '/users': 'Пользователи',
   '/stocks/add': 'Форма создания новой акции',
+  '/stocks/edit': 'Форма редактировании данной акции',
 };
 
-const generateBreadcrumbs = (pathname: string, classes: any) => {
+const generateBreadcrumbs = (pathname: string, classes: Classes) => {
   const segments = pathname.split('/').filter(Boolean);
   const breadcrumbs = [];
 

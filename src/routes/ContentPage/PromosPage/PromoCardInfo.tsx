@@ -14,7 +14,7 @@ import PromoCardInfoProps from 'types/Promo/PromoCardInfoProps';
 
 const useStyles = makeStyles()((theme) => ({
   modalBox: {
-    position: 'absolute' as 'absolute',
+    position: 'absolute' as const,
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
@@ -129,13 +129,6 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
             Имеются противопоказания. Необходима консультация специалиста.
           </Typography>
           <Box className={classes.modalBtns}>
-            <Button
-              className={classes.modalBtn}
-              variant="contained"
-              onClick={props.handleClose}
-            >
-              Редактировать
-            </Button>
             <Button
               className={classes.modalBtn}
               variant="contained"
