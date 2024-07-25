@@ -7,10 +7,11 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
 import PromoCardInfoProps from 'types/Promo/PromoCardInfoProps';
+import WarningWindowDelete from '../components/WarningWindowDelete';
 
 const useStyles = makeStyles()((theme) => ({
   modalBox: {
@@ -76,6 +77,20 @@ const useStyles = makeStyles()((theme) => ({
 
 const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
   const { classes } = useStyles();
+  const [open, setOpen] = useState(false);
+
+  const handleOpenWindow = () => {
+    setOpen(true);
+  };
+
+  const handleCloseWindow = () => {
+    setOpen(false);
+  };
+
+  const handleConfirmDelete = () => {
+    setOpen(false);
+    props.handleConfirmDelete();
+  };
 
   const formattedStartDate = new Date(props.startDate).toLocaleDateString(
     'ru-RU',
@@ -93,53 +108,61 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
   });
 
   return (
-    <Modal
-      aria-labelledby="transition-modal-title"
-      open={props.open}
-      onClose={props.handleClose}
-      closeAfterTransition
-      slots={{ backdrop: Backdrop }}
-      slotProps={{
-        backdrop: {
-          timeout: 500,
-        },
-      }}
-    >
-      <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
-        <Box className={classes.modalBox}>
-          <Box
-            className={classes.promoCardImg}
-            component="img"
-            src={props.img}
-            alt={`${props.img}`}
-          />
-          <Typography className={classes.promoCardTitle}>
-            {props.title}
-          </Typography>
-          <Divider className={classes.promoCardDivider} />
-          <Typography className={classes.promoCardFullDescription}>
-            {props.fullDescription}
-          </Typography>
-          <Divider className={classes.promoCardDivider} />
-          <Typography
-            className={classes.promoCardDate}
-          >{`Акция проводится с ${formattedStartDate} по ${formattedEndDate}`}</Typography>
-          <Divider className={classes.promoCardDivider} />
-          <Typography className={classes.promoCardCommonDescription}>
-            Имеются противопоказания. Необходима консультация специалиста.
-          </Typography>
-          <Box className={classes.modalBtns}>
-            <Button
-              className={classes.modalBtn}
-              variant="contained"
-              onClick={props.handleClose}
-            >
-              Удалить
-            </Button>
+    <>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        open={props.open}
+        onClose={props.handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
+          <Box id="transition-modal-title" className={classes.modalBox}>
+            <Box
+              className={classes.promoCardImg}
+              component="img"
+              src={props.img}
+              alt={`${props.img}`}
+            />
+            <Typography className={classes.promoCardTitle}>
+              {props.title}
+            </Typography>
+            <Divider className={classes.promoCardDivider} />
+            <Typography className={classes.promoCardFullDescription}>
+              {props.fullDescription}
+            </Typography>
+            <Divider className={classes.promoCardDivider} />
+            <Typography
+              className={classes.promoCardDate}
+            >{`Акция проводится с ${formattedStartDate} по ${formattedEndDate}`}</Typography>
+            <Divider className={classes.promoCardDivider} />
+            <Typography className={classes.promoCardCommonDescription}>
+              Имеются противопоказания. Необходима консультация специалиста.
+            </Typography>
+            <Box className={classes.modalBtns}>
+              <Button
+                className={classes.modalBtn}
+                variant="contained"
+                onClick={handleOpenWindow}
+              >
+                Удалить
+              </Button>
+            </Box>
           </Box>
-        </Box>
-      </Fade>
-    </Modal>
+        </Fade>
+      </Modal>
+      <WarningWindowDelete
+        open={open}
+        handleClose={handleCloseWindow}
+        handleConfirm={handleConfirmDelete}
+        text="Вы действительно хотите удалить данную акцию?"
+      />
+    </>
   );
 };
 

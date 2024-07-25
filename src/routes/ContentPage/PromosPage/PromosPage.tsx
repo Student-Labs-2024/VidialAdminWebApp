@@ -6,6 +6,8 @@ import {
   Button,
   Tooltip,
   IconButton,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
@@ -84,6 +86,7 @@ const PromosPage = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
   const [promosCards, setPromoData] = useState<PromoDataCardProps[]>([]);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
     setSelectedPromo(promo);
@@ -91,6 +94,11 @@ const PromosPage = () => {
 
   const handleClosePromo = () => {
     setSelectedPromo(null);
+  };
+
+  const handleConfirmDelete = () => {
+    setSelectedPromo(null);
+    setOpenSnackbar(true);
   };
 
   useEffect(() => {
@@ -101,6 +109,10 @@ const PromosPage = () => {
 
     loadPromoData();
   }, []);
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   return (
     <Box>
@@ -155,6 +167,7 @@ const PromosPage = () => {
         <PromoCardInfo
           open={Boolean(selectedPromo)}
           handleClose={handleClosePromo}
+          handleConfirmDelete={handleConfirmDelete}
           id={selectedPromo.id}
           img={selectedPromo.img}
           title={selectedPromo.title}
@@ -163,6 +176,19 @@ const PromosPage = () => {
           endDate={selectedPromo.endDate}
         />
       )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          severity="success"
+          onClose={handleCloseSnackbar}
+          sx={{ width: '100%' }}
+        >
+          Вы удалили акцию!
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
