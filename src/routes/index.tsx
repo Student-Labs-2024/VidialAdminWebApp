@@ -36,7 +36,7 @@ const Router = createBrowserRouter([
         element: <PromoNewFormPage />,
       },
       {
-        path: '/stocks/edit',
+        path: '/stocks/edit/:id',
         element: <PromoEditFormPage />,
       },
       {

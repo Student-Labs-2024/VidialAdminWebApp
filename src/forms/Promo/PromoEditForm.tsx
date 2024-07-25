@@ -10,7 +10,11 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from 'tss-react/mui';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+
+import promoStore from 'stores/PromoStore';
+import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
@@ -99,10 +103,11 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const PromoEditForm = () => {
-  const location = useLocation();
+const PromoEditForm = observer(() => {
+  const { id } = useParams<{ id: string }>();
+  const promoId = Number(id);
+  const promo = promoStore.getPromoById(promoId);
   const navigate = useNavigate();
-  const { promo } = location.state || {};
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(promo?.img || null);
@@ -146,9 +151,9 @@ const PromoEditForm = () => {
   const formik = useFormik({
     initialValues: {
       img: promo?.img || '',
-      title: String(promo?.title) || '',
-      description: String(promo?.description) || '',
-      fullDescription: String(promo?.fullDescription) || '',
+      title: promo?.title || '',
+      description: promo?.description || '',
+      fullDescription: promo?.fullDescription || '',
       startDate: promo?.startDate
         ? new Date(promo.startDate).toISOString().split('T')[0]
         : '',
@@ -157,11 +162,23 @@ const PromoEditForm = () => {
         : '',
     },
     validationSchema: validationSchema,
-    onSubmit: () => {
+    onSubmit: (values) => {
       if (!image && !imageURL) {
         setImageError('Изображение акции обязательно');
         return;
       }
+
+      const updatedPromo: PromoDataCardProps = {
+        id: promoId,
+        img: values.img,
+        title: values.title,
+        description: values.description,
+        fullDescription: values.fullDescription,
+        startDate: new Date(values.startDate),
+        endDate: new Date(values.endDate),
+      };
+
+      promoStore.editPromo(updatedPromo);
       setOpenSnackbar(true);
       setTimeout(() => {
         navigate('/stocks');
@@ -343,6 +360,6 @@ const PromoEditForm = () => {
       </Snackbar>
     </form>
   );
-};
+});
 
 export default PromoEditForm;

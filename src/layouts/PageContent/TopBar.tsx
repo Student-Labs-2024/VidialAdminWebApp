@@ -49,10 +49,25 @@ const NavigationNameMap: { [key: string]: string } = {
   '/doctors': 'Доктора',
   '/users': 'Пользователи',
   '/stocks/add': 'Форма создания новой акции',
-  '/stocks/edit': 'Форма редактировании данной акции',
 };
 
 const generateBreadcrumbs = (pathname: string, classes: Classes) => {
+  if (pathname.startsWith('/stocks/edit')) {
+    return [
+      <Link
+        key="/stocks"
+        component={NavLink}
+        to="/stocks"
+        className={classes.link}
+      >
+        Акции
+      </Link>,
+      <Typography key="/stocks/edit" className={classes.title}>
+        Форма редактирования акции
+      </Typography>,
+    ];
+  }
+
   const segments = pathname.split('/').filter(Boolean);
   const breadcrumbs = [];
 
@@ -66,6 +81,7 @@ const generateBreadcrumbs = (pathname: string, classes: Classes) => {
     segments.forEach((segment, index) => {
       const url = `/${segments.slice(0, index + 1).join('/')}`;
       const isLast = index === segments.length - 1;
+
       if (isLast) {
         breadcrumbs.push(
           <Typography key={url} className={classes.title}>

@@ -1,3 +1,4 @@
+// src/forms/Promo/PromoNewForm.tsx
 import React, { useState } from 'react';
 import {
   Box,
@@ -11,6 +12,9 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import promoStore from 'stores/PromoStore';
+import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
@@ -99,7 +103,7 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const PromoNewForm = () => {
+const PromoNewForm = observer(() => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
@@ -145,17 +149,33 @@ const PromoNewForm = () => {
       endDate: '',
     },
     validationSchema: validationSchema,
-    onSubmit: () => {
+    onSubmit: (values) => {
       if (!image) {
         setImageError('Изображение акции обязательно');
         return;
       }
+
+      const newPromo: PromoDataCardProps = {
+        id: Date.now(),
+        img: values.img,
+        title: values.title,
+        description: values.description,
+        fullDescription: values.fullDescription,
+        startDate: new Date(values.startDate),
+        endDate: new Date(values.endDate),
+      };
+
+      promoStore.addPromo(newPromo);
       setOpenSnackbar(true);
       setTimeout(() => {
         navigate('/stocks');
       }, 3000);
     },
   });
+
+  const handleCloseSnackbar = () => {
+    setOpenSnackbar(false);
+  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -323,14 +343,22 @@ const PromoNewForm = () => {
           </Box>
         </Box>
       </Box>
-      <Snackbar open={openSnackbar} autoHideDuration={5000}>
-        <Alert severity="success" sx={{ width: '100%' }}>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          severity="success"
+          onClose={handleCloseSnackbar}
+          sx={{ width: '100%' }}
+        >
           Вы добавили новую карточку! Вас автоматически перенаправят на страницу
           Акции
         </Alert>
       </Snackbar>
     </form>
   );
-};
+});
 
 export default PromoNewForm;

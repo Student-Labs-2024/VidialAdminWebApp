@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
   Box,
   Divider,
@@ -12,12 +13,11 @@ import {
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-
+import { observer } from 'mobx-react-lite';
 import PromoCardInfo from './PromoCardInfo';
-import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import InputSearch from '../components/InputSearch';
-import { initializePromoData } from './PromoDataCard';
+import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
+import promoStore from 'stores/PromoStore';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -79,13 +79,12 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const PromosPage = () => {
+const PromosPage = observer(() => {
+  const { classes } = useStyles();
+  const navigate = useNavigate();
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
     null,
   );
-  const { classes } = useStyles();
-  const navigate = useNavigate();
-  const [promosCards, setPromoData] = useState<PromoDataCardProps[]>([]);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
@@ -97,22 +96,20 @@ const PromosPage = () => {
   };
 
   const handleConfirmDelete = () => {
-    setSelectedPromo(null);
-    setOpenSnackbar(true);
+    if (selectedPromo) {
+      promoStore.deletePromo(selectedPromo.id);
+      setSelectedPromo(null);
+      setOpenSnackbar(true);
+    }
   };
-
-  useEffect(() => {
-    const loadPromoData = async () => {
-      const data = await initializePromoData();
-      setPromoData(data);
-    };
-
-    loadPromoData();
-  }, []);
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
+
+  useEffect(() => {
+    promoStore.loadPromos();
+  }, []);
 
   return (
     <Box>
@@ -128,7 +125,7 @@ const PromosPage = () => {
         </Tooltip>
       </Box>
       <Grid container spacing={3}>
-        {promosCards.map((promo) => (
+        {promoStore.promos.map((promo) => (
           <Grid item xs={12} sm={6} md={4} key={promo.id}>
             <Box className={classes.promoCard}>
               <Box
@@ -155,7 +152,7 @@ const PromosPage = () => {
               <Button
                 className={classes.promoCardEditBtn}
                 variant="contained"
-                onClick={() => navigate('/stocks/edit', { state: { promo } })}
+                onClick={() => navigate(`/stocks/edit/${promo.id}`)}
               >
                 Редактировать
               </Button>
@@ -191,6 +188,6 @@ const PromosPage = () => {
       </Snackbar>
     </Box>
   );
-};
+});
 
 export default PromosPage;

@@ -75,4 +75,4 @@ async function initializePromoData() {
   return promoDataCards;
 }
 
-export { initializePromoData };
+export { initializePromoData, createBlobURL };
