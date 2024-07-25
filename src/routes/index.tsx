@@ -4,13 +4,14 @@ import { Typography } from '@mui/material';
 import AuthComponent from './AuthPage/AuthComponent';
 import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
 import MainPage from './MainPage/MainPage';
-import StocksPage from './ContentPage/StocksPage/StocksPage';
 import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
 import ItemPage from './ContentPage/ItemsPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
+import PromosPage from './ContentPage/PromosPage/PromosPage';
+import ErrorContentComponent from './ContentPage/components/ErrorContentComponent';
 
 const Router = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const Router = createBrowserRouter([
   },
   {
     element: <Layout />,
+    errorElement: <ErrorContentComponent />,
     children: [
       {
         path: '/',
@@ -27,7 +29,7 @@ const Router = createBrowserRouter([
       },
       {
         path: '/stocks',
-        element: <StocksPage />,
+        element: <PromosPage />,
       },
       {
         path: '/services',

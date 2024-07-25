@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 
-const StocksPage = () => {
+const PromosPage = () => {
   return (
     <Box
       sx={{
@@ -11,4 +11,4 @@ const StocksPage = () => {
   );
 };
 
-export default StocksPage;
+export default PromosPage;
