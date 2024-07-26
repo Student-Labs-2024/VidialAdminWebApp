@@ -1,34 +1,33 @@
-import React from 'react';
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { ThemeProvider } from '@mui/material/styles';
-
 import { DefaultTheme } from 'theme/DefaultTheme';
 import AuthComponent from 'routes/AuthPage/AuthComponent';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('AuthComponent', () => {
   it('renders the logo and bro image', () => {
-    const { getByAltText } = render(
-      <React.Fragment>
+    render(
+      <MemoryRouter>
         <ThemeProvider theme={DefaultTheme}>
           <AuthComponent />
         </ThemeProvider>
-      </React.Fragment>,
+      </MemoryRouter>,
     );
 
-    expect(getByAltText('Vidial_logo')).toBeTruthy();
-    expect(getByAltText('Vidial_picture')).toBeTruthy();
+    expect(screen.getByAltText('Vidial_logo')).toBeInTheDocument();
+    expect(screen.getByAltText('Vidial_picture')).toBeInTheDocument();
   });
 
   it('renders the login form', () => {
-    const { getByText } = render(
-      <React.Fragment>
+    render(
+      <MemoryRouter>
         <ThemeProvider theme={DefaultTheme}>
           <AuthComponent />
         </ThemeProvider>
-      </React.Fragment>,
+      </MemoryRouter>,
     );
 
-    expect(getByText('Вход')).toBeTruthy();
+    expect(screen.getByText('Вход')).toBeInTheDocument();
   });
 });
