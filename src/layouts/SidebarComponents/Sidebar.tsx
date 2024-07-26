@@ -87,7 +87,9 @@ const Sidebar: React.FC = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     setActivePath(location.pathname);

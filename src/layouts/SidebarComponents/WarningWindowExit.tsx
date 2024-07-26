@@ -1,7 +1,7 @@
-import React from 'react';
 import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router';
+import authStore from 'stores/AuthStore';
 
 interface WarningWindowProps {
   open: boolean;
@@ -39,15 +39,24 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const WarningWindow: React.FC<WarningWindowProps> = (props) => {
+const WarningWindow: React.FC<WarningWindowProps> = ({
+  open,
+  handleClose,
+  text,
+}) => {
   const navigate = useNavigate();
   const { classes } = useStyles();
+
+  const handleSubmit = () => {
+    authStore.logout();
+    navigate('/auth');
+  };
 
   return (
     <Modal
       aria-labelledby="transition-modal-title"
-      open={props.open}
-      onClose={props.handleClose}
+      open={open}
+      onClose={handleClose}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       slotProps={{
@@ -56,27 +65,27 @@ const WarningWindow: React.FC<WarningWindowProps> = (props) => {
         },
       }}
     >
-      <Fade in={props.open}>
+      <Fade in={open}>
         <Box className={classes.modalBox}>
           <Typography
             className={classes.modalText}
             id="transition-modal-title"
             component="h2"
           >
-            {props.text}
+            {text}
           </Typography>
           <Box className={classes.modalBtns}>
             <Button
               className={classes.modalBtn}
               variant="contained"
-              onClick={() => navigate('/auth')}
+              onClick={handleSubmit}
             >
               Да
             </Button>
             <Button
               className={classes.modalBtn}
               variant="contained"
-              onClick={props.handleClose}
+              onClick={handleClose}
             >
               Нет
             </Button>
