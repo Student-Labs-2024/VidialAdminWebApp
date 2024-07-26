@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
 import PromoCardInfoProps from 'types/Promo/PromoCardInfoProps';
@@ -75,9 +75,18 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
+const PromoCardInfo = ({
+  open,
+  handleClose,
+  handleConfirmDelete,
+  img,
+  title,
+  fullDescription,
+  startDate,
+  endDate,
+}: PromoCardInfoProps) => {
   const { classes } = useStyles();
-  const [open, setOpen] = useState(false);
+  const [openModal, setOpen] = useState(false);
 
   const handleOpenWindow = () => {
     setOpen(true);
@@ -87,21 +96,18 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
     setOpen(false);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDeleted = () => {
     setOpen(false);
-    props.handleConfirmDelete();
+    handleConfirmDelete();
   };
 
-  const formattedStartDate = new Date(props.startDate).toLocaleDateString(
-    'ru-RU',
-    {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    },
-  );
+  const formattedStartDate = new Date(startDate).toLocaleDateString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
 
-  const formattedEndDate = new Date(props.endDate).toLocaleDateString('ru-RU', {
+  const formattedEndDate = new Date(endDate).toLocaleDateString('ru-RU', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -111,8 +117,8 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
     <>
       <Modal
         aria-labelledby="transition-modal-title"
-        open={props.open}
-        onClose={props.handleClose}
+        open={open}
+        onClose={handleClose}
         closeAfterTransition
         slots={{ backdrop: Backdrop }}
         slotProps={{
@@ -121,20 +127,18 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
           },
         }}
       >
-        <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
+        <Fade in={open} timeout={{ enter: 300, exit: 900 }}>
           <Box id="transition-modal-title" className={classes.modalBox}>
             <Box
               className={classes.promoCardImg}
               component="img"
-              src={props.img}
-              alt={`${props.img}`}
+              src={img}
+              alt={`${img}`}
             />
-            <Typography className={classes.promoCardTitle}>
-              {props.title}
-            </Typography>
+            <Typography className={classes.promoCardTitle}>{title}</Typography>
             <Divider className={classes.promoCardDivider} />
             <Typography className={classes.promoCardFullDescription}>
-              {props.fullDescription}
+              {fullDescription}
             </Typography>
             <Divider className={classes.promoCardDivider} />
             <Typography
@@ -157,9 +161,9 @@ const PromoCardInfo: React.FC<PromoCardInfoProps> = (props) => {
         </Fade>
       </Modal>
       <WarningWindowDelete
-        open={open}
+        open={openModal}
         handleClose={handleCloseWindow}
-        handleConfirm={handleConfirmDelete}
+        handleConfirm={handleConfirmDeleted}
         text="Вы действительно хотите удалить данную акцию?"
       />
     </>

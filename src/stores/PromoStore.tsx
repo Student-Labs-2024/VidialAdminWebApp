@@ -7,11 +7,11 @@ class PromoStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.loadPromos();
   }
 
   async loadPromos() {
     const storedPromos = localStorage.getItem('promos');
+
     if (storedPromos) {
       this.promos = JSON.parse(storedPromos);
     } else {
@@ -41,6 +41,7 @@ class PromoStore {
     const index = this.promos.findIndex(
       (promo) => promo.id === updatedPromo.id,
     );
+
     if (index !== -1) {
       this.promos[index] = {
         ...updatedPromo,

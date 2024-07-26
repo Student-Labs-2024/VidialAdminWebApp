@@ -90,7 +90,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   };
 
   const isActive = (path: string) => {
-    return currentPath === path || currentPath.startsWith(path);
+    return currentPath.startsWith(path);
   };
 
   return (

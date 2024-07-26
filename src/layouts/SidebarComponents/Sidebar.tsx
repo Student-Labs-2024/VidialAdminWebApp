@@ -13,6 +13,8 @@ import { makeStyles } from 'tss-react/mui';
 
 import menuItems from './SidebarMenuItems';
 import CollapsibleMenuItem from './CollapsibleMenuItem';
+import { ExitToApp } from '@mui/icons-material';
+import WarningWindow from './WarningWindowExit';
 
 const useStyles = makeStyles()((theme) => ({
   drawerPaper: {
@@ -76,10 +78,18 @@ const useStyles = makeStyles()((theme) => ({
 }));
 
 const Sidebar: React.FC = () => {
+  const [open, setOpen] = useState(false);
   const location = useLocation();
   const [activePath, setActivePath] = useState(location.pathname);
 
   const { classes } = useStyles();
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   useEffect(() => {
     setActivePath(location.pathname);
@@ -128,9 +138,29 @@ const Sidebar: React.FC = () => {
               </NavLink>
             );
           })}
+          <Divider className={classes.divider} />
+          <ListItemButton
+            className={`${classes.listItemBtn} ${activePath === '/auth' ? 'active' : 'inactive'}`}
+            onClick={handleOpen}
+          >
+            <ListItemIcon>
+              <ExitToApp />
+            </ListItemIcon>
+            <ListItemText
+              primary="Выйти"
+              primaryTypographyProps={{
+                fontSize: '18px',
+                fontWeight: 700,
+              }}
+            />
+          </ListItemButton>
         </List>
-        <Divider className={classes.divider} />
       </Box>
+      <WarningWindow
+        open={open}
+        handleClose={handleClose}
+        text="Вы действительно хотите выйти?"
+      />
     </Drawer>
   );
 };

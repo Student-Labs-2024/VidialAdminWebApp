@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -113,12 +113,6 @@ const PromoEditForm = observer(() => {
   const [imageURL, setImageURL] = useState<string | null>(promo?.img || null);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const { classes } = useStyles();
-
-  useEffect(() => {
-    if (promo?.img) {
-      setImageURL(promo.img);
-    }
-  }, [promo]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
