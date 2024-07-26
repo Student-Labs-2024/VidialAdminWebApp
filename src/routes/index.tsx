@@ -1,5 +1,4 @@
 import { createBrowserRouter } from 'react-router-dom';
-import { Typography } from '@mui/material';
 
 import AuthComponent from './AuthPage/AuthComponent';
 import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
@@ -12,6 +11,7 @@ import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
 import PromosPage from './ContentPage/PromosPage/PromosPage';
 import ErrorContentComponent from '../components/ErrorContentComponent';
+import PrivateRoute from './PrivateRoute';
 
 const Router = createBrowserRouter([
   {
@@ -20,53 +20,44 @@ const Router = createBrowserRouter([
     errorElement: <ErrorAuthComponent />,
   },
   {
-    element: <Layout />,
-    errorElement: <ErrorContentComponent />,
+    element: <PrivateRoute />,
     children: [
       {
-        path: '/',
-        element: <MainPage />,
+        element: <Layout />,
+        errorElement: <ErrorContentComponent />,
+        children: [
+          {
+            path: '/',
+            element: <MainPage />,
+          },
+          {
+            path: '/stocks',
+            element: <PromosPage />,
+          },
+          {
+            path: '/services',
+            element: <ServicesPage />,
+          },
+          {
+            path: '/items',
+            element: <ItemPage />,
+          },
+          {
+            path: '/filials',
+            element: <DepartmentPage />,
+          },
+          {
+            path: '/doctors',
+            element: <DoctorsPage />,
+          },
+          {
+            path: '/users',
+            element: <UsersPage />,
+          },
+        ],
       },
-      {
-        path: '/stocks',
-        element: <PromosPage />,
-      },
-      {
-        path: '/services',
-        element: <ServicesPage />,
-      },
-      {
-        path: '/items',
-        element: <ItemPage />,
-      },
-      {
-        path: '/filials',
-        element: <DepartmentPage />,
-      },
-      {
-        path: '/doctors',
-        element: <DoctorsPage />,
-      },
-      {
-        path: '/users',
-        element: <UsersPage />,
-      },
-      {
-        path: '/logout',
-        element: (
-          <Typography
-            sx={{
-              textAlign: 'center',
-              color: 'text.secondary',
-              fontSize: '50px',
-            }}
-          >
-            Вы вышли!
-          </Typography>
-        ),
-      },
-    ],
-  },
+    ]
+  }
 ]);
 
 export default Router;
