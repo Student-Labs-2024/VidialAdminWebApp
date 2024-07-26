@@ -1,9 +1,18 @@
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Snackbar,
+  Typography,
+} from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { ArrowRightAltOutlined } from '@mui/icons-material';
-
+import { useState } from 'react';
 import InputSearch from '../components/InputSearch';
 import itemStore from 'stores/ItemStore';
+import ItemEditFormPage from './ItemEditFormPage';
+import ItemsCardProps from 'types/Items/ItemsCardProps';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -80,6 +89,19 @@ const useStyles = makeStyles()((theme) => ({
 const ItemPage = () => {
   const { classes } = useStyles();
   const { items } = itemStore;
+  const [open, setOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<ItemsCardProps | null>(null);
+  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
+
+  const handleOpen = (item: ItemsCardProps) => {
+    setSelectedItem(item);
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSelectedItem(null);
+  };
 
   return (
     <Box className={classes.root}>
@@ -101,23 +123,42 @@ const ItemPage = () => {
               </Typography>
               <Divider className={classes.itemCardDivider} />
               <Box className={classes.itemCardDeskAndPrice}>
-                <Typography
-                  className={classes.itemCardPrice}
-                >{`${item.price} ₽`}</Typography>
+                <Typography className={classes.itemCardPrice}>
+                  {`${item.price} ₽`}
+                </Typography>
                 <Typography className={classes.itemCardDescription}>
                   {item.description}
                 </Typography>
               </Box>
-              <Button variant="text" endIcon={<ArrowRightAltOutlined />}>
-                Подробнее
-              </Button>
-              <Button className={classes.itemCardEditBtn} variant="contained">
+              <Button
+                className={classes.itemCardEditBtn}
+                variant="contained"
+                onClick={() => handleOpen(item)}
+              >
                 Редактировать
               </Button>
             </Box>
           </Grid>
         ))}
+        {selectedItem && (
+          <ItemEditFormPage
+            open={open}
+            handleClose={handleClose}
+            item={selectedItem}
+            setOpenSnackbar={setOpenSnackbar}
+          />
+        )}
       </Grid>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={() => setOpenSnackbar(false)}
+      >
+        <Alert severity="success" sx={{ width: '100%' }}>
+          Вы успешно редактировали данную карточку! Вас автоматически
+          перенаправят на страницу Товары
+        </Alert>
+      </Snackbar>
     </Box>
   );
 };
