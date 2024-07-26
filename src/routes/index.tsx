@@ -10,8 +10,10 @@ import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
 import PromosPage from './ContentPage/PromosPage/PromosPage';
-import ErrorContentComponent from '../components/ErrorContentComponent';
 import PrivateRoute from './PrivateRoute';
+import PromoNewFormPage from './ContentPage/PromosPage/PromoNewFormPage';
+import PromoEditFormPage from './ContentPage/PromosPage/PromoEditFormPage';
+import ErrorContentComponent from './ContentPage/components/ErrorContentComponent';
 
 const Router = createBrowserRouter([
   {
@@ -33,6 +35,14 @@ const Router = createBrowserRouter([
           {
             path: '/stocks',
             element: <PromosPage />,
+          },
+          {
+            path: '/stocks/add',
+            element: <PromoNewFormPage />,
+          },
+          {
+            path: '/stocks/edit/:id',
+            element: <PromoEditFormPage />,
           },
           {
             path: '/services',

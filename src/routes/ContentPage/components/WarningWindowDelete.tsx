@@ -1,11 +1,11 @@
+import React from 'react';
 import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { useNavigate } from 'react-router';
-import authStore from 'stores/AuthStore';
 
 interface WarningWindowProps {
   open: boolean;
   handleClose: () => void;
+  handleConfirm: () => void;
   text: string;
 }
 
@@ -15,7 +15,7 @@ const useStyles = makeStyles()((theme) => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '611px',
+    width: '650px',
     backgroundColor: theme.palette.secondary.main,
     boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10)',
     padding: '71px 95px',
@@ -39,20 +39,19 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const WarningWindow = ({ open, handleClose, text }: WarningWindowProps) => {
-  const navigate = useNavigate();
+const WarningWindowDelete: React.FC<WarningWindowProps> = (props) => {
   const { classes } = useStyles();
 
-  const handleSubmit = () => {
-    authStore.logout();
-    navigate('/auth');
+  const handleConfirmAndClose = () => {
+    props.handleConfirm();
+    props.handleClose();
   };
 
   return (
     <Modal
       aria-labelledby="transition-modal-title"
-      open={open}
-      onClose={handleClose}
+      open={props.open}
+      onClose={props.handleClose}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       slotProps={{
@@ -61,27 +60,27 @@ const WarningWindow = ({ open, handleClose, text }: WarningWindowProps) => {
         },
       }}
     >
-      <Fade in={open}>
+      <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
         <Box className={classes.modalBox}>
           <Typography
             className={classes.modalText}
             id="transition-modal-title"
             component="h2"
           >
-            {text}
+            {props.text}
           </Typography>
           <Box className={classes.modalBtns}>
             <Button
               className={classes.modalBtn}
               variant="contained"
-              onClick={handleSubmit}
+              onClick={handleConfirmAndClose}
             >
               Да
             </Button>
             <Button
               className={classes.modalBtn}
               variant="contained"
-              onClick={handleClose}
+              onClick={props.handleClose}
             >
               Нет
             </Button>
@@ -92,4 +91,4 @@ const WarningWindow = ({ open, handleClose, text }: WarningWindowProps) => {
   );
 };
 
-export default WarningWindow;
+export default WarningWindowDelete;

@@ -107,7 +107,7 @@ const Sidebar: React.FC = () => {
           className={classes.logo}
           component="img"
           alt="Vidial_logo"
-          src="img/logo.svg"
+          src="/img/logo.svg"
         />
 
         <Divider className={classes.divider} />
