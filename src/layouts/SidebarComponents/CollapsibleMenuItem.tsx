@@ -89,6 +89,10 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     );
   };
 
+  const isActive = (path: string) => {
+    return currentPath.startsWith(path);
+  };
+
   return (
     <>
       <ListItemButton
@@ -116,7 +120,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
               className={classes.navLink}
             >
               <ListItemButton
-                className={`${classes.listMenuItemBtn} ${currentPath === subItem.path ? 'active' : 'inactive'}`}
+                className={`${classes.listMenuItemBtn} ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
               >
                 <ListItemIcon sx={{ color: 'inherit' }}>
                   {subItem.icon}
