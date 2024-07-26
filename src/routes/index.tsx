@@ -11,7 +11,7 @@ import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/Layout';
 import PromosPage from './ContentPage/PromosPage/PromosPage';
-import ErrorContentComponent from './ContentPage/components/ErrorContentComponent';
+import ErrorContentComponent from '../components/ErrorContentComponent';
 
 const Router = createBrowserRouter([
   {

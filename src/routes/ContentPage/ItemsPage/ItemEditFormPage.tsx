@@ -1,15 +1,10 @@
 import { Backdrop, Box, Fade, Modal } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import React from 'react';
 
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 import ItemEditForm from 'forms/Item/ItemEditForm';
 
 const useStyles = makeStyles()((theme) => ({
-  container: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
   editFormBox: {
     display: 'flex',
     justifyContent: 'center',
@@ -61,36 +56,39 @@ interface ItemEditFormPageProps {
   setOpenSnackbar: (value: boolean) => void;
 }
 
-const ItemEditFormPage: React.FC<ItemEditFormPageProps> = (props) => {
+const ItemEditFormPage = ({
+  open,
+  handleClose,
+  item,
+  setOpenSnackbar,
+}: ItemEditFormPageProps) => {
   const { classes } = useStyles();
 
   return (
-    <Box className={classes.container}>
-      <Box className={classes.editFormBox}>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          open={props.open}
-          onClose={props.handleClose}
-          closeAfterTransition
-          slots={{ backdrop: Backdrop }}
-          slotProps={{
-            backdrop: {
-              timeout: 500,
-            },
-          }}
-        >
-          <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
-            <Box id="transition-modal-title" className={classes.modalBox}>
-              <ItemEditForm
-                open={props.open}
-                handleClose={props.handleClose}
-                item={props.item}
-                setOpenSnackbar={props.setOpenSnackbar}
-              />
-            </Box>
-          </Fade>
-        </Modal>
-      </Box>
+    <Box className={classes.editFormBox}>
+      <Modal
+        aria-labelledby="transition-modal-title"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        slots={{ backdrop: Backdrop }}
+        slotProps={{
+          backdrop: {
+            timeout: 500,
+          },
+        }}
+      >
+        <Fade in={open} timeout={{ enter: 300, exit: 900 }}>
+          <Box id="transition-modal-title" className={classes.modalBox}>
+            <ItemEditForm
+              open={open}
+              handleClose={handleClose}
+              item={item}
+              setOpenSnackbar={setOpenSnackbar}
+            />
+          </Box>
+        </Fade>
+      </Modal>
     </Box>
   );
 };

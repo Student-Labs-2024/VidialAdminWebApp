@@ -7,7 +7,6 @@ class ItemStore {
 
   constructor() {
     makeAutoObservable(this);
-    this.loadItems();
   }
 
   async createBlobURL(path: string): Promise<string> {

@@ -8,8 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { useState } from 'react';
-import InputSearch from '../components/InputSearch';
+import { useState, useEffect } from 'react';
+import InputSearch from '../../../components/InputSearch';
 import itemStore from 'stores/ItemStore';
 import ItemEditFormPage from './ItemEditFormPage';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
@@ -88,20 +88,22 @@ const useStyles = makeStyles()((theme) => ({
 
 const ItemPage = () => {
   const { classes } = useStyles();
-  const { items } = itemStore;
-  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState<ItemsCardProps[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemsCardProps | null>(null);
   const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const handleOpen = (item: ItemsCardProps) => {
     setSelectedItem(item);
-    setOpen(true);
   };
 
   const handleClose = () => {
-    setOpen(false);
     setSelectedItem(null);
   };
+
+  useEffect(() => {
+    itemStore.loadItems();
+    setItems(itemStore.items);
+  }, []);
 
   return (
     <Box className={classes.root}>
@@ -142,7 +144,7 @@ const ItemPage = () => {
         ))}
         {selectedItem && (
           <ItemEditFormPage
-            open={open}
+            open={!!selectedItem}
             handleClose={handleClose}
             item={selectedItem}
             setOpenSnackbar={setOpenSnackbar}
@@ -155,8 +157,7 @@ const ItemPage = () => {
         onClose={() => setOpenSnackbar(false)}
       >
         <Alert severity="success" sx={{ width: '100%' }}>
-          Вы успешно редактировали данную карточку! Вас автоматически
-          перенаправят на страницу Товары
+          Вы успешно редактировали данную карточку!
         </Alert>
       </Snackbar>
     </Box>
