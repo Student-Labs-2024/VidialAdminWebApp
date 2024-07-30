@@ -53,14 +53,14 @@ interface ItemEditFormPageProps {
   open: boolean;
   handleClose: () => void;
   item: ItemsCardProps;
-  setOpenSnackbar: (value: boolean) => void;
+  notify: () => void;
 }
 
 const ItemEditFormPage = ({
   open,
   handleClose,
   item,
-  setOpenSnackbar,
+  notify,
 }: ItemEditFormPageProps) => {
   const { classes } = useStyles();
 
@@ -84,7 +84,7 @@ const ItemEditFormPage = ({
               open={open}
               handleClose={handleClose}
               item={item}
-              setOpenSnackbar={setOpenSnackbar}
+              notify={notify}
             />
           </Box>
         </Fade>

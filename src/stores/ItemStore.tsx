@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 
 class ItemStore {
@@ -9,13 +8,7 @@ class ItemStore {
     makeAutoObservable(this);
   }
 
-  async createBlobURL(path: string): Promise<string> {
-    const response = await fetch(path);
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  }
-
-  async loadItems() {
+  loadItems() {
     const storedItems = localStorage.getItem('items');
 
     if (storedItems) {
@@ -144,15 +137,12 @@ class ItemStore {
     localStorage.setItem('items', JSON.stringify(this.items));
   }
 
-  async editItem(updatedItem: ItemsCardProps) {
+  editItem(updatedItem: ItemsCardProps) {
     const index = this.items.findIndex(
       (item) => item.index === updatedItem.index,
     );
     if (index !== -1) {
-      this.items[index] = {
-        ...updatedItem,
-        img: await this.createBlobURL(updatedItem.img),
-      };
+      this.items[index] = updatedItem;
       this.saveItems();
     }
   }

@@ -7,8 +7,6 @@ import {
   Button,
   Tooltip,
   IconButton,
-  Snackbar,
-  Alert,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
@@ -19,6 +17,7 @@ import PromoCardInfo from './PromoCardInfo';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
+import { Slide, ToastContainer, toast } from 'react-toastify';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -78,6 +77,9 @@ const useStyles = makeStyles()((theme) => ({
     width: '80%',
     padding: '7px 20px',
   },
+  toastContainer: {
+    width: 'auto',
+  },
 }));
 
 const PromosPage = observer(() => {
@@ -87,7 +89,6 @@ const PromosPage = observer(() => {
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
     null,
   );
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
     setSelectedPromo(promo);
@@ -97,16 +98,27 @@ const PromosPage = observer(() => {
     setSelectedPromo(null);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedPromo) {
-      promoStore.deletePromo(selectedPromo.id);
+      await promoStore.deletePromo(selectedPromo.id);
+      setPromos(promoStore.promos);
       setSelectedPromo(null);
-      setOpenSnackbar(true);
+      notify();
     }
   };
 
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
+  const notify = () => {
+    toast.success('Вы удалили акцию!', {
+      position: 'bottom-center',
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: 'colored',
+      transition: Slide,
+    });
   };
 
   useEffect(() => {
@@ -115,81 +127,78 @@ const PromosPage = observer(() => {
   }, []);
 
   return (
-    <Box>
-      <Box className={classes.promosBtns}>
-        <InputSearch />
-        <Tooltip title="Добавить акцию" placement="bottom">
-          <IconButton
-            onClick={() => navigate('/stocks/add')}
-            sx={{ padding: 0 }}
-          >
-            <Add className={classes.iconAdd} />
-          </IconButton>
-        </Tooltip>
+    <>
+      <Box>
+        <Box className={classes.promosBtns}>
+          <InputSearch />
+          <Tooltip title="Добавить акцию" placement="bottom">
+            <IconButton
+              onClick={() => navigate('/stocks/add')}
+              sx={{ padding: 0 }}
+            >
+              <Add className={classes.iconAdd} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <Grid container spacing={3}>
+          {promos.map((promo) => (
+            <Grid item xs={12} sm={6} lg={4} key={promo.id}>
+              <Box className={classes.promoCard}>
+                <Box
+                  className={classes.promoCardImg}
+                  component="img"
+                  src={promo.img}
+                  alt={promo.title}
+                />
+                <Typography className={classes.promoCardTitle}>
+                  {promo.title}
+                </Typography>
+                <Divider className={classes.promoCardDivider} />
+                <Typography className={classes.promoCardDescription}>
+                  {promo.description}
+                </Typography>
+                <Button
+                  onClick={() => handleOpenPromo(promo)}
+                  variant="text"
+                  endIcon={<ArrowRightAltOutlined />}
+                  className={classes.promoCardBtn}
+                >
+                  Подробнее
+                </Button>
+                <Button
+                  className={classes.promoCardEditBtn}
+                  variant="contained"
+                  onClick={() => navigate(`/stocks/edit/${promo.id}`)}
+                >
+                  Редактировать
+                </Button>
+              </Box>
+            </Grid>
+          ))}
+        </Grid>
+        {selectedPromo && (
+          <PromoCardInfo
+            open={Boolean(selectedPromo)}
+            handleClose={handleClosePromo}
+            handleConfirmDelete={handleConfirmDelete}
+            {...selectedPromo}
+          />
+        )}
       </Box>
-      <Grid container spacing={3}>
-        {promos.map((promo) => (
-          <Grid item xs={12} sm={6} lg={4} key={promo.id}>
-            <Box className={classes.promoCard}>
-              <Box
-                className={classes.promoCardImg}
-                component="img"
-                src={promo.img}
-                alt={promo.title}
-              />
-              <Typography className={classes.promoCardTitle}>
-                {promo.title}
-              </Typography>
-              <Divider className={classes.promoCardDivider} />
-              <Typography className={classes.promoCardDescription}>
-                {promo.description}
-              </Typography>
-              <Button
-                onClick={() => handleOpenPromo(promo)}
-                variant="text"
-                endIcon={<ArrowRightAltOutlined />}
-                className={classes.promoCardBtn}
-              >
-                Подробнее
-              </Button>
-              <Button
-                className={classes.promoCardEditBtn}
-                variant="contained"
-                onClick={() => navigate(`/stocks/edit/${promo.id}`)}
-              >
-                Редактировать
-              </Button>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
-      {selectedPromo && (
-        <PromoCardInfo
-          open={Boolean(selectedPromo)}
-          handleClose={handleClosePromo}
-          handleConfirmDelete={handleConfirmDelete}
-          id={selectedPromo.id}
-          img={selectedPromo.img}
-          title={selectedPromo.title}
-          fullDescription={selectedPromo.fullDescription}
-          startDate={selectedPromo.startDate}
-          endDate={selectedPromo.endDate}
-        />
-      )}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          severity="success"
-          onClose={handleCloseSnackbar}
-          sx={{ width: '100%' }}
-        >
-          Вы удалили акцию!
-        </Alert>
-      </Snackbar>
-    </Box>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+        className={classes.toastContainer}
+      />
+    </>
   );
 });
 

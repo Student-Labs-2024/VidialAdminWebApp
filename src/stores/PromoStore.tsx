@@ -8,13 +8,7 @@ class PromoStore {
     makeAutoObservable(this);
   }
 
-  async createBlobURL(path: string): Promise<string> {
-    const response = await fetch(path);
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  }
-
-  async loadPromos() {
+  loadPromos() {
     const storedPromos = localStorage.getItem('promos');
 
     if (storedPromos) {
@@ -94,30 +88,23 @@ class PromoStore {
     localStorage.setItem('promos', JSON.stringify(this.promos));
   }
 
-  async addPromo(promo: PromoDataCardProps) {
-    const newPromo = {
-      ...promo,
-      img: await this.createBlobURL(promo.img),
-    };
-    this.promos.push(newPromo);
+  addPromo(promo: PromoDataCardProps) {
+    this.promos.push(promo);
     this.savePromos();
   }
 
-  async editPromo(updatedPromo: PromoDataCardProps) {
+  editPromo(updatedPromo: PromoDataCardProps) {
     const index = this.promos.findIndex(
       (promo) => promo.id === updatedPromo.id,
     );
 
     if (index !== -1) {
-      this.promos[index] = {
-        ...updatedPromo,
-        img: await this.createBlobURL(updatedPromo.img),
-      };
+      this.promos[index] = updatedPromo;
       this.savePromos();
     }
   }
 
-  deletePromo(id: number) {
+  async deletePromo(id: number) {
     this.promos = this.promos.filter((promo) => promo.id !== id);
     this.savePromos();
   }

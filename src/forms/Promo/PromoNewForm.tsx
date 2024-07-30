@@ -1,17 +1,11 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Snackbar,
-  Alert,
-} from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from 'tss-react/mui';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 
@@ -102,11 +96,14 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const PromoNewForm = observer(() => {
+interface PromoNewFormProps {
+  notify: () => void;
+}
+
+const PromoNewForm = observer(({ notify }: PromoNewFormProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const { classes } = useStyles();
   const navigate = useNavigate();
 
@@ -165,16 +162,12 @@ const PromoNewForm = observer(() => {
       };
 
       promoStore.addPromo(newPromo);
-      setOpenSnackbar(true);
+      notify();
       setTimeout(() => {
         navigate('/stocks');
       }, 3000);
     },
   });
-
-  const handleCloseSnackbar = () => {
-    setOpenSnackbar(false);
-  };
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -342,20 +335,6 @@ const PromoNewForm = observer(() => {
           </Box>
         </Box>
       </Box>
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={5000}
-        onClose={handleCloseSnackbar}
-      >
-        <Alert
-          severity="success"
-          onClose={handleCloseSnackbar}
-          sx={{ width: '100%' }}
-        >
-          Вы добавили новую карточку! Вас автоматически перенаправят на страницу
-          Акции
-        </Alert>
-      </Snackbar>
     </form>
   );
 });

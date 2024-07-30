@@ -1,12 +1,5 @@
 import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Snackbar,
-  Alert,
-} from '@mui/material';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { makeStyles } from 'tss-react/mui';
@@ -103,7 +96,11 @@ const useStyles = makeStyles()((theme) => ({
   },
 }));
 
-const PromoEditForm = observer(() => {
+interface PromoEditFormProps {
+  notify: () => void;
+}
+
+const PromoEditForm = observer(({ notify }: PromoEditFormProps) => {
   const { id } = useParams<{ id: string }>();
   const promoId = Number(id);
   const promo = promoStore.getPromoById(promoId);
@@ -111,7 +108,6 @@ const PromoEditForm = observer(() => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(promo?.img || null);
-  const [openSnackbar, setOpenSnackbar] = useState<boolean>(false);
   const { classes } = useStyles();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -173,7 +169,7 @@ const PromoEditForm = observer(() => {
       };
 
       promoStore.editPromo(updatedPromo);
-      setOpenSnackbar(true);
+      notify();
       setTimeout(() => {
         navigate('/stocks');
       }, 3000);
@@ -346,12 +342,6 @@ const PromoEditForm = observer(() => {
           </Box>
         </Box>
       </Box>
-      <Snackbar open={openSnackbar} autoHideDuration={5000}>
-        <Alert severity="success" sx={{ width: '100%' }}>
-          Вы успешно редактировали данную карточку! Вас автоматически
-          перенаправят на страницу Акции
-        </Alert>
-      </Snackbar>
     </form>
   );
 });

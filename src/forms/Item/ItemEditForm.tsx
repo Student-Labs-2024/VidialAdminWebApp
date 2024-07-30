@@ -100,11 +100,11 @@ interface ItemEditFormProps {
   open: boolean;
   handleClose: () => void;
   item: ItemsCardProps;
-  setOpenSnackbar: (value: boolean) => void;
+  notify: () => void;
 }
 
 const ItemEditForm = observer(
-  ({ handleClose, item, setOpenSnackbar }: ItemEditFormProps) => {
+  ({ handleClose, item, notify }: ItemEditFormProps) => {
     const { classes } = useStyles();
     const [image, setImage] = useState<File | null>(null);
     const [imageError, setImageError] = useState<string>('');
@@ -159,26 +159,9 @@ const ItemEditForm = observer(
           title: values.title,
           description: values.description,
           price: values.price,
-          manufacture: item.manufacture,
-          brand: item.brand,
-          index: item.index,
-          cover: item.cover,
-          color: item.color,
-          diameter: item.diameter,
-          material: item.material,
-          geometry: item.geometry,
-          lensType: item.lensType,
-          lensClass: item.lensClass,
-          technology: item.technology,
-          dioptre: item.dioptre,
-          cylinder: item.cylinder,
-          add: item.add,
-          amount: item.amount,
-          department: item.department,
         };
 
         itemStore.editItem(updatedItem);
-        setOpenSnackbar(true);
         handleClose();
       },
     });
@@ -239,6 +222,7 @@ const ItemEditForm = observer(
                   variant="contained"
                   type="submit"
                   disabled={!formik.isValid || !formik.dirty || !imageURL}
+                  onClick={notify}
                 >
                   Сохранить
                 </Button>
