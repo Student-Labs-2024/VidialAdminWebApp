@@ -17,6 +17,7 @@ class ItemStore {
 
   async loadItems() {
     const storedItems = localStorage.getItem('items');
+
     if (storedItems) {
       this.items = JSON.parse(storedItems);
     } else {
@@ -143,12 +144,15 @@ class ItemStore {
     localStorage.setItem('items', JSON.stringify(this.items));
   }
 
-  editItem(updatedItem: ItemsCardProps) {
+  async editItem(updatedItem: ItemsCardProps) {
     const index = this.items.findIndex(
       (item) => item.index === updatedItem.index,
     );
     if (index !== -1) {
-      this.items[index] = updatedItem;
+      this.items[index] = {
+        ...updatedItem,
+        img: await this.createBlobURL(updatedItem.img),
+      };
       this.saveItems();
     }
   }

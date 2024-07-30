@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
 
 import { DefaultTheme } from 'theme/DefaultTheme';
-import Sidebar from 'layouts/SidebarComponents/Sidebar';
+import Sidebar from 'layouts/MainLayout/Sidebar';
 
 describe('Sidebar component', () => {
   const renderSidebar = () =>

@@ -14,10 +14,11 @@ import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+
 import PromoCardInfo from './PromoCardInfo';
-import InputSearch from '../components/InputSearch';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
+import InputSearch from 'components/InputSearch';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -82,6 +83,7 @@ const useStyles = makeStyles()((theme) => ({
 const PromosPage = observer(() => {
   const { classes } = useStyles();
   const navigate = useNavigate();
+  const [promos, setPromos] = useState<PromoDataCardProps[]>([]);
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
     null,
   );
@@ -109,6 +111,7 @@ const PromosPage = observer(() => {
 
   useEffect(() => {
     promoStore.loadPromos();
+    setPromos(promoStore.promos);
   }, []);
 
   return (
@@ -125,8 +128,8 @@ const PromosPage = observer(() => {
         </Tooltip>
       </Box>
       <Grid container spacing={3}>
-        {promoStore.promos.map((promo) => (
-          <Grid item xs={12} sm={6} md={4} key={promo.id}>
+        {promos.map((promo) => (
+          <Grid item xs={12} sm={6} lg={4} key={promo.id}>
             <Box className={classes.promoCard}>
               <Box
                 className={classes.promoCardImg}

@@ -9,10 +9,11 @@ import {
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useState, useEffect } from 'react';
-import InputSearch from '../../../components/InputSearch';
+
 import itemStore from 'stores/ItemStore';
 import ItemEditFormPage from './ItemEditFormPage';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
+import InputSearch from 'components/InputSearch';
 
 const useStyles = makeStyles()((theme) => ({
   root: {

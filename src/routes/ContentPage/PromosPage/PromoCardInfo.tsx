@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { makeStyles } from 'tss-react/mui';
 
 import PromoCardInfoProps from 'types/Promo/PromoCardInfoProps';
-import WarningWindowDelete from '../components/WarningWindowDelete';
+import WarningWindowDelete from 'components/WarningWindowDelete';
 
 const useStyles = makeStyles()((theme) => ({
   modalBox: {

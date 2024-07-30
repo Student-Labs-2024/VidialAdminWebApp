@@ -13,5 +13,6 @@ module.exports = {
     '^forms/(.*)$': '<rootDir>/src/forms/$1',
     '^types/(.*)$': '<rootDir>/src/types/$1',
     '^layouts/(.*)$': '<rootDir>/src/layouts/$1',
+    '^components/(.*)$': '<rootDir>/src/components/$1',
   },
 };
