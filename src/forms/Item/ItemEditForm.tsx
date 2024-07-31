@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { makeStyles } from 'tss-react/mui';
-import { observer } from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite'
+
 import itemStore from 'stores/ItemStore';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
+import useGlobalStyles from 'theme/globalStyles';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение товара'),
@@ -17,85 +18,6 @@ const validationSchema = yup.object({
     .positive('Цена должна быть положительной'),
 });
 
-const useStyles = makeStyles()((theme) => ({
-  modalBtns: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    width: '100%',
-    gap: '10px',
-  },
-  modalBtn: {
-    fontSize: theme.typography.h3.fontSize,
-    width: '100%',
-  },
-  formContainer: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    gap: '40px',
-  },
-  formInputs: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'center',
-    width: '400px',
-  },
-  uploadButtonContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '350px',
-  },
-  uploadButton: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: '100%',
-  },
-  uploadButtonStyle: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '10px',
-    border: `1px solid ${theme.palette.grey[600]}`,
-    padding: '10px',
-  },
-  uploadBtnText: {
-    color: theme.palette.grey[600],
-    fontSize: '14px',
-    fontWeight: theme.typography.h2.fontWeight,
-  },
-  uploadBtnWarning: {
-    textAlign: 'center',
-    color: theme.palette.grey[600],
-  },
-  uploadTextError: {
-    textAlign: 'center',
-    fontSize: '14px',
-    color: theme.palette.primary.main,
-  },
-  uploadBtnImgName: {
-    color: theme.palette.text.secondary,
-    fontSize: '10px',
-  },
-  uploadedImageContainer: {
-    width: '100%',
-    maxWidth: '300px',
-    height: 'auto',
-    padding: '10px',
-    textAlign: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    gap: '10px',
-  },
-  uploadedImage: {
-    borderRadius: '20px',
-  },
-  deleteButton: {
-    color: theme.palette.text.primary,
-  },
-}));
-
 interface ItemEditFormProps {
   open: boolean;
   handleClose: () => void;
@@ -103,9 +25,9 @@ interface ItemEditFormProps {
   notify: () => void;
 }
 
-const ItemEditForm = observer(
+const ItemEditForm =
   ({ handleClose, item, notify }: ItemEditFormProps) => {
-    const { classes } = useStyles();
+    const globalClasses = useGlobalStyles()
     const [image, setImage] = useState<File | null>(null);
     const [imageError, setImageError] = useState<string>('');
     const [imageURL, setImageURL] = useState<string | null>(item.img);
@@ -169,8 +91,8 @@ const ItemEditForm = observer(
     return (
       <form onSubmit={formik.handleSubmit}>
         <Box display="flex" flexDirection="column" gap="10px">
-          <Box className={classes.formContainer}>
-            <Box className={classes.formInputs}>
+          <Box className={globalClasses.classes.formContainer}>
+            <Box className={globalClasses.classes.formInputs}>
               <TextField
                 fullWidth
                 id="title"
@@ -216,9 +138,9 @@ const ItemEditForm = observer(
                 error={formik.touched.price && Boolean(formik.errors.price)}
                 helperText={formik.touched.price && formik.errors.price}
               />
-              <Box className={classes.modalBtns}>
+              <Box className={globalClasses.classes.modalBtns}>
                 <Button
-                  className={classes.modalBtn}
+                  className={globalClasses.classes.modalBtn}
                   variant="contained"
                   type="submit"
                   disabled={!formik.isValid || !formik.dirty || !imageURL}
@@ -227,7 +149,7 @@ const ItemEditForm = observer(
                   Сохранить
                 </Button>
                 <Button
-                  className={classes.modalBtn}
+                  className={globalClasses.classes.modalBtn}
                   variant="contained"
                   onClick={handleClose}
                 >
@@ -235,7 +157,7 @@ const ItemEditForm = observer(
                 </Button>
               </Box>
             </Box>
-            <Box className={classes.uploadButtonContainer}>
+            <Box className={globalClasses.classes.uploadButtonContainer}>
               {!imageURL ? (
                 <>
                   <input
@@ -247,15 +169,15 @@ const ItemEditForm = observer(
                   />
                   <label
                     htmlFor="upload-image"
-                    className={classes.uploadButton}
+                    className={globalClasses.classes.uploadButton}
                   >
                     <Button
-                      className={classes.uploadButtonStyle}
+                      className={globalClasses.classes.uploadButtonStyle}
                       component="span"
                     >
                       <Box component="img" src="/img/upload.svg" alt="upload" />
                       <Typography
-                        className={classes.uploadBtnText}
+                        className={globalClasses.classes.uploadBtnText}
                         variant="body2"
                       >
                         Загрузите новое фото товара
@@ -263,22 +185,22 @@ const ItemEditForm = observer(
                     </Button>
                   </label>
                   {imageError && (
-                    <Typography className={classes.uploadTextError}>
+                    <Typography className={globalClasses.classes.uploadTextError}>
                       {imageError}
                     </Typography>
                   )}
                 </>
               ) : (
-                <Box className={classes.uploadedImageContainer}>
+                <Box className={globalClasses.classes.uploadedImageContainer}>
                   <Box
-                    className={classes.uploadedImage}
+                    className={globalClasses.classes.uploadedImage}
                     component="img"
                     src={imageURL}
                     alt="uploaded"
                     width="100%"
                   />
                   <Button
-                    className={classes.deleteButton}
+                    className={globalClasses.classes.deleteButton}
                     onClick={handleImageDelete}
                     variant="contained"
                   >
@@ -287,14 +209,14 @@ const ItemEditForm = observer(
                 </Box>
               )}
               <Typography
-                className={classes.uploadBtnWarning}
+                className={globalClasses.classes.uploadBtnWarning}
                 variant="body2"
                 color="red"
               >
                 *Форматы изображений: jpg, png. Рекомендуемый размер: 1024x1024.
               </Typography>
               {formik.errors.img && (
-                <Typography color="error" className={classes.uploadTextError}>
+                <Typography color="error" className={globalClasses.classes.uploadTextError}>
                   {String(formik.errors.img)}
                 </Typography>
               )}
@@ -303,7 +225,7 @@ const ItemEditForm = observer(
         </Box>
       </form>
     );
-  },
-);
+  }
+  ;
 
-export default ItemEditForm;
+export default observer(ItemEditForm);

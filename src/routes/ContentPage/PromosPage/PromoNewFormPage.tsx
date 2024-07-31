@@ -3,6 +3,7 @@ import { makeStyles } from 'tss-react/mui';
 import { Slide, ToastContainer, toast } from 'react-toastify';
 
 import PromoNewForm from 'forms/Promo/PromoNewForm';
+import useGlobalStyles from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -19,13 +20,11 @@ const useStyles = makeStyles()((theme) => ({
     borderRadius: '20px',
     padding: '20px 50px',
   },
-  toastContainer: {
-    width: 'auto',
-  },
 }));
 
 const PromoNewFormPage = () => {
   const { classes } = useStyles();
+  const globalClasses = useGlobalStyles();
 
   const notify = () => {
     toast.success(
@@ -62,7 +61,7 @@ const PromoNewFormPage = () => {
         draggable
         pauseOnHover
         theme="colored"
-        className={classes.toastContainer}
+        className={globalClasses.classes.toastContainer}
       />
     </>
   );

@@ -11,26 +11,9 @@ import { NavLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 
 import CollapsibleMenuItemProps from 'types/CollapsibleMenuItemProps';
+import useGlobalStyles from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
-  listMenuBtn: {
-    borderRadius: '30px',
-    '&.active': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&.inactive': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.text.primary,
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&:hover .MuiListItemIcon-root': {
-      color: theme.palette.primary.main,
-    },
-  },
   collapseBtn: {
     backgroundColor: theme.palette.primary.dark,
     borderRadius: '30px',
@@ -40,30 +23,7 @@ const useStyles = makeStyles()((theme) => ({
     textDecoration: 'none',
     color: theme.palette.grey[600],
   },
-  listMenuItemBtn: {
-    borderRadius: '30px',
-    '&.active': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-      '.MuiListItemIcon-root': {
-        color: theme.palette.primary.main,
-      },
-    },
-    '$.inactive': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.grey[600],
-      '.MuiListItemIcon-root': {
-        color: theme.palette.grey[600],
-      },
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&:hover .MuiListItemIcon-root': {
-      color: theme.palette.primary.main,
-    },
-  },
+
 }));
 
 const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
@@ -77,6 +37,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   });
 
   const { classes } = useStyles();
+  const globalClasses = useGlobalStyles();
 
   const handleClick = () => {
     const newOpenState = !open;
@@ -97,7 +58,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     <>
       <ListItemButton
         onClick={handleClick}
-        className={`${classes.listMenuBtn} ${open ? 'active' : 'inactive'}`}
+        className={`${globalClasses.classes.listItemBtn} ${open ? 'active' : 'inactive'}`}
       >
         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
         <ListItemText
@@ -120,7 +81,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
               className={classes.navLink}
             >
               <ListItemButton
-                className={`${classes.listMenuItemBtn} ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
+                className={`${globalClasses.classes.listMenuItemBtn} ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
               >
                 <ListItemIcon sx={{ color: 'inherit' }}>
                   {subItem.icon}

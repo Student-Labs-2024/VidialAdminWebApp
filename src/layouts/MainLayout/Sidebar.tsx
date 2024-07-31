@@ -15,6 +15,7 @@ import menuItems from './SidebarMenuItems';
 import CollapsibleMenuItem from './CollapsibleMenuItem';
 import { ExitToApp } from '@mui/icons-material';
 import WarningWindow from './WarningWindowExit';
+import useGlobalStyles from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
   drawerPaper: {
@@ -51,30 +52,7 @@ const useStyles = makeStyles()((theme) => ({
   navLink: {
     textDecoration: 'none',
   },
-  listItemBtn: {
-    borderRadius: '30px',
-    '&.active': {
-      color: theme.palette.primary.main,
-      backgroundColor: theme.palette.secondary.main,
-      '& .MuiListItemIcon-root': {
-        color: theme.palette.primary.main,
-      },
-    },
-    '&.inactive': {
-      color: theme.palette.secondary.main,
-      backgroundColor: 'transparent',
-      '& .MuiListItemIcon-root': {
-        color: theme.palette.secondary.main,
-      },
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&:hover .MuiListItemIcon-root': {
-      color: theme.palette.primary.main,
-    },
-  },
+
 }));
 
 const Sidebar: React.FC = () => {
@@ -83,6 +61,7 @@ const Sidebar: React.FC = () => {
   const [activePath, setActivePath] = useState(location.pathname);
 
   const { classes } = useStyles();
+  const globalClasses = useGlobalStyles();
 
   const handleOpen = () => {
     setOpen(true);
@@ -123,7 +102,7 @@ const Sidebar: React.FC = () => {
             ) : (
               <NavLink to={item.path!} key={index} className={classes.navLink}>
                 <ListItemButton
-                  className={`${classes.listItemBtn} ${activePath === item.path ? 'active' : 'inactive'}`}
+                  className={`${globalClasses.classes.listItemBtn} ${activePath === item.path ? 'active' : 'inactive'}`}
                   onClick={() => setActivePath(item.path!)}
                 >
                   <ListItemIcon>{item.icon}</ListItemIcon>
@@ -140,7 +119,7 @@ const Sidebar: React.FC = () => {
           })}
           <Divider className={classes.divider} />
           <ListItemButton
-            className={`${classes.listItemBtn} ${activePath === '/auth' ? 'active' : 'inactive'}`}
+            className={`${globalClasses.classes.listItemBtn} ${activePath === '/auth' ? 'active' : 'inactive'}`}
             onClick={handleOpen}
           >
             <ListItemIcon>

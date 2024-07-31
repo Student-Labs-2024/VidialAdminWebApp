@@ -1,6 +1,7 @@
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useState, useEffect } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Slide, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -8,6 +9,7 @@ import itemStore from 'stores/ItemStore';
 import ItemEditFormPage from './ItemEditFormPage';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 import InputSearch from 'components/InputSearch';
+import useGlobalStyles from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -79,13 +81,11 @@ const useStyles = makeStyles()((theme) => ({
     width: '80%',
     padding: '7px 20px',
   },
-  toastContainer: {
-    width: 'auto',
-  },
 }));
 
 const ItemPage = () => {
   const { classes } = useStyles();
+  const globalClasses = useGlobalStyles();
   const [items, setItems] = useState<ItemsCardProps[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemsCardProps | null>(null);
 
@@ -175,10 +175,10 @@ const ItemPage = () => {
         draggable
         pauseOnHover
         theme="colored"
-        className={classes.toastContainer}
+        className={globalClasses.classes.toastContainer}
       />
     </>
   );
 };
 
-export default ItemPage;
+export default observer(ItemPage);

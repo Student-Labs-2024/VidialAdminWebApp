@@ -18,6 +18,7 @@ import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
 import { Slide, ToastContainer, toast } from 'react-toastify';
+import useGlobalStyles from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -77,13 +78,11 @@ const useStyles = makeStyles()((theme) => ({
     width: '80%',
     padding: '7px 20px',
   },
-  toastContainer: {
-    width: 'auto',
-  },
 }));
 
-const PromosPage = observer(() => {
+const PromosPage = () => {
   const { classes } = useStyles();
+  const globalClasses = useGlobalStyles();
   const navigate = useNavigate();
   const [promos, setPromos] = useState<PromoDataCardProps[]>([]);
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
@@ -196,10 +195,10 @@ const PromosPage = observer(() => {
         draggable
         pauseOnHover
         theme="colored"
-        className={classes.toastContainer}
+        className={globalClasses.classes.toastContainer}
       />
     </>
   );
-});
+};
 
-export default PromosPage;
+export default observer(PromosPage);
