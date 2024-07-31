@@ -52,7 +52,6 @@ const useStyles = makeStyles()((theme) => ({
   navLink: {
     textDecoration: 'none',
   },
-
 }));
 
 const Sidebar: React.FC = () => {

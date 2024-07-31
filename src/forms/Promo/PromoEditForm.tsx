@@ -18,7 +18,6 @@ const validationSchema = yup.object({
   endDate: yup.date().required('Требуется дата конца акции'),
 });
 
-
 interface PromoEditFormProps {
   notify: () => void;
 }
@@ -212,7 +211,10 @@ const PromoEditForm = ({ notify }: PromoEditFormProps) => {
                   type="file"
                   onChange={handleImageChange}
                 />
-                <label htmlFor="upload-image" className={globalClasses.classes.uploadButton}>
+                <label
+                  htmlFor="upload-image"
+                  className={globalClasses.classes.uploadButton}
+                >
                   <Button
                     className={globalClasses.classes.uploadButtonStyle}
                     component="span"
@@ -258,7 +260,10 @@ const PromoEditForm = ({ notify }: PromoEditFormProps) => {
               *Форматы изображений: jpg, png. Рекомендуемый размер: 1024x1024.
             </Typography>
             {formik.errors.img && (
-              <Typography color="error" className={globalClasses.classes.uploadTextError}>
+              <Typography
+                color="error"
+                className={globalClasses.classes.uploadTextError}
+              >
                 {String(formik.errors.img)}
               </Typography>
             )}

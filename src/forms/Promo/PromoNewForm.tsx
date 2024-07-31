@@ -204,7 +204,10 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
                   type="file"
                   onChange={handleImageChange}
                 />
-                <label htmlFor="upload-image" className={globalClasses.classes.uploadButton}>
+                <label
+                  htmlFor="upload-image"
+                  className={globalClasses.classes.uploadButton}
+                >
                   <Button
                     className={globalClasses.classes.uploadButtonStyle}
                     component="span"
@@ -250,7 +253,10 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
               *Форматы изображений: jpg, png. Рекомендуемый размер: 1024x1024.
             </Typography>
             {formik.errors.img && (
-              <Typography color="error" className={globalClasses.classes.uploadTextError}>
+              <Typography
+                color="error"
+                className={globalClasses.classes.uploadTextError}
+              >
                 {formik.errors.img}
               </Typography>
             )}

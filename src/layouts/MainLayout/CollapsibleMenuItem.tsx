@@ -23,7 +23,6 @@ const useStyles = makeStyles()((theme) => ({
     textDecoration: 'none',
     color: theme.palette.grey[600],
   },
-
 }));
 
 const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
