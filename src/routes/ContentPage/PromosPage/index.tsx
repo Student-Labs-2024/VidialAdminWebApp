@@ -28,15 +28,6 @@ const useStyles = makeStyles()((theme) => ({
     width: '100%',
     marginBottom: '25px',
   },
-  iconAdd: {
-    borderRadius: '30px',
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.secondary.main,
-    padding: '10px 20px',
-    width: '65px',
-    height: 'auto',
-    boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10)',
-  },
   promoCard: {
     padding: '30px',
     backgroundColor: theme.palette.secondary.main,
@@ -134,7 +125,7 @@ const PromosPage = () => {
               onClick={() => navigate('/stocks/add')}
               sx={{ padding: 0 }}
             >
-              <Add className={classes.iconAdd} />
+              <Add className="iconAdd" />
             </IconButton>
           </Tooltip>
         </Box>

@@ -8,6 +8,38 @@ const GlobalStylesComponent = () => {
     <>
       <GlobalStyles
         styles={{
+          '.root': {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+          },
+          '.iconAdd': {
+            borderRadius: '30px !important',
+            backgroundColor: `${theme.palette.primary.main} !important`,
+            color: `${theme.palette.secondary.main} !important`,
+            padding: '10px 20px !important',
+            width: '65px !important',
+            height: 'auto !important',
+            boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10) !important',
+          },
+          '.filterBtn': {
+            borderRadius: '30px !important',
+            backgroundColor: `${theme.palette.primary.main} !important`,
+            color: `${theme.palette.secondary.main} !important`,
+            padding: '10px 20px !important',
+            width: '65px !important',
+            height: 'auto !important',
+            boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10) !important',
+          },
+          '.contentBtns': {
+            display: 'flex',
+            gap: '10px',
+            height: '45px',
+            width: '100%',
+            marginBottom: '25px',
+          },
           '.listItemBtn': {
             borderRadius: '30px !important',
             '&.active': {

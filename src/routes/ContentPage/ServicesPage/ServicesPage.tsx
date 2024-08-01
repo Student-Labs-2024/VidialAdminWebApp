@@ -1,13 +1,22 @@
-import { Box } from '@mui/material';
+import { Add } from '@mui/icons-material';
+import { Box, IconButton, Tooltip } from '@mui/material';
+
+import InputSearch from 'components/InputSearch';
+import MenuFilterBtn from 'components/MenuFilterBtn';
 
 const ServicesPage = () => {
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        width: '100%',
-      }}
-    ></Box>
+    <Box className="root">
+      <Box className="contentBtns">
+        <InputSearch />
+        <Tooltip title="Добавить услугу" placement="bottom">
+          <IconButton sx={{ padding: 0 }}>
+            <Add className="iconAdd" />
+          </IconButton>
+        </Tooltip>
+        <MenuFilterBtn />
+      </Box>
+    </Box>
   );
 };
 
