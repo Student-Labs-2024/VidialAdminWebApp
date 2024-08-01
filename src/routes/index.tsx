@@ -4,7 +4,6 @@ import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 import AuthComponent from './AuthPage/AuthComponent';
 import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
 import MainPage from './MainPage/MainPage';
-import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
 import ItemPage from './ContentPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
@@ -17,6 +16,10 @@ import PromoEditFormPage from './ContentPage/PromosPage/PromoEditFormPage';
 import authStore from 'stores/AuthStore';
 
 import ErrorContentComponent from 'components/ErrorContentComponent';
+import ServiceAllContent from './ContentPage/ServicesPage/ServiceAllContent';
+import ServiceDiagnosisTreatmentContent from './ContentPage/ServicesPage/ServiceDiagnosisTreatmentContent';
+import ServiceHardwareTreatmentContent from './ContentPage/ServicesPage/ServiceHardwareTreatmentContent';
+import ServiceLayout from 'layouts/ServiceLayout/ServiceLayout';
 
 const PrivateRoute: React.FC = observer(() => {
   return authStore.isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
@@ -29,7 +32,7 @@ const Router = createBrowserRouter([
     errorElement: <ErrorAuthComponent />,
   },
   {
-    element: <PrivateRoute />,
+    // element: <PrivateRoute />,
     children: [
       {
         element: <Layout />,
@@ -52,8 +55,21 @@ const Router = createBrowserRouter([
             element: <PromoEditFormPage />,
           },
           {
-            path: '/services',
-            element: <ServicesPage />,
+            element: <ServiceLayout />,
+            children: [
+              {
+                path: '/services/',
+                element: <ServiceAllContent />,
+              },
+              {
+                path: '/services/DT',
+                element: <ServiceDiagnosisTreatmentContent />,
+              },
+              {
+                path: '/services/HT',
+                element: <ServiceHardwareTreatmentContent />,
+              },
+            ],
           },
           {
             path: '/items',
