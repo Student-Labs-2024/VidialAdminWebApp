@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 
 class ItemStore {
@@ -9,14 +8,9 @@ class ItemStore {
     makeAutoObservable(this);
   }
 
-  async createBlobURL(path: string): Promise<string> {
-    const response = await fetch(path);
-    const blob = await response.blob();
-    return URL.createObjectURL(blob);
-  }
-
-  async loadItems() {
+  loadItems() {
     const storedItems = localStorage.getItem('items');
+
     if (storedItems) {
       this.items = JSON.parse(storedItems);
     } else {

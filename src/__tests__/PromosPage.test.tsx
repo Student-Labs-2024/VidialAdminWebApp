@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 
-import PromosPage from 'routes/ContentPage/PromosPage/PromosPage';
+import PromosPage from 'routes/ContentPage/PromosPage';
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 

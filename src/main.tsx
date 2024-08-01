@@ -6,10 +6,12 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 import Router from './routes';
 import { DefaultTheme } from 'theme/DefaultTheme';
+import GlobalStylesComponent from 'theme/globalStyles';
 
 ReactDOM.createRoot(document.getElementById('admin-panel-vidial')!).render(
   <ThemeProvider theme={DefaultTheme}>
     <React.StrictMode>
+      <GlobalStylesComponent />
       <CssBaseline />
       <RouterProvider router={Router} />
     </React.StrictMode>

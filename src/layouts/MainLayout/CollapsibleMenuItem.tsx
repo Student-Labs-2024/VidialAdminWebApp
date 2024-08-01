@@ -13,24 +13,6 @@ import { makeStyles } from 'tss-react/mui';
 import CollapsibleMenuItemProps from 'types/CollapsibleMenuItemProps';
 
 const useStyles = makeStyles()((theme) => ({
-  listMenuBtn: {
-    borderRadius: '30px',
-    '&.active': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&.inactive': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.text.primary,
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&:hover .MuiListItemIcon-root': {
-      color: theme.palette.primary.main,
-    },
-  },
   collapseBtn: {
     backgroundColor: theme.palette.primary.dark,
     borderRadius: '30px',
@@ -39,30 +21,6 @@ const useStyles = makeStyles()((theme) => ({
   navLink: {
     textDecoration: 'none',
     color: theme.palette.grey[600],
-  },
-  listMenuItemBtn: {
-    borderRadius: '30px',
-    '&.active': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-      '.MuiListItemIcon-root': {
-        color: theme.palette.primary.main,
-      },
-    },
-    '$.inactive': {
-      backgroundColor: theme.palette.primary.main,
-      color: theme.palette.grey[600],
-      '.MuiListItemIcon-root': {
-        color: theme.palette.grey[600],
-      },
-    },
-    '&:hover': {
-      backgroundColor: theme.palette.secondary.main,
-      color: theme.palette.primary.main,
-    },
-    '&:hover .MuiListItemIcon-root': {
-      color: theme.palette.primary.main,
-    },
   },
 }));
 
@@ -97,7 +55,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     <>
       <ListItemButton
         onClick={handleClick}
-        className={`${classes.listMenuBtn} ${open ? 'active' : 'inactive'}`}
+        className={`listItemBtn ${open ? 'active' : 'inactive'}`}
       >
         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
         <ListItemText
@@ -120,7 +78,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
               className={classes.navLink}
             >
               <ListItemButton
-                className={`${classes.listMenuItemBtn} ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
+                className={`listMenuItemBtn ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
               >
                 <ListItemIcon sx={{ color: 'inherit' }}>
                   {subItem.icon}

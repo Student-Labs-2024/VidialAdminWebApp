@@ -1,7 +1,9 @@
 import { Box } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
+import { Slide, toast } from 'react-toastify';
 
 import PromoNewForm from 'forms/Promo/PromoNewForm';
+import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -23,12 +25,32 @@ const useStyles = makeStyles()((theme) => ({
 const PromoNewFormPage = () => {
   const { classes } = useStyles();
 
+  const notify = () => {
+    toast.success(
+      'Вы успешно добавили новую акцию! Вас автоматически перенаправят на страницу Акции',
+      {
+        position: 'bottom-center',
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+        transition: Slide,
+      },
+    );
+  };
+
   return (
-    <Box className={classes.container}>
-      <Box className={classes.newFormBox}>
-        <PromoNewForm />
+    <>
+      <Box className={classes.container}>
+        <Box className={classes.newFormBox}>
+          <PromoNewForm notify={notify} />
+        </Box>
       </Box>
-    </Box>
+      <Toast />
+    </>
   );
 };
 

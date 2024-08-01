@@ -1,19 +1,26 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 
 import AuthComponent from './AuthPage/AuthComponent';
 import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
 import MainPage from './MainPage/MainPage';
 import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
-import ItemPage from './ContentPage/ItemsPage/ItemsPage';
+import ItemPage from './ContentPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
-import Layout from 'layouts/Layout';
-import PromosPage from './ContentPage/PromosPage/PromosPage';
-import PrivateRoute from './PrivateRoute';
+import Layout from 'layouts/MainLayout';
+import PromosPage from './ContentPage/PromosPage';
 import PromoNewFormPage from './ContentPage/PromosPage/PromoNewFormPage';
 import PromoEditFormPage from './ContentPage/PromosPage/PromoEditFormPage';
-import ErrorContentComponent from './ContentPage/components/ErrorContentComponent';
+
+import authStore from 'stores/AuthStore';
+
+import ErrorContentComponent from 'components/ErrorContentComponent';
+
+const PrivateRoute: React.FC = observer(() => {
+  return authStore.isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
+});
 
 const Router = createBrowserRouter([
   {

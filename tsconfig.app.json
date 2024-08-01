@@ -27,7 +27,8 @@
       "layouts/*": ["layouts/*"],
       "types/*": ["types/*"],
       "theme/*": ["theme/*"],
-      "stores/*": ["stores/*"]
+      "stores/*": ["stores/*"],
+      "components/*": ["components/*"]
     }
   },
   "include": ["src"]
