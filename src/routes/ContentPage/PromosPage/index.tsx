@@ -17,8 +17,8 @@ import PromoCardInfo from './PromoCardInfo';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
-import { Slide, ToastContainer, toast } from 'react-toastify';
-import useGlobalStyles from 'theme/globalStyles';
+import { Slide, toast } from 'react-toastify';
+import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -82,7 +82,6 @@ const useStyles = makeStyles()((theme) => ({
 
 const PromosPage = () => {
   const { classes } = useStyles();
-  const globalClasses = useGlobalStyles();
   const navigate = useNavigate();
   const [promos, setPromos] = useState<PromoDataCardProps[]>([]);
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
@@ -184,19 +183,7 @@ const PromosPage = () => {
           />
         )}
       </Box>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        className={globalClasses.classes.toastContainer}
-      />
+      <Toast />
     </>
   );
 };

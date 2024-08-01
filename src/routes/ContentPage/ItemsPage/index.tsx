@@ -2,14 +2,13 @@ import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Slide, toast } from 'react-toastify';
 
 import itemStore from 'stores/ItemStore';
 import ItemEditFormPage from './ItemEditFormPage';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 import InputSearch from 'components/InputSearch';
-import useGlobalStyles from 'theme/globalStyles';
+import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -85,7 +84,6 @@ const useStyles = makeStyles()((theme) => ({
 
 const ItemPage = () => {
   const { classes } = useStyles();
-  const globalClasses = useGlobalStyles();
   const [items, setItems] = useState<ItemsCardProps[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemsCardProps | null>(null);
 
@@ -164,19 +162,7 @@ const ItemPage = () => {
           )}
         </Grid>
       </Box>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        className={globalClasses.classes.toastContainer}
-      />
+      <Toast />
     </>
   );
 };

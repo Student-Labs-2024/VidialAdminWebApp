@@ -15,7 +15,7 @@ import menuItems from './SidebarMenuItems';
 import CollapsibleMenuItem from './CollapsibleMenuItem';
 import { ExitToApp } from '@mui/icons-material';
 import WarningWindow from './WarningWindowExit';
-import useGlobalStyles from 'theme/globalStyles';
+import GlobalStylesComponent from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
   drawerPaper: {
@@ -60,7 +60,6 @@ const Sidebar: React.FC = () => {
   const [activePath, setActivePath] = useState(location.pathname);
 
   const { classes } = useStyles();
-  const globalClasses = useGlobalStyles();
 
   const handleOpen = () => {
     setOpen(true);
@@ -74,72 +73,79 @@ const Sidebar: React.FC = () => {
   }, [location.pathname]);
 
   return (
-    <Drawer
-      className={classes.drawerPaper}
-      anchor="left"
-      variant="permanent"
-      open={true}
-    >
-      <Box className={classes.container}>
-        <Box
-          className={classes.logo}
-          component="img"
-          alt="Vidial_logo"
-          src="/img/logo.svg"
-        />
+    <>
+      <GlobalStylesComponent />
+      <Drawer
+        className={classes.drawerPaper}
+        anchor="left"
+        variant="permanent"
+        open={true}
+      >
+        <Box className={classes.container}>
+          <Box
+            className={classes.logo}
+            component="img"
+            alt="Vidial_logo"
+            src="/img/logo.svg"
+          />
 
-        <Divider className={classes.divider} />
-        <List className={classes.listBtns}>
-          {menuItems.map((item, index) => {
-            return item.children ? (
-              <CollapsibleMenuItem
-                key={index}
-                item={item}
-                index={index}
-                currentPath={location.pathname}
-              />
-            ) : (
-              <NavLink to={item.path!} key={index} className={classes.navLink}>
-                <ListItemButton
-                  className={`${globalClasses.classes.listItemBtn} ${activePath === item.path ? 'active' : 'inactive'}`}
-                  onClick={() => setActivePath(item.path!)}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  <ListItemText
-                    primary={item.text}
-                    primaryTypographyProps={{
-                      fontSize: '18px',
-                      fontWeight: 700,
-                    }}
-                  />
-                </ListItemButton>
-              </NavLink>
-            );
-          })}
           <Divider className={classes.divider} />
-          <ListItemButton
-            className={`${globalClasses.classes.listItemBtn} ${activePath === '/auth' ? 'active' : 'inactive'}`}
-            onClick={handleOpen}
-          >
-            <ListItemIcon>
-              <ExitToApp />
-            </ListItemIcon>
-            <ListItemText
-              primary="Выйти"
-              primaryTypographyProps={{
-                fontSize: '18px',
-                fontWeight: 700,
-              }}
-            />
-          </ListItemButton>
-        </List>
-      </Box>
-      <WarningWindow
-        open={open}
-        handleClose={handleClose}
-        text="Вы действительно хотите выйти?"
-      />
-    </Drawer>
+          <List className={classes.listBtns}>
+            {menuItems.map((item, index) => {
+              return item.children ? (
+                <CollapsibleMenuItem
+                  key={index}
+                  item={item}
+                  index={index}
+                  currentPath={location.pathname}
+                />
+              ) : (
+                <NavLink
+                  to={item.path!}
+                  key={index}
+                  className={classes.navLink}
+                >
+                  <ListItemButton
+                    className={`listItemBtn ${activePath === item.path ? 'active' : 'inactive'}`}
+                    onClick={() => setActivePath(item.path!)}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    <ListItemText
+                      primary={item.text}
+                      primaryTypographyProps={{
+                        fontSize: '18px',
+                        fontWeight: 700,
+                      }}
+                    />
+                  </ListItemButton>
+                </NavLink>
+              );
+            })}
+            <Divider className={classes.divider} />
+            <ListItemButton
+              className={`listItemBtn ${activePath === '/auth' ? 'active' : 'inactive'}`}
+              onClick={handleOpen}
+            >
+              <ListItemIcon>
+                <ExitToApp />
+              </ListItemIcon>
+              <ListItemText
+                primary="Выйти"
+                primaryTypographyProps={{
+                  fontSize: '18px',
+                  fontWeight: 700,
+                }}
+              />
+            </ListItemButton>
+          </List>
+        </Box>
+        <WarningWindow
+          open={open}
+          handleClose={handleClose}
+          text="Вы действительно хотите выйти?"
+        />
+      </Drawer>
+    </>
   );
 };
 

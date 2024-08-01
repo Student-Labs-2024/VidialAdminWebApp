@@ -7,7 +7,6 @@ import { observer } from 'mobx-react-lite';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
-import useGlobalStyles from 'theme/globalStyles';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
@@ -26,7 +25,6 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
-  const globalClasses = useGlobalStyles();
   const navigate = useNavigate();
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -94,8 +92,8 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <Box display="flex" flexDirection="column" gap="10px">
-        <Box className={globalClasses.classes.formContainer}>
-          <Box className={globalClasses.classes.formInputs}>
+        <Box className="formContainer">
+          <Box className="formInputs">
             <TextField
               fullWidth
               id="title"
@@ -176,9 +174,9 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
               error={formik.touched.endDate && Boolean(formik.errors.endDate)}
               helperText={formik.touched.endDate && formik.errors.endDate}
             />
-            <Box className={globalClasses.classes.modalBtns}>
+            <Box className="modalBtns">
               <Button
-                className={globalClasses.classes.modalBtn}
+                className="modalBtn"
                 variant="contained"
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
@@ -186,7 +184,7 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
                 Сохранить
               </Button>
               <Button
-                className={globalClasses.classes.modalBtn}
+                className="modalBtn"
                 variant="contained"
                 onClick={() => navigate('/stocks')}
               >
@@ -194,7 +192,7 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
               </Button>
             </Box>
           </Box>
-          <Box className={globalClasses.classes.uploadButtonContainer}>
+          <Box className="uploadButtonContainer">
             {!imageURL ? (
               <>
                 <input
@@ -204,40 +202,31 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
                   type="file"
                   onChange={handleImageChange}
                 />
-                <label
-                  htmlFor="upload-image"
-                  className={globalClasses.classes.uploadButton}
-                >
-                  <Button
-                    className={globalClasses.classes.uploadButtonStyle}
-                    component="span"
-                  >
+                <label htmlFor="upload-image" className="uploadButton">
+                  <Button className="uploadButtonStyle" component="span">
                     <Box component="img" src="/img/upload.svg" alt="upload" />
-                    <Typography
-                      className={globalClasses.classes.uploadBtnText}
-                      variant="body2"
-                    >
+                    <Typography className="uploadBtnText" variant="body2">
                       Загрузите новое фото акции
                     </Typography>
                   </Button>
                 </label>
                 {imageError && (
-                  <Typography className={globalClasses.classes.uploadTextError}>
+                  <Typography className="uploadTextError">
                     {imageError}
                   </Typography>
                 )}
               </>
             ) : (
-              <Box className={globalClasses.classes.uploadedImageContainer}>
+              <Box className="uploadedImageContainer">
                 <Box
-                  className={globalClasses.classes.uploadedImage}
+                  className="uploadedImage"
                   component="img"
                   src={imageURL}
                   alt="uploaded"
                   width="100%"
                 />
                 <Button
-                  className={globalClasses.classes.deleteButton}
+                  className="deleteButton"
                   onClick={handleImageDelete}
                   variant="contained"
                 >
@@ -246,17 +235,14 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
               </Box>
             )}
             <Typography
-              className={globalClasses.classes.uploadBtnWarning}
+              className="uploadBtnWarning"
               variant="body2"
               color="red"
             >
               *Форматы изображений: jpg, png. Рекомендуемый размер: 1024x1024.
             </Typography>
             {formik.errors.img && (
-              <Typography
-                color="error"
-                className={globalClasses.classes.uploadTextError}
-              >
+              <Typography color="error" className="uploadTextError">
                 {formik.errors.img}
               </Typography>
             )}

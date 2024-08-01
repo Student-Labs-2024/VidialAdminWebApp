@@ -11,7 +11,6 @@ import { NavLink } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 
 import CollapsibleMenuItemProps from 'types/CollapsibleMenuItemProps';
-import useGlobalStyles from 'theme/globalStyles';
 
 const useStyles = makeStyles()((theme) => ({
   collapseBtn: {
@@ -36,7 +35,6 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
   });
 
   const { classes } = useStyles();
-  const globalClasses = useGlobalStyles();
 
   const handleClick = () => {
     const newOpenState = !open;
@@ -57,7 +55,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
     <>
       <ListItemButton
         onClick={handleClick}
-        className={`${globalClasses.classes.listItemBtn} ${open ? 'active' : 'inactive'}`}
+        className={`listItemBtn ${open ? 'active' : 'inactive'}`}
       >
         <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
         <ListItemText
@@ -80,7 +78,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
               className={classes.navLink}
             >
               <ListItemButton
-                className={`${globalClasses.classes.listMenuItemBtn} ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
+                className={`listMenuItemBtn ${isActive(subItem.path!) ? 'active' : 'inactive'}`}
               >
                 <ListItemIcon sx={{ color: 'inherit' }}>
                   {subItem.icon}

@@ -1,9 +1,9 @@
 import { Box } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { Slide, ToastContainer, toast } from 'react-toastify';
+import { Slide, toast } from 'react-toastify';
 
 import PromoNewForm from 'forms/Promo/PromoNewForm';
-import useGlobalStyles from 'theme/globalStyles';
+import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -24,7 +24,6 @@ const useStyles = makeStyles()((theme) => ({
 
 const PromoNewFormPage = () => {
   const { classes } = useStyles();
-  const globalClasses = useGlobalStyles();
 
   const notify = () => {
     toast.success(
@@ -50,19 +49,7 @@ const PromoNewFormPage = () => {
           <PromoNewForm notify={notify} />
         </Box>
       </Box>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="colored"
-        className={globalClasses.classes.toastContainer}
-      />
+      <Toast />
     </>
   );
 };

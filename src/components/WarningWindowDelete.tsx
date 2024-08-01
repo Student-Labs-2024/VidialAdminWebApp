@@ -1,8 +1,6 @@
 import React from 'react';
 import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 
-import useGlobalStyles from 'theme/globalStyles';
-
 interface WarningWindowProps {
   open: boolean;
   handleClose: () => void;
@@ -11,8 +9,6 @@ interface WarningWindowProps {
 }
 
 const WarningWindowDelete: React.FC<WarningWindowProps> = (props) => {
-  const globalClasses = useGlobalStyles();
-
   const handleConfirmAndClose = () => {
     props.handleConfirm();
     props.handleClose();
@@ -32,24 +28,20 @@ const WarningWindowDelete: React.FC<WarningWindowProps> = (props) => {
       }}
     >
       <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
-        <Box className={globalClasses.classes.modalBox}>
-          <Typography
-            className={globalClasses.classes.modalText}
-            id="transition-modal-title"
-            component="h2"
-          >
+        <Box className="modalBox">
+          <Typography className="modalText" id="transition-modal-title">
             {props.text}
           </Typography>
-          <Box className={globalClasses.classes.modalBtns}>
+          <Box className="modalBtns">
             <Button
-              className={globalClasses.classes.modalBtn}
+              className="modalBtn"
               variant="contained"
               onClick={handleConfirmAndClose}
             >
               Да
             </Button>
             <Button
-              className={globalClasses.classes.modalBtn}
+              className="modalBtn"
               variant="contained"
               onClick={props.handleClose}
             >

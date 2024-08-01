@@ -1,7 +1,7 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
-import ItemPage from 'routes/ContentPage/ItemsPage/ItemsPage';
+import ItemPage from 'routes/ContentPage/ItemsPage';
 import itemStore from 'stores/ItemStore';
 
 describe('ItemPage', () => {
