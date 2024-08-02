@@ -3,6 +3,7 @@ import { Box, Button, TextField } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { observer } from 'mobx-react-lite';
+import { Slide, toast } from 'react-toastify';
 
 import serviceStore from 'stores/ServiceStore';
 import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
@@ -29,13 +30,11 @@ const validationSchemaHT = yup.object({
 });
 
 interface ServiceEditFormProps {
-  notify: () => void;
   handleClose: () => void;
   service: ServiceDataCardProps;
 }
 
 const ServiceEditForm: React.FC<ServiceEditFormProps> = ({
-  notify,
   handleClose,
   service,
 }) => {
@@ -60,7 +59,7 @@ const ServiceEditForm: React.FC<ServiceEditFormProps> = ({
       };
 
       serviceStore.editService(updatedService);
-      notify();
+      toast.success('Услуга отредактирована!', { transition: Slide });
       handleClose();
     },
   });

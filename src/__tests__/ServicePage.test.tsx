@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { MemoryRouter } from 'react-router-dom';
-import ServiceAllContent from 'routes/ContentPage/ServicesPage/ServiceAllContent';
 import { ToastContainer } from 'react-toastify';
+
+import ServicesPage from 'routes/ContentPage/ServicesPage';
 import serviceStore from 'stores/ServiceStore';
 
-// Mock data
 const mockServices = [
   {
     id: 1,
@@ -27,35 +27,44 @@ const mockServices = [
 
 jest.mock('stores/ServiceStore', () => ({
   loadServices: jest.fn(),
-  services: [],
+  get services() {
+    return this._services;
+  },
+  set services(value) {
+    this._services = value;
+  },
+  _services: [],
   addService: jest.fn(),
   deleteService: jest.fn(),
 }));
 
-describe('ServiceAllContent', () => {
+describe('ServicesPage', () => {
   beforeEach(() => {
     (serviceStore.loadServices as jest.Mock).mockImplementation(() => {
       serviceStore.services = mockServices;
     });
+    serviceStore.services = mockServices;
   });
 
-  test('renders services correctly', () => {
+  test('renders services correctly', async () => {
     render(
       <MemoryRouter>
-        <ServiceAllContent />
+        <ServicesPage />
         <ToastContainer />
       </MemoryRouter>,
     );
 
-    mockServices.forEach((service) => {
-      expect(screen.getByText(service.title)).toBeInTheDocument();
-      expect(screen.getByText(service.description)).toBeInTheDocument();
-      expect(screen.getByText(`${service.price} ₽`)).toBeInTheDocument();
-      if (service.countProcedures > 0) {
-        expect(
-          screen.getByText(`${service.countProcedures} процедур`),
-        ).toBeInTheDocument();
-      }
+    await waitFor(() => {
+      mockServices.forEach((service) => {
+        expect(screen.getByText(service.title)).toBeInTheDocument();
+        expect(screen.getByText(service.description)).toBeInTheDocument();
+        expect(screen.getByText(`${service.price} ₽`)).toBeInTheDocument();
+        if (service.countProcedures > 0) {
+          expect(
+            screen.getByText(`${service.countProcedures} процедур`),
+          ).toBeInTheDocument();
+        }
+      });
     });
   });
 });

@@ -4,6 +4,7 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { Slide, toast } from 'react-toastify';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
@@ -17,11 +18,7 @@ const validationSchema = yup.object({
   endDate: yup.date().required('Требуется дата конца акции'),
 });
 
-interface PromoNewFormProps {
-  notify: () => void;
-}
-
-const PromoNewForm = ({ notify }: PromoNewFormProps) => {
+const PromoNewForm = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
@@ -82,10 +79,12 @@ const PromoNewForm = ({ notify }: PromoNewFormProps) => {
       };
 
       promoStore.addPromo(newPromo);
-      notify();
+      toast.success('Акция добавлена!', {
+        transition: Slide,
+      });
       setTimeout(() => {
         navigate('/stocks');
-      }, 3000);
+      }, 2000);
     },
   });
 

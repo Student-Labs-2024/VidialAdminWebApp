@@ -16,10 +16,8 @@ import PromoEditFormPage from './ContentPage/PromosPage/PromoEditFormPage';
 import authStore from 'stores/AuthStore';
 
 import ErrorContentComponent from 'components/ErrorContentComponent';
-import ServiceAllContent from './ContentPage/ServicesPage/ServiceAllContent';
-import ServiceDiagnosisTreatmentContent from './ContentPage/ServicesPage/ServiceDiagnosisTreatmentContent';
-import ServiceHardwareTreatmentContent from './ContentPage/ServicesPage/ServiceHardwareTreatmentContent';
-import ServiceLayout from 'layouts/ServiceLayout/ServiceLayout';
+
+import ServicesPage from './ContentPage/ServicesPage';
 
 const PrivateRoute: React.FC = observer(() => {
   return authStore.isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;
@@ -55,21 +53,8 @@ const Router = createBrowserRouter([
             element: <PromoEditFormPage />,
           },
           {
-            element: <ServiceLayout />,
-            children: [
-              {
-                path: '/services/',
-                element: <ServiceAllContent />,
-              },
-              {
-                path: '/services/DT',
-                element: <ServiceDiagnosisTreatmentContent />,
-              },
-              {
-                path: '/services/HT',
-                element: <ServiceHardwareTreatmentContent />,
-              },
-            ],
+            path: '/services',
+            element: <ServicesPage />,
           },
           {
             path: '/items',

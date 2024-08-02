@@ -14,12 +14,11 @@ const Toast = () => {
   return (
     <ToastContainer
       position="bottom-center"
-      autoClose={5000}
+      autoClose={1000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick
       rtl={false}
-      pauseOnFocusLoss
       draggable
       pauseOnHover
       theme="colored"

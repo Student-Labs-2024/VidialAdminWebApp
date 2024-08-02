@@ -2,7 +2,6 @@ import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { useState, useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 
 import itemStore from 'stores/ItemStore';
 import ItemEditFormPage from './ItemEditFormPage';
@@ -65,22 +64,7 @@ const useStyles = makeStyles()((theme) => ({
 
 const ItemPage = () => {
   const { classes } = useStyles();
-  const [items, setItems] = useState<ItemsCardProps[]>([]);
   const [selectedItem, setSelectedItem] = useState<ItemsCardProps | null>(null);
-
-  const notify = () => {
-    toast.success('Вы успешно редактировали данный товар!', {
-      position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-      transition: Slide,
-    });
-  };
 
   const handleOpen = (item: ItemsCardProps) => {
     setSelectedItem(item);
@@ -92,7 +76,6 @@ const ItemPage = () => {
 
   useEffect(() => {
     itemStore.loadItems();
-    setItems(itemStore.items);
   }, []);
 
   return (
@@ -101,7 +84,7 @@ const ItemPage = () => {
         <InputSearch />
       </Box>
       <Grid container spacing={3}>
-        {items.map((item) => (
+        {itemStore.items.map((item) => (
           <Grid item xs={12} sm={6} lg={4} key={item.index}>
             <Box className={classes.ItemCard}>
               <Box
@@ -137,7 +120,6 @@ const ItemPage = () => {
             open={!!selectedItem}
             handleClose={handleClose}
             item={selectedItem}
-            notify={notify}
           />
         )}
       </Grid>

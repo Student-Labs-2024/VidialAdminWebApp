@@ -7,14 +7,12 @@ import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
 interface ServiceEditFormPageProps {
   open: boolean;
   handleClose: () => void;
-  notify: () => void;
   service: ServiceDataCardProps;
 }
 
 const ServiceEditFormPage: React.FC<ServiceEditFormPageProps> = ({
   open,
   handleClose,
-  notify,
   service,
 }) => {
   return (
@@ -32,11 +30,7 @@ const ServiceEditFormPage: React.FC<ServiceEditFormPageProps> = ({
     >
       <Fade in={open} timeout={{ enter: 300, exit: 300 }}>
         <Box id="transition-modal-title" className="modalBox">
-          <ServiceEditForm
-            handleClose={handleClose}
-            notify={notify}
-            service={service}
-          />
+          <ServiceEditForm handleClose={handleClose} service={service} />
         </Box>
       </Fade>
     </Modal>

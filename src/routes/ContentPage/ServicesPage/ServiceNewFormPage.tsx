@@ -6,13 +6,11 @@ import ServiceNewForm from 'forms/Service/ServiceNewForm';
 interface ServiceNewFormPageProps {
   open: boolean;
   handleClose: () => void;
-  notify: () => void;
 }
 
 const ServiceNewFormPage: React.FC<ServiceNewFormPageProps> = ({
   open,
   handleClose,
-  notify,
 }) => {
   return (
     <Modal
@@ -29,7 +27,7 @@ const ServiceNewFormPage: React.FC<ServiceNewFormPageProps> = ({
     >
       <Fade in={open} timeout={{ enter: 300, exit: 300 }}>
         <Box id="transition-modal-title" className="modalBox">
-          <ServiceNewForm handleClose={handleClose} notify={notify} />
+          <ServiceNewForm handleClose={handleClose} />
         </Box>
       </Fade>
     </Modal>

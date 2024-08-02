@@ -1,7 +1,6 @@
 import { IconButton, Menu, MenuItem, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import { FiFilter } from 'react-icons/fi';
-import { useNavigate } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
 
 const useStyles = makeStyles()((theme) => ({
@@ -18,11 +17,14 @@ const tagDictionary: { [key: string]: string } = {
   'Аппаратное лечение': 'HT',
 };
 
-const MenuFilterBtn = () => {
+interface MenuFilterBtnProps {
+  onFilterChange: (filter: string | null) => void;
+}
+
+const MenuFilterBtn: React.FC<MenuFilterBtnProps> = ({ onFilterChange }) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const { classes } = useStyles();
-  const navigate = useNavigate();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -32,8 +34,8 @@ const MenuFilterBtn = () => {
     setAnchorEl(null);
   };
 
-  const handleNavigate = (tag: string) => {
-    navigate(`/services/${tag}`);
+  const handleMenuItemClick = (filter: string | null) => {
+    onFilterChange(filter);
     handleClose();
   };
 
@@ -61,11 +63,18 @@ const MenuFilterBtn = () => {
         }}
         className={classes.menuContainer}
       >
+        <MenuItem
+          key="all"
+          className={classes.menuItemText}
+          onClick={() => handleMenuItemClick(null)}
+        >
+          Все
+        </MenuItem>
         {Object.entries(tagDictionary).map(([name, tag]) => (
           <MenuItem
             key={tag}
             className={classes.menuItemText}
-            onClick={() => handleNavigate(tag)}
+            onClick={() => handleMenuItemClick(tag)}
           >
             {name}
           </MenuItem>

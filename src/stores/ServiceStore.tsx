@@ -124,7 +124,7 @@ class ServiceStore {
     }
   }
 
-  async deleteService(id: number) {
+  deleteService(id: number) {
     this.services = this.services.filter((service) => service.id !== id);
     this.saveServices();
   }

@@ -10,6 +10,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { observer } from 'mobx-react-lite';
+import { Slide, toast } from 'react-toastify';
 
 import serviceStore from 'stores/ServiceStore';
 import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
@@ -37,13 +38,9 @@ const validationSchemaHT = yup.object({
 
 interface ServiceNewFormProps {
   handleClose: () => void;
-  notify: () => void;
 }
 
-const ServiceNewForm: React.FC<ServiceNewFormProps> = ({
-  handleClose,
-  notify,
-}) => {
+const ServiceNewForm: React.FC<ServiceNewFormProps> = ({ handleClose }) => {
   const [selectedTag, setSelectedTag] = useState<'DT' | 'HT'>('DT');
   const isDT = selectedTag === 'DT';
 
@@ -66,8 +63,8 @@ const ServiceNewForm: React.FC<ServiceNewFormProps> = ({
       };
 
       serviceStore.addService(newService);
-      notify();
       handleClose();
+      toast.success('Услуга добавлена!', { transition: Slide });
     },
   });
 

@@ -104,7 +104,7 @@ class PromoStore {
     }
   }
 
-  async deletePromo(id: number) {
+  deletePromo(id: number) {
     this.promos = this.promos.filter((promo) => promo.id !== id);
     this.savePromos();
   }

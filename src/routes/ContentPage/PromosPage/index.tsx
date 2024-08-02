@@ -74,7 +74,6 @@ const useStyles = makeStyles()((theme) => ({
 const PromosPage = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const [promos, setPromos] = useState<PromoDataCardProps[]>([]);
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
     null,
   );
@@ -87,32 +86,17 @@ const PromosPage = () => {
     setSelectedPromo(null);
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = () => {
     if (selectedPromo) {
-      await promoStore.deletePromo(selectedPromo.id);
-      setPromos(promoStore.promos);
+      promoStore.deletePromo(selectedPromo.id);
+      promoStore.savePromos();
       setSelectedPromo(null);
-      notify();
+      toast.success('Акция удалена!', { transition: Slide });
     }
-  };
-
-  const notify = () => {
-    toast.success('Вы удалили акцию!', {
-      position: 'bottom-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: false,
-      draggable: true,
-      progress: undefined,
-      theme: 'colored',
-      transition: Slide,
-    });
   };
 
   useEffect(() => {
     promoStore.loadPromos();
-    setPromos(promoStore.promos);
   }, []);
 
   return (
@@ -130,7 +114,7 @@ const PromosPage = () => {
           </Tooltip>
         </Box>
         <Grid container spacing={3}>
-          {promos.map((promo) => (
+          {promoStore.promos.map((promo) => (
             <Grid item xs={12} sm={6} lg={4} key={promo.id}>
               <Box className={classes.promoCard}>
                 <Box

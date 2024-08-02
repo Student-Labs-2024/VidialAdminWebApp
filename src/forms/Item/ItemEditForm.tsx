@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 
 import itemStore from 'stores/ItemStore';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
+import { Slide, toast } from 'react-toastify';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение товара'),
@@ -21,10 +22,9 @@ interface ItemEditFormProps {
   open: boolean;
   handleClose: () => void;
   item: ItemsCardProps;
-  notify: () => void;
 }
 
-const ItemEditForm = ({ handleClose, item, notify }: ItemEditFormProps) => {
+const ItemEditForm = ({ handleClose, item }: ItemEditFormProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(item.img);
@@ -140,7 +140,9 @@ const ItemEditForm = ({ handleClose, item, notify }: ItemEditFormProps) => {
                 variant="contained"
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
-                onClick={notify}
+                onClick={() =>
+                  toast.success('Товар отредактирован!', { transition: Slide })
+                }
               >
                 Сохранить
               </Button>
