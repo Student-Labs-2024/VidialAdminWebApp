@@ -1,25 +1,24 @@
-import { useEffect, useState } from 'react';
-import { observer } from 'mobx-react-lite';
 import { Box, Button, Grid, Typography } from '@mui/material';
+import { useState } from 'react';
+import { observer } from 'mobx-react-lite';
 import { Slide, toast } from 'react-toastify';
 
-import Toast from 'components/Toast';
-import serviceStore from 'stores/ServiceStore';
 import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
+import serviceStore from 'stores/ServiceStore';
 import WarningWindowDelete from 'components/WarningWindowDelete';
 import ServiceEditFormPage from './ServiceEditFormPage';
 
-const ServiceAllContent = () => {
+interface ServiceCommonContentProps {
+  servicesCommon: ServiceDataCardProps[];
+}
+
+const ServiceCommonContent: React.FC<ServiceCommonContentProps> = ({
+  servicesCommon,
+}) => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedService, setSelectedService] =
     useState<ServiceDataCardProps | null>(null);
-  const [services, setServices] = useState<ServiceDataCardProps[]>([]);
-
-  useEffect(() => {
-    serviceStore.loadServices();
-    setServices(serviceStore.services);
-  }, []);
 
   const handleOpenDeleteWindow = (service: ServiceDataCardProps) => {
     setSelectedService(service);
@@ -72,7 +71,6 @@ const ServiceAllContent = () => {
   const handleConfirmDelete = async () => {
     if (selectedService) {
       await serviceStore.deleteService(selectedService.id);
-      setServices(serviceStore.services);
       setOpenDeleteModal(false);
       notifyDelete();
     }
@@ -81,7 +79,7 @@ const ServiceAllContent = () => {
   return (
     <>
       <Grid container spacing={3}>
-        {services.map((service) => (
+        {servicesCommon.map((service) => (
           <Grid item xs={12} sm={12} lg={12} key={service.id}>
             <Box className="serviceCard">
               <Box className="serviceCardTitleAndDesc">
@@ -134,9 +132,8 @@ const ServiceAllContent = () => {
           service={selectedService}
         />
       )}
-      <Toast />
     </>
   );
 };
 
-export default observer(ServiceAllContent);
+export default observer(ServiceCommonContent);

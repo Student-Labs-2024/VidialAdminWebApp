@@ -1,47 +1,41 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 
 import serviceStore from 'stores/ServiceStore';
+import ServiceCommonContent from './ServiceCommonContent';
+import Toast from 'components/Toast';
+import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
+
+const useFilteredServices = (tag: string) => {
+  const [filteredServices, setFilteredServices] = useState<
+    ServiceDataCardProps[]
+  >([]);
+
+  useEffect(() => {
+    serviceStore.loadServices();
+  }, []);
+
+  useEffect(() => {
+    setFilteredServices(
+      serviceStore.services.filter((service) => service.tag === tag),
+    );
+  }, [tag]);
+
+  return filteredServices;
+};
 
 const ServiceHardwareTreatmentContent = () => {
   const location = useLocation();
-
-  const tag = location.pathname.split('/').pop();
-  const filteredServices = serviceStore.services.filter(
-    (service) => service.tag === tag,
-  );
+  const tag = location.pathname.split('/').pop()!;
+  const filteredServices = useFilteredServices(tag);
 
   return (
     <>
-      <Grid container spacing={3}>
-        {filteredServices.map((service) => (
-          <Grid item xs={12} sm={6} lg={12} key={service.id}>
-            <Box className="serviceCard">
-              <Box className="serviceCardTitleAndDesc">
-                <Typography className="serviceCardTitle">
-                  {service.title}
-                </Typography>
-                <Typography className="serviceCardDescription">
-                  {`${service.countProcedures} процедур`}
-                </Typography>
-              </Box>
-              <Typography className="serviceCardPrice">
-                {`${service.price} ₽`}
-              </Typography>
-              <Box className="serviceBtnsContainer">
-                <Button className="serviceCardEditBtn" variant="contained">
-                  Редактировать
-                </Button>
-                <Button className="serviceCardEditBtn" variant="contained">
-                  Удалить
-                </Button>
-              </Box>
-            </Box>
-          </Grid>
-        ))}
-      </Grid>
+      <ServiceCommonContent servicesCommon={filteredServices} />
+      <Toast />
     </>
   );
 };
 
-export default ServiceHardwareTreatmentContent;
+export default observer(ServiceHardwareTreatmentContent);

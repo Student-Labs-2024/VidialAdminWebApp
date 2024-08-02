@@ -1,5 +1,4 @@
 import { makeAutoObservable } from 'mobx';
-
 import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
 
 class ServiceStore {
@@ -107,6 +106,31 @@ class ServiceStore {
 
   saveServices() {
     localStorage.setItem('services', JSON.stringify(this.services));
+  }
+
+  addService(service: ServiceDataCardProps) {
+    this.services.push(service);
+    this.saveServices();
+  }
+
+  editService(updatedService: ServiceDataCardProps) {
+    const index = this.services.findIndex(
+      (service) => service.id === updatedService.id,
+    );
+
+    if (index !== -1) {
+      this.services[index] = updatedService;
+      this.saveServices();
+    }
+  }
+
+  async deleteService(id: number) {
+    this.services = this.services.filter((service) => service.id !== id);
+    this.saveServices();
+  }
+
+  getServiceById(id: number): ServiceDataCardProps | undefined {
+    return this.services.find((service) => service.id === id);
   }
 }
 
