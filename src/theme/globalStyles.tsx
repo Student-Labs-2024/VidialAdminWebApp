@@ -8,6 +8,38 @@ const GlobalStylesComponent = () => {
     <>
       <GlobalStyles
         styles={{
+          '.root': {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+          },
+          '.iconAdd': {
+            borderRadius: '30px !important',
+            backgroundColor: `${theme.palette.primary.main} !important`,
+            color: `${theme.palette.secondary.main} !important`,
+            padding: '10px 20px !important',
+            width: '65px !important',
+            height: 'auto !important',
+            boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10) !important',
+          },
+          '.filterBtn': {
+            borderRadius: '30px !important',
+            backgroundColor: `${theme.palette.primary.main} !important`,
+            color: `${theme.palette.secondary.main} !important`,
+            padding: '10px 20px !important',
+            width: '65px !important',
+            height: 'auto !important',
+            boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10) !important',
+          },
+          '.contentBtns': {
+            display: 'flex',
+            gap: '10px',
+            height: '45px',
+            width: '100%',
+            marginBottom: '25px',
+          },
           '.listItemBtn': {
             borderRadius: '30px !important',
             '&.active': {
@@ -147,6 +179,50 @@ const GlobalStylesComponent = () => {
           },
           '.deleteButton': {
             color: theme.palette.text.primary,
+          },
+          '.serviceCard': {
+            padding: '30px',
+            backgroundColor: theme.palette.secondary.main,
+            boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10)',
+            borderRadius: '20px',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            transition: 'transform 0.3s ease-in-out',
+            '&:hover': {
+              transform: 'scale(1.02)',
+            },
+          },
+          '.serviceCardTitleAndDesc': {
+            display: 'flex',
+            flexDirection: 'column',
+            width: '50% !important',
+          },
+          '.serviceCardTitle': {
+            color: theme.palette.text.secondary,
+            fontSize: '20px !important',
+            fontWeight: theme.typography.h4.fontWeight,
+          },
+          '.serviceCardDescription': {
+            color: theme.palette.grey[600],
+            fontSize: '16px !important',
+            fontWeight: theme.typography.body1.fontWeight,
+          },
+          '.serviceCardPrice': {
+            color: theme.palette.text.secondary,
+            fontSize: '20px !important',
+            fontWeight: theme.typography.h4.fontWeight,
+          },
+          '.serviceBtnsContainer': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+          },
+          '.serviceCardEditBtn': {
+            width: '190px !important',
+            padding: '7px 20px !important',
           },
         }}
       />

@@ -4,7 +4,6 @@ import { Navigate, Outlet, createBrowserRouter } from 'react-router-dom';
 import AuthComponent from './AuthPage/AuthComponent';
 import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
 import MainPage from './MainPage/MainPage';
-import ServicesPage from './ContentPage/ServicesPage/ServicesPage';
 import ItemPage from './ContentPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
@@ -17,6 +16,8 @@ import PromoEditFormPage from './ContentPage/PromosPage/PromoEditFormPage';
 import authStore from 'stores/AuthStore';
 
 import ErrorContentComponent from 'components/ErrorContentComponent';
+
+import ServicesPage from './ContentPage/ServicesPage';
 
 const PrivateRoute: React.FC = observer(() => {
   return authStore.isAuthenticated ? <Outlet /> : <Navigate to="/auth" />;

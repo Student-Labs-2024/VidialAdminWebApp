@@ -53,14 +53,12 @@ interface ItemEditFormPageProps {
   open: boolean;
   handleClose: () => void;
   item: ItemsCardProps;
-  notify: () => void;
 }
 
 const ItemEditFormPage = ({
   open,
   handleClose,
   item,
-  notify,
 }: ItemEditFormPageProps) => {
   const { classes } = useStyles();
 
@@ -80,12 +78,7 @@ const ItemEditFormPage = ({
       >
         <Fade in={open} timeout={{ enter: 300, exit: 900 }}>
           <Box id="transition-modal-title" className={classes.modalBox}>
-            <ItemEditForm
-              open={open}
-              handleClose={handleClose}
-              item={item}
-              notify={notify}
-            />
+            <ItemEditForm open={open} handleClose={handleClose} item={item} />
           </Box>
         </Fade>
       </Modal>

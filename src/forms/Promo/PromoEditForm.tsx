@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
+import { Slide, toast } from 'react-toastify';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
@@ -17,11 +18,7 @@ const validationSchema = yup.object({
   endDate: yup.date().required('Требуется дата конца акции'),
 });
 
-interface PromoEditFormProps {
-  notify: () => void;
-}
-
-const PromoEditForm = ({ notify }: PromoEditFormProps) => {
+const PromoEditForm = () => {
   const { id } = useParams<{ id: string }>();
   const promoId = Number(id);
   const promo = promoStore.getPromoById(promoId);
@@ -89,10 +86,12 @@ const PromoEditForm = ({ notify }: PromoEditFormProps) => {
       };
 
       promoStore.editPromo(updatedPromo);
-      notify();
       setTimeout(() => {
         navigate('/stocks');
-      }, 3000);
+      }, 2000);
+      toast.success('Акция отредактирована!', {
+        transition: Slide,
+      });
     },
   });
 

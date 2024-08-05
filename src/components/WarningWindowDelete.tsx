@@ -8,17 +8,22 @@ interface WarningWindowProps {
   text: string;
 }
 
-const WarningWindowDelete: React.FC<WarningWindowProps> = (props) => {
+const WarningWindowDelete: React.FC<WarningWindowProps> = ({
+  open,
+  handleClose,
+  handleConfirm,
+  text,
+}) => {
   const handleConfirmAndClose = () => {
-    props.handleConfirm();
-    props.handleClose();
+    handleConfirm();
+    handleClose();
   };
 
   return (
     <Modal
       aria-labelledby="transition-modal-title"
-      open={props.open}
-      onClose={props.handleClose}
+      open={open}
+      onClose={handleClose}
       closeAfterTransition
       slots={{ backdrop: Backdrop }}
       slotProps={{
@@ -27,10 +32,10 @@ const WarningWindowDelete: React.FC<WarningWindowProps> = (props) => {
         },
       }}
     >
-      <Fade in={props.open} timeout={{ enter: 300, exit: 900 }}>
+      <Fade in={open} timeout={{ enter: 300, exit: 300 }}>
         <Box className="modalBox">
           <Typography className="modalText" id="transition-modal-title">
-            {props.text}
+            {text}
           </Typography>
           <Box className="modalBtns">
             <Button
@@ -43,7 +48,7 @@ const WarningWindowDelete: React.FC<WarningWindowProps> = (props) => {
             <Button
               className="modalBtn"
               variant="contained"
-              onClick={props.handleClose}
+              onClick={handleClose}
             >
               Нет
             </Button>
