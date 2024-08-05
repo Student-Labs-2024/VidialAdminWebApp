@@ -1,11 +1,7 @@
-export default interface PromoCardInfoProps {
+import PromoDataCardProps from './PromoDataCardProps';
+
+export default interface PromoCardInfoProps extends PromoDataCardProps {
   open: boolean;
   handleClose: () => void;
   handleConfirmDelete: () => void;
-  id: number;
-  img: string;
-  title: string;
-  fullDescription: string;
-  startDate: Date;
-  endDate: Date;
 }

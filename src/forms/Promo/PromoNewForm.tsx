@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
@@ -13,7 +19,6 @@ const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
   title: yup.string().required('Требуется название акции'),
   description: yup.string().required('Требуется описание акции'),
-  fullDescription: yup.string().required('Требуется подробное описание'),
   startDate: yup.date().required('Требуется дата начала акции'),
   endDate: yup.date().required('Требуется дата конца акции'),
 });
@@ -57,34 +62,38 @@ const PromoNewForm = () => {
       img: '',
       title: '',
       description: '',
-      fullDescription: '',
       startDate: '',
       endDate: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!image) {
         setImageError('Изображение акции обязательно');
         return;
       }
 
       const newPromo: PromoDataCardProps = {
-        id: Date.now(),
-        img: values.img,
         title: values.title,
         description: values.description,
-        fullDescription: values.fullDescription,
-        startDate: new Date(values.startDate),
-        endDate: new Date(values.endDate),
+        photo: imageURL!,
+        link: values.img,
+        start_date: values.startDate,
+        end_date: values.endDate,
       };
 
-      promoStore.addPromo(newPromo);
-      toast.success('Акция добавлена!', {
-        transition: Slide,
-      });
-      setTimeout(() => {
-        navigate('/stocks');
-      }, 2000);
+      try {
+        await promoStore.addPromo(newPromo, image);
+        toast.success('Акция добавлена!', {
+          transition: Slide,
+        });
+        setTimeout(() => {
+          navigate('/stocks');
+        }, 2000);
+      } catch (error) {
+        toast.error(`Ошибка при добавлении акции: ${promoStore.error}`, {
+          transition: Slide,
+        });
+      }
     },
   });
 
@@ -110,9 +119,11 @@ const PromoNewForm = () => {
               fullWidth
               id="description"
               name="description"
-              label="Описание акции"
-              placeholder="Введите описание акции"
+              label="Подробное описание"
+              placeholder="Введите подробное описание акции"
               variant="standard"
+              multiline
+              rows={4}
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -121,26 +132,6 @@ const PromoNewForm = () => {
               }
               helperText={
                 formik.touched.description && formik.errors.description
-              }
-            />
-            <TextField
-              fullWidth
-              id="fullDescription"
-              name="fullDescription"
-              label="Подробное описание"
-              placeholder="Введите подробное описание акции"
-              variant="standard"
-              multiline
-              rows={4}
-              value={formik.values.fullDescription}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.fullDescription &&
-                Boolean(formik.errors.fullDescription)
-              }
-              helperText={
-                formik.touched.fullDescription && formik.errors.fullDescription
               }
             />
             <TextField
@@ -180,7 +171,11 @@ const PromoNewForm = () => {
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
               >
-                Сохранить
+                {promoStore.isLoading ? (
+                  <CircularProgress sx={{ color: 'white' }} size={36} />
+                ) : (
+                  'Сохранить'
+                )}
               </Button>
               <Button
                 className="modalBtn"

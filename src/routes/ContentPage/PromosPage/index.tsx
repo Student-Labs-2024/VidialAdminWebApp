@@ -18,7 +18,6 @@ import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
 import { Slide, toast } from 'react-toastify';
-import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -86,12 +85,16 @@ const PromosPage = () => {
     setSelectedPromo(null);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedPromo) {
-      promoStore.deletePromo(selectedPromo.id);
-      promoStore.savePromos();
-      setSelectedPromo(null);
-      toast.success('Акция удалена!', { transition: Slide });
+      try {
+        await promoStore.deletePromo(selectedPromo.id!);
+        setSelectedPromo(null);
+        toast.success('Акция удалена!', { transition: Slide });
+      } catch (error) {
+        console.error('Error deleting promo:', error);
+        toast.error('Что-то пошло не так!', { transition: Slide });
+      }
     }
   };
 
@@ -120,7 +123,7 @@ const PromosPage = () => {
                 <Box
                   className={classes.promoCardImg}
                   component="img"
-                  src={promo.img}
+                  src={promo.photo}
                   alt={promo.title}
                 />
                 <Typography className={classes.promoCardTitle}>
@@ -128,7 +131,7 @@ const PromosPage = () => {
                 </Typography>
                 <Divider className={classes.promoCardDivider} />
                 <Typography className={classes.promoCardDescription}>
-                  {promo.description}
+                  {promo.description?.split('.')[0] + '\n'}
                 </Typography>
                 <Button
                   onClick={() => handleOpenPromo(promo)}
@@ -158,7 +161,6 @@ const PromosPage = () => {
           />
         )}
       </Box>
-      <Toast />
     </>
   );
 };

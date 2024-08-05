@@ -1,6 +1,7 @@
 import {
   Backdrop,
   Button,
+  CircularProgress,
   Divider,
   Fade,
   Modal,
@@ -12,6 +13,7 @@ import { makeStyles } from 'tss-react/mui';
 
 import PromoCardInfoProps from 'types/Promo/PromoCardInfoProps';
 import WarningWindowDelete from 'components/WarningWindowDelete';
+import promoStore from 'stores/PromoStore';
 
 const useStyles = makeStyles()((theme) => ({
   modalBox: {
@@ -79,11 +81,11 @@ const PromoCardInfo = ({
   open,
   handleClose,
   handleConfirmDelete,
-  img,
+  photo,
   title,
-  fullDescription,
-  startDate,
-  endDate,
+  description,
+  start_date,
+  end_date,
 }: PromoCardInfoProps) => {
   const { classes } = useStyles();
   const [openModal, setOpen] = useState(false);
@@ -100,18 +102,6 @@ const PromoCardInfo = ({
     setOpen(false);
     handleConfirmDelete();
   };
-
-  const formattedStartDate = new Date(startDate).toLocaleDateString('ru-RU', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
-
-  const formattedEndDate = new Date(endDate).toLocaleDateString('ru-RU', {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
 
   return (
     <>
@@ -132,18 +122,18 @@ const PromoCardInfo = ({
             <Box
               className={classes.promoCardImg}
               component="img"
-              src={img}
-              alt={`${img}`}
+              src={photo}
+              alt={`${photo}`}
             />
             <Typography className={classes.promoCardTitle}>{title}</Typography>
             <Divider className={classes.promoCardDivider} />
             <Typography className={classes.promoCardFullDescription}>
-              {fullDescription}
+              {description}
             </Typography>
             <Divider className={classes.promoCardDivider} />
             <Typography
               className={classes.promoCardDate}
-            >{`Акция проводится с ${formattedStartDate} по ${formattedEndDate}`}</Typography>
+            >{`Акция проводится с ${String(start_date)} по ${end_date}`}</Typography>
             <Divider className={classes.promoCardDivider} />
             <Typography className={classes.promoCardCommonDescription}>
               Имеются противопоказания. Необходима консультация специалиста.
@@ -154,7 +144,11 @@ const PromoCardInfo = ({
                 variant="contained"
                 onClick={handleOpenWindow}
               >
-                Удалить
+                {promoStore.isLoading ? (
+                  <CircularProgress sx={{ color: 'white' }} size={36} />
+                ) : (
+                  'Удалить'
+                )}
               </Button>
             </Box>
           </Box>
