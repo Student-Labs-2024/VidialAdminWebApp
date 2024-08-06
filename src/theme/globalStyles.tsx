@@ -158,6 +158,7 @@ const GlobalStylesComponent = () => {
           '.uploadTextError': {
             textAlign: 'center',
             fontSize: '14px  !important',
+            color: theme.palette.error.main,
           },
           '.uploadBtnImgName': {
             color: theme.palette.text.secondary,

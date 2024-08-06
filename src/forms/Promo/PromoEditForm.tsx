@@ -19,6 +19,7 @@ const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
   title: yup.string().required('Требуется название акции'),
   description: yup.string().required('Требуется описание акции'),
+  link: yup.string().required('Требуется ссылка на акцию'),
   start_date: yup.date().required('Требуется дата начала акции'),
   end_date: yup.date().required('Требуется дата конца акции'),
 });
@@ -62,9 +63,10 @@ const PromoEditForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      img: promo?.photo || '',
+      img: promo?.link || '',
       title: promo?.title || '',
       description: promo?.description || '',
+      link: promo?.link || '',
       start_date: promo?.start_date ? promo.start_date : '',
       end_date: promo?.end_date ? promo.end_date : '',
     },
@@ -79,8 +81,8 @@ const PromoEditForm = () => {
         promo_id: promoId,
         title: values.title,
         description: values.description,
-        photo: values.img,
-        link: values.img,
+        photo: values.link,
+        link: values.link,
         start_date: values.start_date,
         end_date: values.end_date,
       };
@@ -122,7 +124,6 @@ const PromoEditForm = () => {
               error={formik.touched.title && Boolean(formik.errors.title)}
               helperText={formik.touched.title && formik.errors.title}
             />
-
             <TextField
               fullWidth
               id="description"
@@ -141,6 +142,19 @@ const PromoEditForm = () => {
               helperText={
                 formik.touched.description && formik.errors.description
               }
+            />
+            <TextField
+              fullWidth
+              id="link"
+              name="link"
+              label="Ссылка на акцию"
+              placeholder="Введите ссылку на акцию"
+              variant="standard"
+              value={formik.values.link}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.link && Boolean(formik.errors.link)}
+              helperText={formik.touched.link && formik.errors.link}
             />
             <TextField
               fullWidth

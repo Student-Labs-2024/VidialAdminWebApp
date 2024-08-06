@@ -19,6 +19,7 @@ const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
   title: yup.string().required('Требуется название акции'),
   description: yup.string().required('Требуется описание акции'),
+  link: yup.string().required('Требуется ссылка на акцию'),
   startDate: yup.date().required('Требуется дата начала акции'),
   endDate: yup.date().required('Требуется дата конца акции'),
 });
@@ -62,6 +63,7 @@ const PromoNewForm = () => {
       img: '',
       title: '',
       description: '',
+      link: '',
       startDate: '',
       endDate: '',
     },
@@ -75,14 +77,14 @@ const PromoNewForm = () => {
       const newPromo: PromoDataCardProps = {
         title: values.title,
         description: values.description,
-        photo: imageURL!,
-        link: values.img,
+        photo: values.link,
+        link: values.link,
         start_date: values.startDate,
         end_date: values.endDate,
       };
 
       try {
-        await promoStore.addPromo(newPromo, image);
+        await promoStore.addPromo(newPromo);
         toast.success('Акция добавлена!', {
           transition: Slide,
         });
@@ -133,6 +135,19 @@ const PromoNewForm = () => {
               helperText={
                 formik.touched.description && formik.errors.description
               }
+            />
+            <TextField
+              fullWidth
+              id="link"
+              name="link"
+              label="Ссылка на акцию"
+              placeholder="Введите ссылку на акцию"
+              variant="standard"
+              value={formik.values.link}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.link && Boolean(formik.errors.link)}
+              helperText={formik.touched.link && formik.errors.link}
             />
             <TextField
               fullWidth

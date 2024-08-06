@@ -11,6 +11,7 @@ class PromoStore {
   promos: PromoDataCardProps[] = [];
   isLoading: boolean = false;
   error: string | null = null;
+  isError: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -24,22 +25,23 @@ class PromoStore {
       this.promos = data;
     } catch (error) {
       this.error = (error as Error).message;
+      this.isError = true;
     } finally {
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 2000);
     }
   }
 
-  async addPromo(promo: PromoDataCardProps, image: File) {
+  async addPromo(promo: PromoDataCardProps) {
     this.isLoading = true;
     this.error = null;
     try {
-      const imageBlob = await image
-        .arrayBuffer()
-        .then((buffer) => new Blob([buffer]));
-      const newPromo = await addSinglePromo({ ...promo, imageBlob });
+      const newPromo = await addSinglePromo(promo);
       this.promos.push(newPromo);
     } catch (error) {
       this.error = (error as Error).message;
+      this.isError = true;
       console.error('Error adding promo:', (error as Error).message);
     } finally {
       this.isLoading = false;
@@ -59,6 +61,7 @@ class PromoStore {
       }
     } catch (error) {
       this.error = (error as Error).message;
+      this.isError = true;
     } finally {
       this.isLoading = false;
     }
@@ -72,6 +75,7 @@ class PromoStore {
       this.promos = this.promos.filter((promo) => promo.id !== id);
     } catch (error) {
       this.error = (error as Error).message;
+      this.isError = true;
     } finally {
       this.isLoading = false;
     }

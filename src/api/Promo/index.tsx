@@ -10,15 +10,9 @@ export const getPromos = async () => {
   }
 };
 
-export const addSinglePromo = async (
-  promo: PromoDataCardProps & { imageBlob: Blob },
-) => {
+export const addSinglePromo = async (promo: PromoDataCardProps) => {
   try {
-    const response = await instance.post<PromoDataCardProps>(`/promos`, promo, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await instance.post<PromoDataCardProps>(`/promos`, promo);
     return response.data;
   } catch (error) {
     throw new Error(`Error adding promo: ${error}`);
