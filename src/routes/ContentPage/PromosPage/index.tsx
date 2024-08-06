@@ -12,13 +12,12 @@ import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
+import { Slide, toast } from 'react-toastify';
 
 import PromoCardInfo from './PromoCardInfo';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
-import { Slide, toast } from 'react-toastify';
-import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -158,7 +157,6 @@ const PromosPage = () => {
           />
         )}
       </Box>
-      <Toast />
     </>
   );
 };

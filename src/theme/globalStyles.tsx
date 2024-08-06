@@ -224,6 +224,20 @@ const GlobalStylesComponent = () => {
             width: '190px !important',
             padding: '7px 20px !important',
           },
+          '.cardDivider': {
+            color: theme.palette.grey[600],
+            width: '100%',
+          },
+          '.doctorCardName': {
+            color: `${theme.palette.text.secondary} !important`,
+            fontSize: '18px',
+            fontWeight: `${theme.typography.h2.fontWeight} !important`,
+          },
+          '.doctorCardCategory': {
+            color: `${theme.palette.text.secondary} !important`,
+            fontSize: '16px',
+            fontWeight: `${theme.typography.body1.fontWeight} !important`,
+          },
         }}
       />
     </>

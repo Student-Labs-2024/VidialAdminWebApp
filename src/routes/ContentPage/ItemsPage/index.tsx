@@ -7,7 +7,6 @@ import itemStore from 'stores/ItemStore';
 import ItemEditFormPage from './ItemEditFormPage';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 import InputSearch from 'components/InputSearch';
-import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   ItemCard: {
@@ -123,7 +122,6 @@ const ItemPage = () => {
           />
         )}
       </Grid>
-      <Toast />
     </>
   );
 };
