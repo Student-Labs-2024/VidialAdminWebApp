@@ -25,18 +25,7 @@ class DoctorStore {
           category: 'врач-офтальмолог',
           portrait:
             'https://www.vidial.ru/upload/resize_cache/iblock/857/230_250_2/85785b7c6205cf6b45e5a8273e08075c.png',
-          time: [
-            {
-              time: '2024-08-07T09:00:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-07T10:30:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-          ],
+          time: [],
         },
         {
           id: 1,
@@ -47,18 +36,7 @@ class DoctorStore {
           category: 'врач-офтальмолог',
           portrait:
             'https://www.vidial.ru/upload/resize_cache/iblock/bad/488_473_2/bad2578dea9ae7683b4442c1a3be659e.png',
-          time: [
-            {
-              time: '2024-08-08T08:00:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-08T11:00:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-          ],
+          time: [],
         },
         {
           id: 2,
@@ -67,20 +45,8 @@ class DoctorStore {
           patronymic_name: 'Юрьевна',
           name: 'Артюхова Ольга Юрьевна',
           category: 'врач-офтальмолог',
-          portrait:
-            'https://www.vidial.ru/upload/resize_cache/iblock/207/488_473_2/2079be32c0b38c776cf09890e140e716.png',
-          time: [
-            {
-              time: '2024-08-09T07:30:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-09T12:00:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-          ],
+          portrait: '',
+          time: [],
         },
         {
           id: 3,
@@ -91,18 +57,7 @@ class DoctorStore {
           category: 'оптометрист',
           portrait:
             'https://www.vidial.ru/upload/resize_cache/iblock/351/488_473_2/351af44691b9b3048f006bc4ff3d6260.png',
-          time: [
-            {
-              time: '2024-08-10T09:15:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-10T13:00:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-          ],
+          time: [],
         },
         {
           id: 4,
@@ -113,18 +68,7 @@ class DoctorStore {
           category: 'оптометрист',
           portrait:
             'https://www.vidial.ru/upload/resize_cache/webp/upload/resize_cache/iblock/259/488_473_2/259ad70703410612d086fe5d7b4ae398.jpeg.webp',
-          time: [
-            {
-              time: '2024-08-11T08:45:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-11T10:30:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-          ],
+          time: [],
         },
         {
           id: 5,
@@ -133,35 +77,8 @@ class DoctorStore {
           patronymic_name: 'Геннадьевна',
           name: 'Полтавец Татьяна Геннадьевна',
           category: 'оптометрист',
-          portrait:
-            'https://www.vidial.ru/upload/resize_cache/iblock/89e/488_473_2/89e2dde8cc2a5fe3b3c1a8bd3ff6e6ab.png',
-          time: [
-            {
-              time: '2024-08-12T09:00:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-12T11:15:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-            {
-              time: '2024-08-13T08:00:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-            {
-              time: '2024-08-13T10:00:00.000Z',
-              department_id: 2,
-              department_name: 'Нейрология',
-            },
-            {
-              time: '2024-08-13T11:45:00.000Z',
-              department_id: 1,
-              department_name: 'Кардиология',
-            },
-          ],
+          portrait: '',
+          time: [],
         },
       ];
       this.doctors = data;
@@ -173,12 +90,7 @@ class DoctorStore {
     localStorage.setItem('doctors', JSON.stringify(this.doctors));
   }
 
-  addDoctor(doctor: DoctorCardProps) {
-    this.doctors.push(doctor);
-    this.saveDoctors();
-  }
-
-  editPromo(updatedDoctor: DoctorCardProps) {
+  editDoctor(updatedDoctor: DoctorCardProps) {
     const index = this.doctors.findIndex(
       (doctor) => doctor.id === updatedDoctor.id,
     );
@@ -189,9 +101,12 @@ class DoctorStore {
     }
   }
 
-  deleteDoctor(id: number) {
-    this.doctors = this.doctors.filter((doctor) => doctor.id !== id);
-    this.saveDoctors();
+  deleteDoctorPhoto(id: number) {
+    const doctor = this.doctors.find((doctor) => doctor.id === id);
+    if (doctor) {
+      doctor.portrait = '';
+      this.saveDoctors();
+    }
   }
 
   getDoctorById(id: number): DoctorCardProps | undefined {

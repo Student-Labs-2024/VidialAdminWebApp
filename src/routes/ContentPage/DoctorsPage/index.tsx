@@ -1,23 +1,14 @@
-import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Grid,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { useEffect, useState } from 'react';
+import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from 'tss-react/mui';
-import { useEffect } from 'react';
 import { Slide, toast } from 'react-toastify';
 
-import InputSearch from 'components/InputSearch';
 import doctorStore from 'stores/DoctorStore';
 import { DoctorCardProps } from 'types/Doctor/DoctorCardProps';
-import DoctorCardInfo from './DoctorCardInfo';
+import WarningWindowDelete from 'components/WarningWindowDelete';
+import DoctorNewForm from 'forms/Doctor/DoctorNewForm';
+import DoctorEditForm from 'forms/Doctor/DoctorEditForm';
 
 const useStyles = makeStyles()((theme) => ({
   doctorCard: {
@@ -39,7 +30,7 @@ const useStyles = makeStyles()((theme) => ({
   },
   doctorCardImg: {
     width: '90%',
-    height: 'auto',
+    height: '250px',
   },
 
   doctorCardEditBtn: {
@@ -50,23 +41,47 @@ const useStyles = makeStyles()((theme) => ({
 
 const DoctorsPage = () => {
   const { classes } = useStyles();
-  // const navigate = useNavigate();
-
-  const handleOpenDoctor = (doctor: DoctorCardProps) => {
-    doctorStore.selectDoctor(doctor);
-  };
-
-  const handleCloseDoctor = () => {
-    doctorStore.clearSelectedDoctor();
-  };
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+  const [openAddPhotoModal, setOpenAddPhotoModal] = useState(false);
+  const [openModalDelete, setOpenModalDelete] = useState(false);
 
   const handleConfirmDelete = () => {
     if (doctorStore.selectedDoctor) {
-      doctorStore.deleteDoctor(doctorStore.selectedDoctor.id);
+      doctorStore.deleteDoctorPhoto(doctorStore.selectedDoctor.id);
       doctorStore.saveDoctors();
       doctorStore.clearSelectedDoctor();
-      toast.success('Доктор удален!', { transition: Slide });
+      toast.success('Фото доктора удалено!', { transition: Slide });
     }
+    setOpenModalDelete(false);
+  };
+
+  const handleOpenModalDelete = (doctor: DoctorCardProps) => {
+    doctorStore.selectDoctor(doctor);
+    setOpenModalDelete(true);
+  };
+
+  const handleCloseModalDelete = () => {
+    setOpenModalDelete(false);
+  };
+
+  const handleOpenModalEdit = (doctor: DoctorCardProps) => {
+    doctorStore.selectDoctor(doctor);
+    setOpenModalEdit(true);
+  };
+
+  const handleCloseModalEdit = () => {
+    setOpenModalEdit(false);
+    doctorStore.clearSelectedDoctor();
+  };
+
+  const handleOpenAddPhotoModal = (doctor: DoctorCardProps) => {
+    doctorStore.selectDoctor(doctor);
+    setOpenAddPhotoModal(true);
+  };
+
+  const handleCloseAddPhotoModal = () => {
+    setOpenAddPhotoModal(false);
+    doctorStore.clearSelectedDoctor();
   };
 
   useEffect(() => {
@@ -75,14 +90,6 @@ const DoctorsPage = () => {
 
   return (
     <Box>
-      <Box className="contentBtns">
-        <InputSearch />
-        <Tooltip title="Добавить доктора" placement="bottom">
-          <IconButton sx={{ padding: 0 }}>
-            <Add className="iconAdd" />
-          </IconButton>
-        </Tooltip>
-      </Box>
       <Grid container spacing={3}>
         {doctorStore.doctors.map((doctor) => (
           <Grid item xs={12} sm={6} lg={4} key={doctor.id}>
@@ -97,25 +104,50 @@ const DoctorsPage = () => {
               <Typography className="doctorCardCategory">
                 {doctor.category}
               </Typography>
-              <Button
-                onClick={() => handleOpenDoctor(doctor)}
-                variant="text"
-                endIcon={<ArrowRightAltOutlined />}
-              >
-                Подробнее
-              </Button>
-              <Button className={classes.doctorCardEditBtn} variant="contained">
-                Редактировать
-              </Button>
+              {doctor.portrait ? (
+                <>
+                  <Button
+                    className={classes.doctorCardEditBtn}
+                    variant="contained"
+                    onClick={() => handleOpenModalEdit(doctor)}
+                  >
+                    Редактировать
+                  </Button>
+                  <Button
+                    className={classes.doctorCardEditBtn}
+                    variant="contained"
+                    onClick={() => handleOpenModalDelete(doctor)}
+                  >
+                    Удалить фото
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  className={classes.doctorCardEditBtn}
+                  variant="contained"
+                  onClick={() => handleOpenAddPhotoModal(doctor)}
+                >
+                  Добавить фото
+                </Button>
+              )}
             </Box>
           </Grid>
         ))}
+        <WarningWindowDelete
+          open={openModalDelete}
+          handleClose={handleCloseModalDelete}
+          handleConfirm={handleConfirmDelete}
+          text="Вы действительно хотите удалить фото данного доктора?"
+        />
+        <DoctorNewForm
+          open={openAddPhotoModal}
+          handleClose={handleCloseAddPhotoModal}
+        />
         {doctorStore.selectedDoctor && (
-          <DoctorCardInfo
-            open={Boolean(doctorStore.selectedDoctor)}
-            handleClose={handleCloseDoctor}
-            handleConfirmDelete={handleConfirmDelete}
-            {...doctorStore.selectedDoctor}
+          <DoctorEditForm
+            open={openModalEdit}
+            handleClose={handleCloseModalEdit}
+            doctor={doctorStore.selectedDoctor!}
           />
         )}
       </Grid>

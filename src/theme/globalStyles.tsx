@@ -124,6 +124,7 @@ const GlobalStylesComponent = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+            gap: '15px',
             width: '400px',
           },
           '.uploadButtonContainer': {
@@ -158,6 +159,7 @@ const GlobalStylesComponent = () => {
           '.uploadTextError': {
             textAlign: 'center',
             fontSize: '14px  !important',
+            color: theme.palette.error.main,
           },
           '.uploadBtnImgName': {
             color: theme.palette.text.secondary,
