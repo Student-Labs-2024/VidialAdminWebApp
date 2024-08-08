@@ -18,7 +18,6 @@ import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
 import { Slide, toast } from 'react-toastify';
-import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -158,7 +157,6 @@ const PromosPage = () => {
           />
         )}
       </Box>
-      <Toast />
     </>
   );
 };

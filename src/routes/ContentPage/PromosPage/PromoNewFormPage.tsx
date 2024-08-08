@@ -2,7 +2,6 @@ import { Box } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 
 import PromoNewForm from 'forms/Promo/PromoNewForm';
-import Toast from 'components/Toast';
 
 const useStyles = makeStyles()((theme) => ({
   container: {
@@ -31,7 +30,6 @@ const PromoNewFormPage = () => {
           <PromoNewForm />
         </Box>
       </Box>
-      <Toast />
     </>
   );
 };
