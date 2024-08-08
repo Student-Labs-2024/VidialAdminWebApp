@@ -80,7 +80,7 @@ class DepartmentStore {
           longitude: '',
         },
         {
-          id: 6,
+          id: 7,
           name: 'Филиал № 8',
           city: 'Omsk',
           address: 'Путилова, 3В',
@@ -100,7 +100,7 @@ class DepartmentStore {
 
   editDepartment(updatedDepartment: DepartmentCardProps) {
     const index = this.departments.findIndex(
-      (doctor) => doctor.id === updatedDepartment.id,
+      (department) => department.id === updatedDepartment.id,
     );
 
     if (index !== -1) {

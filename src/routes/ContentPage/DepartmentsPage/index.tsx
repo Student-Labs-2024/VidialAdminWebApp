@@ -1,10 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from 'tss-react/mui';
 
 import departmentStore from 'stores/DepartmentStore';
 import { Call } from '@mui/icons-material';
+import { Slide, toast } from 'react-toastify';
+import DepartmentCardProps from 'types/Department/DepartmentCardProps';
+import WarningWindowDelete from 'components/WarningWindowDelete';
+import DepartmentNewForm from 'forms/Department/DepartmentNewForm';
+import DepartmentEditForm from 'forms/Department/DepartmentEditForm';
 
 const useStyles = makeStyles()((theme) => ({
   departmentCard: {
@@ -42,7 +47,7 @@ const useStyles = makeStyles()((theme) => ({
     width: '20px',
     height: 'auto',
   },
-  doctorCardEditBtn: {
+  departmentCardEditBtn: {
     width: '80%',
     padding: '7px 20px',
   },
@@ -50,6 +55,50 @@ const useStyles = makeStyles()((theme) => ({
 
 const DepartmentsPage = () => {
   const { classes } = useStyles();
+  const [openModalDelete, setOpenModalDelete] = useState(false);
+  const [openAddCoordinatesModal, setOpenAddCoordinatesModal] = useState(false);
+  const [openModalEdit, setOpenModalEdit] = useState(false);
+
+  const handleConfirmDelete = () => {
+    if (departmentStore.selectedDepartment) {
+      departmentStore.deleteDepartmentCoordinates(
+        departmentStore.selectedDepartment.id,
+      );
+      departmentStore.saveDepartments();
+      departmentStore.clearSelectedDepartment();
+      toast.success('Координаты филиалы удалены!', { transition: Slide });
+    }
+    setOpenModalDelete(false);
+  };
+
+  const handleOpenModalDelete = (department: DepartmentCardProps) => {
+    departmentStore.selectDepartment(department);
+    setOpenModalDelete(true);
+  };
+
+  const handleCloseModalDelete = () => {
+    setOpenModalDelete(false);
+  };
+
+  const handleOpenAddCoordinatesModal = (department: DepartmentCardProps) => {
+    departmentStore.selectDepartment(department);
+    setOpenAddCoordinatesModal(true);
+  };
+
+  const handleCloseAddCoordinatesModal = () => {
+    setOpenAddCoordinatesModal(false);
+    departmentStore.clearSelectedDepartment();
+  };
+
+  const handleOpenModalEdit = (department: DepartmentCardProps) => {
+    departmentStore.selectDepartment(department);
+    setOpenModalEdit(true);
+  };
+
+  const handleCloseModalEdit = () => {
+    setOpenModalEdit(false);
+    departmentStore.clearSelectedDepartment();
+  };
 
   useEffect(() => {
     departmentStore.loadDepartments();
@@ -75,22 +124,25 @@ const DepartmentsPage = () => {
               {department.longitude && department.latitude ? (
                 <>
                   <Button
-                    className={classes.doctorCardEditBtn}
+                    className={classes.departmentCardEditBtn}
                     variant="contained"
+                    onClick={() => handleOpenModalEdit(department)}
                   >
                     Изменить координаты
                   </Button>
                   <Button
-                    className={classes.doctorCardEditBtn}
+                    className={classes.departmentCardEditBtn}
                     variant="contained"
+                    onClick={() => handleOpenModalDelete(department)}
                   >
                     Удалить координаты
                   </Button>
                 </>
               ) : (
                 <Button
-                  className={classes.doctorCardEditBtn}
+                  className={classes.departmentCardEditBtn}
                   variant="contained"
+                  onClick={() => handleOpenAddCoordinatesModal(department)}
                 >
                   Добавить координаты
                 </Button>
@@ -98,6 +150,23 @@ const DepartmentsPage = () => {
             </Box>
           </Grid>
         ))}
+        <WarningWindowDelete
+          open={openModalDelete}
+          handleClose={handleCloseModalDelete}
+          handleConfirm={handleConfirmDelete}
+          text="Вы действительно хотите удалить координаты данного филиала?"
+        />
+        <DepartmentNewForm
+          open={openAddCoordinatesModal}
+          handleClose={handleCloseAddCoordinatesModal}
+        />
+        {departmentStore.selectedDepartment && (
+          <DepartmentEditForm
+            open={openModalEdit}
+            handleClose={handleCloseModalEdit}
+            department={departmentStore.selectedDepartment!}
+          />
+        )}
       </Grid>
     </Box>
   );
