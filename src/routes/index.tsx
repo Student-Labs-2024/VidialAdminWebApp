@@ -6,7 +6,7 @@ import ErrorAuthComponent from './AuthPage/ErrorAuthComponent';
 import MainPage from './MainPage/MainPage';
 import ItemPage from './ContentPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage';
-import DoctorsPage from './ContentPage/DoctorsPage/DoctorsPage';
+import DoctorsPage from './ContentPage/DoctorsPage';
 import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/MainLayout';
 import PromosPage from './ContentPage/PromosPage';

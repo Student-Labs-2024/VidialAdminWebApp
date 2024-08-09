@@ -124,6 +124,7 @@ const GlobalStylesComponent = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+            gap: '15px',
             width: '400px',
           },
           '.uploadButtonContainer': {
@@ -228,6 +229,16 @@ const GlobalStylesComponent = () => {
           '.cardDivider': {
             color: theme.palette.grey[600],
             width: '100%',
+          },
+          '.doctorCardName': {
+            color: `${theme.palette.text.secondary} !important`,
+            fontSize: '18px',
+            fontWeight: `${theme.typography.h2.fontWeight} !important`,
+          },
+          '.doctorCardCategory': {
+            color: `${theme.palette.text.secondary} !important`,
+            fontSize: '16px',
+            fontWeight: `${theme.typography.body1.fontWeight} !important`,
           },
           '.loadingBtn': {
             color: `${theme.palette.secondary.main} !important`,

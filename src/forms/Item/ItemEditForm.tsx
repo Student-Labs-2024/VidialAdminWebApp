@@ -35,6 +35,7 @@ const ItemEditForm = ({ handleClose, item }: ItemEditFormProps) => {
 
       if (!['image/jpeg', 'image/png'].includes(file.type)) {
         setImageError('Только файлы JPG и PNG допустимы');
+
         return;
       }
       const img = new Image();
@@ -69,6 +70,7 @@ const ItemEditForm = ({ handleClose, item }: ItemEditFormProps) => {
     onSubmit: (values) => {
       if (!image && !imageURL) {
         setImageError('Изображение товара обязательно');
+
         return;
       }
 

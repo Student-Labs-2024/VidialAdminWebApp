@@ -49,6 +49,7 @@ const NavigationNameMap: { [key: string]: string } = {
   '/doctors': 'Доктора',
   '/users': 'Пользователи',
   '/stocks/add': 'Форма создания новой акции',
+  '/doctors/add': 'Форма добавления нового доктора',
 };
 
 const generateBreadcrumbs = (pathname: string, classes: Classes) => {

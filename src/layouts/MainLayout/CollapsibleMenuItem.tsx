@@ -31,6 +31,7 @@ const CollapsibleMenuItem: React.FC<CollapsibleMenuItemProps> = ({
 }) => {
   const [open, setOpen] = useState<boolean>(() => {
     const savedState = localStorage.getItem(`menuOpenState-${index}`);
+
     return savedState ? JSON.parse(savedState) : false;
   });
 
