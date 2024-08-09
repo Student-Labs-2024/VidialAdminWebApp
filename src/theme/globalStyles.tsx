@@ -224,6 +224,10 @@ const GlobalStylesComponent = () => {
             width: '190px !important',
             padding: '7px 20px !important',
           },
+          '.cardDivider': {
+            color: theme.palette.grey[600],
+            width: '100%',
+          },
         }}
       />
     </>
