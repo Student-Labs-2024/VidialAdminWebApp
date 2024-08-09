@@ -7,17 +7,18 @@ import {
   Button,
   Tooltip,
   IconButton,
+  Skeleton,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 
 import PromoCardInfo from './PromoCardInfo';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import promoStore from 'stores/PromoStore';
 import InputSearch from 'components/InputSearch';
+import ErrorContentComponent from 'components/ErrorContentComponent';
 
 const useStyles = makeStyles()((theme) => ({
   promosBtns: {
@@ -76,6 +77,7 @@ const PromosPage = () => {
   const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
     null,
   );
+  const { error, isLoading, promos } = promoStore;
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
     setSelectedPromo(promo);
@@ -85,12 +87,10 @@ const PromosPage = () => {
     setSelectedPromo(null);
   };
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedPromo) {
-      promoStore.deletePromo(selectedPromo.id);
-      promoStore.savePromos();
+      await promoStore.deletePromo(selectedPromo.id!);
       setSelectedPromo(null);
-      toast.success('Акция удалена!', { transition: Slide });
     }
   };
 
@@ -99,65 +99,102 @@ const PromosPage = () => {
   }, []);
 
   return (
-    <>
-      <Box>
-        <Box className={classes.promosBtns}>
-          <InputSearch />
-          <Tooltip title="Добавить акцию" placement="bottom">
-            <IconButton
-              onClick={() => navigate('/stocks/add')}
-              sx={{ padding: 0 }}
-            >
-              <Add className="iconAdd" />
-            </IconButton>
-          </Tooltip>
-        </Box>
-        <Grid container spacing={3}>
-          {promoStore.promos.map((promo) => (
-            <Grid item xs={12} sm={6} lg={4} key={promo.id}>
-              <Box className={classes.promoCard}>
-                <Box
-                  className={classes.promoCardImg}
-                  component="img"
-                  src={promo.img}
-                  alt={promo.title}
-                />
-                <Typography className={classes.promoCardTitle}>
-                  {promo.title}
-                </Typography>
-                <Divider className={classes.promoCardDivider} />
-                <Typography className={classes.promoCardDescription}>
-                  {promo.description}
-                </Typography>
-                <Button
-                  onClick={() => handleOpenPromo(promo)}
-                  variant="text"
-                  endIcon={<ArrowRightAltOutlined />}
-                  className={classes.promoCardBtn}
-                >
-                  Подробнее
-                </Button>
-                <Button
-                  className={classes.promoCardEditBtn}
-                  variant="contained"
-                  onClick={() => navigate(`/stocks/edit/${promo.id}`)}
-                >
-                  Редактировать
-                </Button>
-              </Box>
-            </Grid>
-          ))}
-        </Grid>
-        {selectedPromo && (
-          <PromoCardInfo
-            open={Boolean(selectedPromo)}
-            handleClose={handleClosePromo}
-            handleConfirmDelete={handleConfirmDelete}
-            {...selectedPromo}
-          />
-        )}
+    <Box>
+      <Box className={classes.promosBtns}>
+        <InputSearch />
+        <Tooltip title="Добавить акцию" placement="bottom">
+          <IconButton
+            onClick={() => navigate('/stocks/add')}
+            sx={{ padding: 0 }}
+          >
+            <Add className="iconAdd" />
+          </IconButton>
+        </Tooltip>
       </Box>
-    </>
+      <Grid container spacing={3}>
+        {error && (
+          <Grid item xs={12}>
+            <ErrorContentComponent />
+          </Grid>
+        )}
+        {isLoading
+          ? Array.from(new Array(6)).map((_, index) => (
+              <Grid item xs={12} sm={6} lg={4} key={index}>
+                <Box className={classes.promoCard}>
+                  <Skeleton
+                    variant="rectangular"
+                    className={classes.promoCardImg}
+                    height={200}
+                    sx={{ bgcolor: 'grey.300' }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    sx={{ bgcolor: 'grey.300', width: '80%' }}
+                  />
+                  <Divider />
+                  <Skeleton
+                    variant="text"
+                    sx={{ bgcolor: 'grey.300', width: '60%' }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    height={64}
+                    width="60%"
+                    sx={{ bgcolor: 'grey.300' }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    height={64}
+                    width="80%"
+                    sx={{ bgcolor: 'grey.300' }}
+                  />
+                </Box>
+              </Grid>
+            ))
+          : promos.map((promo) => (
+              <Grid item xs={12} sm={6} lg={4} key={promo.id}>
+                <Box className={classes.promoCard}>
+                  <Box
+                    className={classes.promoCardImg}
+                    component="img"
+                    src={promo.photo}
+                    alt={promo.title}
+                  />
+                  <Typography className={classes.promoCardTitle}>
+                    {promo.title}
+                  </Typography>
+                  <Divider className={classes.promoCardDivider} />
+                  <Typography className={classes.promoCardDescription}>
+                    {promo.description?.split('.')[0] + '\n'}
+                  </Typography>
+                  <Button
+                    onClick={() => handleOpenPromo(promo)}
+                    variant="text"
+                    endIcon={<ArrowRightAltOutlined />}
+                    className={classes.promoCardBtn}
+                  >
+                    Подробнее
+                  </Button>
+                  <Button
+                    className={classes.promoCardEditBtn}
+                    variant="contained"
+                    onClick={() => navigate(`/stocks/edit/${promo.id}`)}
+                  >
+                    Редактировать
+                  </Button>
+                </Box>
+              </Grid>
+            ))}
+      </Grid>
+      {selectedPromo && (
+        <PromoCardInfo
+          open={Boolean(selectedPromo)}
+          handleClose={handleClosePromo}
+          handleConfirmDelete={handleConfirmDelete}
+          {...selectedPromo}
+        />
+      )}
+    </Box>
   );
 };
 

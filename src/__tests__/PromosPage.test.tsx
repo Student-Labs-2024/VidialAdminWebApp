@@ -15,21 +15,21 @@ describe('PromosPage', () => {
     promoStore.promos = [
       {
         id: 1,
-        img: 'img/promo1.jpg',
+        photo: 'img/promo1.jpg',
         title: 'Promo 1',
         description: 'Description 1',
-        fullDescription: 'Full Description 1',
-        startDate: new Date('2024-03-01'),
-        endDate: new Date('2024-03-31'),
+        link: '',
+        start_date: '2024-03-01',
+        end_date: '2024-03-31',
       },
       {
         id: 2,
-        img: 'img/promo2.jpg',
+        photo: 'img/promo2.jpg',
         title: 'Promo 2',
         description: 'Description 2',
-        fullDescription: 'Full Description 2',
-        startDate: new Date('2024-04-01'),
-        endDate: new Date('2024-04-30'),
+        link: '',
+        start_date: '2024-04-01',
+        end_date: '2024-04-30',
       },
     ];
   });

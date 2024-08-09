@@ -240,6 +240,11 @@ const GlobalStylesComponent = () => {
             fontSize: '16px',
             fontWeight: `${theme.typography.body1.fontWeight} !important`,
           },
+          '.loadingBtn': {
+            color: `${theme.palette.secondary.main} !important`,
+            width: '25px',
+            height: '25px',
+          },
         }}
       />
     </>

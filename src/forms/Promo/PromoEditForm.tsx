@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -7,15 +13,14 @@ import { observer } from 'mobx-react-lite';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
-import { Slide, toast } from 'react-toastify';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
   title: yup.string().required('Требуется название акции'),
   description: yup.string().required('Требуется описание акции'),
-  fullDescription: yup.string().required('Требуется подробное описание'),
-  startDate: yup.date().required('Требуется дата начала акции'),
-  endDate: yup.date().required('Требуется дата конца акции'),
+  link: yup.string().required('Требуется ссылка на акцию'),
+  start_date: yup.date().required('Требуется дата начала акции'),
+  end_date: yup.date().required('Требуется дата конца акции'),
 });
 
 const PromoEditForm = () => {
@@ -25,7 +30,8 @@ const PromoEditForm = () => {
   const navigate = useNavigate();
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
-  const [imageURL, setImageURL] = useState<string | null>(promo?.img || null);
+  const [imageURL, setImageURL] = useState<string | null>(promo?.photo || null);
+  const { isLoading } = promoStore;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -58,42 +64,36 @@ const PromoEditForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      img: promo?.img || '',
+      img: promo?.link || '',
       title: promo?.title || '',
       description: promo?.description || '',
-      fullDescription: promo?.fullDescription || '',
-      startDate: promo?.startDate
-        ? new Date(promo.startDate).toISOString().split('T')[0]
-        : '',
-      endDate: promo?.endDate
-        ? new Date(promo.endDate).toISOString().split('T')[0]
-        : '',
+      link: promo?.link || '',
+      start_date: promo?.start_date ? promo.start_date : '',
+      end_date: promo?.end_date ? promo.end_date : '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!image && !imageURL) {
         setImageError('Изображение акции обязательно');
 
         return;
       }
 
-      const updatedPromo: PromoDataCardProps = {
-        id: promoId,
-        img: values.img,
+      const updatedPromo: PromoDataCardProps & { promo_id: number } = {
+        promo_id: promoId,
         title: values.title,
         description: values.description,
-        fullDescription: values.fullDescription,
-        startDate: new Date(values.startDate),
-        endDate: new Date(values.endDate),
+        photo: values.link,
+        link: values.link,
+        start_date: values.start_date,
+        end_date: values.end_date,
       };
 
-      promoStore.editPromo(updatedPromo);
+      await promoStore.editPromo(updatedPromo);
+
       setTimeout(() => {
         navigate('/stocks');
       }, 2000);
-      toast.success('Акция отредактирована!', {
-        transition: Slide,
-      });
     },
   });
 
@@ -119,9 +119,11 @@ const PromoEditForm = () => {
               fullWidth
               id="description"
               name="description"
-              label="Описание акции"
-              placeholder="Введите описание акции"
+              label="Подробное описание"
+              placeholder="Введите подробное описание акции"
               variant="standard"
+              multiline
+              rows={4}
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -134,53 +136,46 @@ const PromoEditForm = () => {
             />
             <TextField
               fullWidth
-              id="fullDescription"
-              name="fullDescription"
-              label="Подробное описание"
-              placeholder="Введите подробное описание акции"
+              id="link"
+              name="link"
+              label="Ссылка на акцию"
+              placeholder="Введите ссылку на акцию"
               variant="standard"
-              multiline
-              rows={4}
-              value={formik.values.fullDescription}
+              value={formik.values.link}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                formik.touched.fullDescription &&
-                Boolean(formik.errors.fullDescription)
-              }
-              helperText={
-                formik.touched.fullDescription && formik.errors.fullDescription
-              }
+              error={formik.touched.link && Boolean(formik.errors.link)}
+              helperText={formik.touched.link && formik.errors.link}
             />
             <TextField
               fullWidth
-              id="startDate"
-              name="startDate"
+              id="start_date"
+              name="start_date"
               label="Дата начала акции"
               type="date"
               InputLabelProps={{ shrink: true }}
               variant="standard"
-              value={formik.values.startDate}
+              value={formik.values.start_date}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={
-                formik.touched.startDate && Boolean(formik.errors.startDate)
+                formik.touched.start_date && Boolean(formik.errors.start_date)
               }
-              helperText={formik.touched.startDate && formik.errors.startDate}
+              helperText={formik.touched.start_date && formik.errors.start_date}
             />
             <TextField
               fullWidth
-              id="endDate"
-              name="endDate"
+              id="end_date"
+              name="end_date"
               label="Дата конца акции"
               type="date"
               InputLabelProps={{ shrink: true }}
               variant="standard"
-              value={formik.values.endDate}
+              value={formik.values.end_date}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={formik.touched.endDate && Boolean(formik.errors.endDate)}
-              helperText={formik.touched.endDate && formik.errors.endDate}
+              error={formik.touched.end_date && Boolean(formik.errors.end_date)}
+              helperText={formik.touched.end_date && formik.errors.end_date}
             />
             <Box className="modalBtns">
               <Button
@@ -189,7 +184,11 @@ const PromoEditForm = () => {
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
               >
-                Сохранить
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
+                ) : (
+                  'Сохранить'
+                )}
               </Button>
               <Button
                 className="modalBtn"

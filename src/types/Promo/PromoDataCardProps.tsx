@@ -1,9 +1,9 @@
 export default interface PromoDataCardProps {
-  id: number;
-  img: string;
+  id?: number;
   title: string;
   description: string;
-  fullDescription: string;
-  startDate: Date;
-  endDate: Date;
+  photo: string;
+  link: string;
+  start_date: string;
+  end_date: string;
 }

@@ -28,7 +28,8 @@
       "types/*": ["types/*"],
       "theme/*": ["theme/*"],
       "stores/*": ["stores/*"],
-      "components/*": ["components/*"]
+      "components/*": ["components/*"],
+      "api/*": ["api/*"]
     }
   },
   "include": ["src"]
