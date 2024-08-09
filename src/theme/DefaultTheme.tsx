@@ -72,6 +72,7 @@ const ExtendedDefaultTheme = createTheme(DefaultTheme, {
             fontWeight: 700,
           },
           width: '100%',
+          marginBottom: '25px',
         },
       },
     },

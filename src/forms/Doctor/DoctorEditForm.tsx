@@ -54,21 +54,27 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
   const [imageURL, setImageURL] = useState<string | null>(doctor.portrait);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (!['image/jpeg', 'image/png'].includes(file.type)) {
-        setImageError('Только файлы JPG и PNG допустимы');
-        return;
-      }
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        setImage(file);
-        setImageURL(img.src);
-        setImageError('');
-        formik.setFieldValue('img', img.src);
-      };
+    if (!e.target.files || !e.target.files[0]) {
+      return;
     }
+
+    const file = e.target.files[0];
+
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      setImageError('Только файлы JPG и PNG допустимы');
+
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+
+    img.onload = () => {
+      setImage(file);
+      setImageURL(img.src);
+      setImageError('');
+      formik.setFieldValue('img', img.src);
+    };
   };
 
   const handleImageDelete = () => {
@@ -85,6 +91,7 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
     onSubmit: (values) => {
       if (!image) {
         setImageError('Фото доктора обязательно');
+
         return;
       }
 

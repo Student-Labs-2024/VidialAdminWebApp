@@ -32,6 +32,7 @@ const PromoEditForm = () => {
       const file = e.target.files[0];
       if (!['image/jpeg', 'image/png'].includes(file.type)) {
         setImageError('Только файлы JPG и PNG допустимы');
+
         return;
       }
       const img = new Image();
@@ -72,6 +73,7 @@ const PromoEditForm = () => {
     onSubmit: (values) => {
       if (!image && !imageURL) {
         setImageError('Изображение акции обязательно');
+
         return;
       }
 

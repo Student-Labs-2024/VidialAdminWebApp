@@ -14,5 +14,10 @@ module.exports = {
       'off',
       { allowConstantExport: true },
     ],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: 'var', next: 'return' },
+    ],
+    'newline-before-return': 'error',
   },
 };
