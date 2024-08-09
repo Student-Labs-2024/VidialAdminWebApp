@@ -1,112 +1,93 @@
 import { makeAutoObservable } from 'mobx';
+import { Slide, toast } from 'react-toastify';
+
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
+import api from 'api';
 
 class PromoStore {
   promos: PromoDataCardProps[] = [];
+  isLoading: boolean = false;
+  error: string | null = null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  loadPromos() {
-    const storedPromos = localStorage.getItem('promos');
-
-    if (storedPromos) {
-      this.promos = JSON.parse(storedPromos);
-    } else {
-      const data: PromoDataCardProps[] = [
-        {
-          id: 0,
-          img: '/img/promo1.jpg',
-          title: 'Скидка на комплексную проверку зрения',
-          description:
-            'Скидка 20% на комплексную проверку зрения в наших салонах.',
-          fullDescription:
-            'Воспользуйтесь скидкой 20% на комплексную проверку зрения. Включает диагностику и консультацию врача-офтальмолога. Акция действительна во всех салонах оптики Vidial. Скидка не суммируется с другими скидками и спец.предложениями. Подробности по тел. 511-333 или у продавцов-консультантов.',
-          startDate: new Date('2024-03-01'),
-          endDate: new Date('2024-03-31'),
-        },
-        {
-          id: 1,
-          img: '/img/promo2.jpg',
-          title: 'Скидка на солнцезащитные очки',
-          description: 'Скидка 15% на все солнцезащитные очки.',
-          fullDescription:
-            'Воспользуйтесь скидкой 15% на все солнцезащитные очки. Огромный выбор моделей от ведущих производителей. Акция действительна во всех салонах оптики Vidial. Скидка не суммируется с другими скидками и спец.предложениями. Подробности по тел. 511-333 или у продавцов-консультантов.',
-          startDate: new Date('2024-04-01'),
-          endDate: new Date('2024-04-30'),
-        },
-        {
-          id: 2,
-          img: '/img/promo3.jpg',
-          title: 'Акция на контактные линзы Acuvue',
-          description:
-            'Покупай 3 упаковки контактных линз Acuvue и получай 4-ю в подарок.',
-          fullDescription:
-            'Купите три упаковки контактных линз Acuvue и получите четвертую упаковку в подарок. Акция действительна во всех салонах оптики Vidial. Скидка не суммируется с другими скидками и спец.предложениями. Подробности по тел. 511-333 или у продавцов-консультантов.',
-          startDate: new Date('2024-05-01'),
-          endDate: new Date('2024-05-31'),
-        },
-        {
-          id: 3,
-          img: '/img/promo4.jpg',
-          title: 'Скидка на оправы Ray-Ban',
-          description: 'Скидка 10% на все оправы Ray-Ban.',
-          fullDescription:
-            'Воспользуйтесь скидкой 10% на все оправы Ray-Ban. Стильные и качественные оправы для вашего идеального образа. Акция действительна во всех салонах оптики Vidial. Скидка не суммируется с другими скидками и спец.предложениями. Подробности по тел. 511-333 или у продавцов-консультантов.',
-          startDate: new Date('2024-06-01'),
-          endDate: new Date('2024-06-30'),
-        },
-        {
-          id: 4,
-          img: '/img/promo5.jpg',
-          title: 'Бесплатная диагностика для пенсионеров',
-          description:
-            'Бесплатная диагностика зрения для пенсионеров по будним дням.',
-          fullDescription:
-            'Приходите на бесплатную диагностику зрения для пенсионеров в будние дни. Подробности по тел. 511-333 или у продавцов-консультантов. Акция действительна во всех салонах оптики Vidial.',
-          startDate: new Date('2024-07-01'),
-          endDate: new Date('2024-07-31'),
-        },
-        {
-          id: 5,
-          img: '/img/promo6.jpg',
-          title: 'Скидка на детские очки',
-          description: 'Скидка 25% на все детские очки.',
-          fullDescription:
-            'Скидка 25% на все детские очки. Позаботьтесь о здоровье зрения ваших детей. Акция действительна во всех салонах оптики Vidial. Скидка не суммируется с другими скидками и спец.предложениями. Подробности по тел. 511-333 или у продавцов-консультантов.',
-          startDate: new Date('2024-08-01'),
-          endDate: new Date('2024-08-31'),
-        },
-      ];
+  async loadPromos() {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      const data = await api.getPromos();
       this.promos = data;
-      this.savePromos();
+    } catch (error) {
+      this.error = (error as Error).message;
+    } finally {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 2000);
     }
   }
 
-  savePromos() {
-    localStorage.setItem('promos', JSON.stringify(this.promos));
-  }
-
-  addPromo(promo: PromoDataCardProps) {
-    this.promos.push(promo);
-    this.savePromos();
-  }
-
-  editPromo(updatedPromo: PromoDataCardProps) {
-    const index = this.promos.findIndex(
-      (promo) => promo.id === updatedPromo.id,
-    );
-
-    if (index !== -1) {
-      this.promos[index] = updatedPromo;
-      this.savePromos();
+  async addPromo(promo: PromoDataCardProps) {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      const newPromo = await api.addSinglePromo(promo);
+      this.promos.push(newPromo);
+      toast.success('Акция добавлена!', {
+        transition: Slide,
+      });
+    } catch (error) {
+      this.error = (error as Error).message;
+      console.error('Error adding promo:', (error as Error).message);
+      toast.error(`Ошибка при добавлении акции: ${promoStore.error}`, {
+        transition: Slide,
+      });
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  deletePromo(id: number) {
-    this.promos = this.promos.filter((promo) => promo.id !== id);
-    this.savePromos();
+  async editPromo(updatedPromo: PromoDataCardProps & { promo_id: number }) {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      const promo = await api.editSinglePromo(
+        updatedPromo.promo_id,
+        updatedPromo,
+      );
+      const index = this.promos.findIndex(
+        (promo) => promo.id === updatedPromo.id,
+      );
+      if (index !== -1) {
+        this.promos[index] = promo;
+      }
+      toast.success('Акция отредактирована!', {
+        transition: Slide,
+      });
+    } catch (error) {
+      this.error = (error as Error).message;
+      toast.error(`Ошибка при редактировании акции: ${promoStore.error}`, {
+        transition: Slide,
+      });
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  async deletePromo(id: number) {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      await api.deleteSinglePromo(id);
+      this.promos = this.promos.filter((promo) => promo.id !== id);
+      toast.success('Акция удалена!', { transition: Slide });
+    } catch (error) {
+      this.error = (error as Error).message;
+      toast.error('Что-то пошло не так!', { transition: Slide });
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   getPromoById(id: number): PromoDataCardProps | undefined {

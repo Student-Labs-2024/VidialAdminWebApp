@@ -24,13 +24,11 @@ const PromoEditFormPage = () => {
   const { classes } = useStyles();
 
   return (
-    <>
-      <Box className={classes.container}>
-        <Box className={classes.editFormBox}>
-          <PromoEditForm />
-        </Box>
+    <Box className={classes.container}>
+      <Box className={classes.editFormBox}>
+        <PromoEditForm />
       </Box>
-    </>
+    </Box>
   );
 };
 

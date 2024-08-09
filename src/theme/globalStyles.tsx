@@ -158,6 +158,7 @@ const GlobalStylesComponent = () => {
           '.uploadTextError': {
             textAlign: 'center',
             fontSize: '14px  !important',
+            color: theme.palette.error.main,
           },
           '.uploadBtnImgName': {
             color: theme.palette.text.secondary,
@@ -227,6 +228,11 @@ const GlobalStylesComponent = () => {
           '.cardDivider': {
             color: theme.palette.grey[600],
             width: '100%',
+          },
+          '.loadingBtn': {
+            color: `${theme.palette.secondary.main} !important`,
+            width: '25px',
+            height: '25px',
           },
         }}
       />

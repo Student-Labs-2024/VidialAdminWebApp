@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography,
+} from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
@@ -13,7 +18,7 @@ const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
   title: yup.string().required('Требуется название акции'),
   description: yup.string().required('Требуется описание акции'),
-  fullDescription: yup.string().required('Требуется подробное описание'),
+  link: yup.string().required('Требуется ссылка на акцию'),
   startDate: yup.date().required('Требуется дата начала акции'),
   endDate: yup.date().required('Требуется дата конца акции'),
 });
@@ -23,6 +28,7 @@ const PromoNewForm = () => {
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { isLoading } = promoStore;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -57,31 +63,27 @@ const PromoNewForm = () => {
       img: '',
       title: '',
       description: '',
-      fullDescription: '',
+      link: '',
       startDate: '',
       endDate: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!image) {
         setImageError('Изображение акции обязательно');
         return;
       }
 
       const newPromo: PromoDataCardProps = {
-        id: Date.now(),
-        img: values.img,
         title: values.title,
         description: values.description,
-        fullDescription: values.fullDescription,
-        startDate: new Date(values.startDate),
-        endDate: new Date(values.endDate),
+        photo: values.link,
+        link: values.link,
+        start_date: values.startDate,
+        end_date: values.endDate,
       };
 
-      promoStore.addPromo(newPromo);
-      toast.success('Акция добавлена!', {
-        transition: Slide,
-      });
+      await promoStore.addPromo(newPromo);
       setTimeout(() => {
         navigate('/stocks');
       }, 2000);
@@ -110,9 +112,11 @@ const PromoNewForm = () => {
               fullWidth
               id="description"
               name="description"
-              label="Описание акции"
-              placeholder="Введите описание акции"
+              label="Подробное описание"
+              placeholder="Введите подробное описание акции"
               variant="standard"
+              multiline
+              rows={4}
               value={formik.values.description}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -125,23 +129,16 @@ const PromoNewForm = () => {
             />
             <TextField
               fullWidth
-              id="fullDescription"
-              name="fullDescription"
-              label="Подробное описание"
-              placeholder="Введите подробное описание акции"
+              id="link"
+              name="link"
+              label="Ссылка на акцию"
+              placeholder="Введите ссылку на акцию"
               variant="standard"
-              multiline
-              rows={4}
-              value={formik.values.fullDescription}
+              value={formik.values.link}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              error={
-                formik.touched.fullDescription &&
-                Boolean(formik.errors.fullDescription)
-              }
-              helperText={
-                formik.touched.fullDescription && formik.errors.fullDescription
-              }
+              error={formik.touched.link && Boolean(formik.errors.link)}
+              helperText={formik.touched.link && formik.errors.link}
             />
             <TextField
               fullWidth
@@ -180,7 +177,11 @@ const PromoNewForm = () => {
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
               >
-                Сохранить
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
+                ) : (
+                  'Сохранить'
+                )}
               </Button>
               <Button
                 className="modalBtn"
