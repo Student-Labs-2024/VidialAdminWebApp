@@ -89,6 +89,7 @@ const PromoCardInfo = ({
 }: PromoCardInfoProps) => {
   const { classes } = useStyles();
   const [openModal, setOpen] = useState(false);
+  const { isLoading } = promoStore;
 
   const handleOpenWindow = () => {
     setOpen(true);
@@ -144,8 +145,8 @@ const PromoCardInfo = ({
                 variant="contained"
                 onClick={handleOpenWindow}
               >
-                {promoStore.isLoading ? (
-                  <CircularProgress sx={{ color: 'white' }} size={36} />
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
                 ) : (
                   'Удалить'
                 )}

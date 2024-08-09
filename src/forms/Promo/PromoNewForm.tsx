@@ -10,7 +10,6 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
@@ -29,6 +28,7 @@ const PromoNewForm = () => {
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { isLoading } = promoStore;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -83,19 +83,10 @@ const PromoNewForm = () => {
         end_date: values.endDate,
       };
 
-      try {
-        await promoStore.addPromo(newPromo);
-        toast.success('Акция добавлена!', {
-          transition: Slide,
-        });
-        setTimeout(() => {
-          navigate('/stocks');
-        }, 2000);
-      } catch (error) {
-        toast.error(`Ошибка при добавлении акции: ${promoStore.error}`, {
-          transition: Slide,
-        });
-      }
+      await promoStore.addPromo(newPromo);
+      setTimeout(() => {
+        navigate('/stocks');
+      }, 2000);
     },
   });
 
@@ -186,8 +177,8 @@ const PromoNewForm = () => {
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
               >
-                {promoStore.isLoading ? (
-                  <CircularProgress sx={{ color: 'white' }} size={36} />
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
                 ) : (
                   'Сохранить'
                 )}

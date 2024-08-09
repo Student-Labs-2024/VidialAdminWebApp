@@ -225,6 +225,11 @@ const GlobalStylesComponent = () => {
             width: '190px !important',
             padding: '7px 20px !important',
           },
+          '.loadingBtn': {
+            color: `${theme.palette.secondary.main} !important`,
+            width: '25px',
+            height: '25px',
+          },
         }}
       />
     </>

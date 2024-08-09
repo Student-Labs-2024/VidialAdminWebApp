@@ -1,17 +1,13 @@
 import { makeAutoObservable } from 'mobx';
+import { Slide, toast } from 'react-toastify';
+
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
-import {
-  addSinglePromo,
-  getPromos,
-  editSinglePromo,
-  deleteSinglePromo,
-} from 'api/Promo';
+import api from 'api';
 
 class PromoStore {
   promos: PromoDataCardProps[] = [];
   isLoading: boolean = false;
   error: string | null = null;
-  isError: boolean = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -21,11 +17,10 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const data = await getPromos();
+      const data = await api.getPromos();
       this.promos = data;
     } catch (error) {
       this.error = (error as Error).message;
-      this.isError = true;
     } finally {
       setTimeout(() => {
         this.isLoading = false;
@@ -37,12 +32,17 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const newPromo = await addSinglePromo(promo);
+      const newPromo = await api.addSinglePromo(promo);
       this.promos.push(newPromo);
+      toast.success('Акция добавлена!', {
+        transition: Slide,
+      });
     } catch (error) {
       this.error = (error as Error).message;
-      this.isError = true;
       console.error('Error adding promo:', (error as Error).message);
+      toast.error(`Ошибка при добавлении акции: ${promoStore.error}`, {
+        transition: Slide,
+      });
     } finally {
       this.isLoading = false;
     }
@@ -52,16 +52,24 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const promo = await editSinglePromo(updatedPromo.promo_id, updatedPromo);
+      const promo = await api.editSinglePromo(
+        updatedPromo.promo_id,
+        updatedPromo,
+      );
       const index = this.promos.findIndex(
         (promo) => promo.id === updatedPromo.id,
       );
       if (index !== -1) {
         this.promos[index] = promo;
       }
+      toast.success('Акция отредактирована!', {
+        transition: Slide,
+      });
     } catch (error) {
       this.error = (error as Error).message;
-      this.isError = true;
+      toast.error(`Ошибка при редактировании акции: ${promoStore.error}`, {
+        transition: Slide,
+      });
     } finally {
       this.isLoading = false;
     }
@@ -71,11 +79,12 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      await deleteSinglePromo(id);
+      await api.deleteSinglePromo(id);
       this.promos = this.promos.filter((promo) => promo.id !== id);
+      toast.success('Акция удалена!', { transition: Slide });
     } catch (error) {
       this.error = (error as Error).message;
-      this.isError = true;
+      toast.error('Что-то пошло не так!', { transition: Slide });
     } finally {
       this.isLoading = false;
     }

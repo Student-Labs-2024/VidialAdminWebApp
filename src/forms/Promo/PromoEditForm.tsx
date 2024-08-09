@@ -13,7 +13,6 @@ import { observer } from 'mobx-react-lite';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
-import { Slide, toast } from 'react-toastify';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
@@ -32,6 +31,7 @@ const PromoEditForm = () => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(promo?.photo || null);
+  const { isLoading } = promoStore;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -87,22 +87,11 @@ const PromoEditForm = () => {
         end_date: values.end_date,
       };
 
-      console.log(updatedPromo);
+      await promoStore.editPromo(updatedPromo);
 
-      try {
-        await promoStore.editPromo(updatedPromo);
-        toast.success('Акция отредактирована!', {
-          transition: Slide,
-        });
-        setTimeout(() => {
-          navigate('/stocks');
-        }, 2000);
-      } catch (error) {
-        console.error('Error editing promo:', error);
-        toast.error(`Ошибка при редактировании акции: ${promoStore.error}`, {
-          transition: Slide,
-        });
-      }
+      setTimeout(() => {
+        navigate('/stocks');
+      }, 2000);
     },
   });
 
@@ -193,8 +182,8 @@ const PromoEditForm = () => {
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty || !imageURL}
               >
-                {promoStore.isLoading ? (
-                  <CircularProgress sx={{ color: 'white' }} size={36} />
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
                 ) : (
                   'Сохранить'
                 )}
