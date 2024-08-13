@@ -3,6 +3,7 @@ import ServiceDataCardProps from 'types/Service/ServiceDataCardProps';
 
 class ServiceStore {
   services: ServiceDataCardProps[] = [];
+  selectedService: ServiceDataCardProps | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -129,8 +130,12 @@ class ServiceStore {
     this.saveServices();
   }
 
-  getServiceById(id: number): ServiceDataCardProps | undefined {
-    return this.services.find((service) => service.id === id);
+  selectService(selectedService: ServiceDataCardProps) {
+    this.selectedService = selectedService;
+  }
+
+  clearSelectedService() {
+    this.selectedService = null;
   }
 }
 

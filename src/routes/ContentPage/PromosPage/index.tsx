@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import {
   Box,
   Divider,
@@ -74,23 +74,21 @@ const useStyles = makeStyles()((theme) => ({
 const PromosPage = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
-  const [selectedPromo, setSelectedPromo] = useState<PromoDataCardProps | null>(
-    null,
-  );
-  const { error, isLoading, promos } = promoStore;
+
+  const { error, isLoading, promos, selectedPromo } = promoStore;
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
-    setSelectedPromo(promo);
+    promoStore.selectPromo(promo);
   };
 
   const handleClosePromo = () => {
-    setSelectedPromo(null);
+    promoStore.clearSelectedPromo();
   };
 
   const handleConfirmDelete = async () => {
     if (selectedPromo) {
       await promoStore.deletePromo(selectedPromo.id!);
-      setSelectedPromo(null);
+      promoStore.clearSelectedPromo();
     }
   };
 

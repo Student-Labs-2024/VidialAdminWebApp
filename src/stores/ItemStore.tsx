@@ -3,6 +3,7 @@ import ItemsCardProps from 'types/Items/ItemsCardProps';
 
 class ItemStore {
   items: ItemsCardProps[] = [];
+  selectedItem: ItemsCardProps | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -147,8 +148,18 @@ class ItemStore {
     }
   }
 
-  getItemByIndex(index: string): ItemsCardProps | undefined {
-    return this.items.find((item) => item.index === index);
+  selectItem(selectedItem: ItemsCardProps) {
+    this.selectedItem = selectedItem;
+  }
+
+  clearSelectedItem() {
+    this.selectedItem = null;
+  }
+
+  resetItems() {
+    this.items = [];
+    this.selectedItem = null;
+    localStorage.removeItem('items');
   }
 }
 

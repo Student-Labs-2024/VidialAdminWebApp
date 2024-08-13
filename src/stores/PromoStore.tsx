@@ -8,6 +8,7 @@ class PromoStore {
   promos: PromoDataCardProps[] = [];
   isLoading: boolean = false;
   error: string | null = null;
+  selectedPromo: PromoDataCardProps | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -92,6 +93,14 @@ class PromoStore {
 
   getPromoById(id: number): PromoDataCardProps | undefined {
     return this.promos.find((promo) => promo.id === id);
+  }
+
+  selectPromo(selectedPromo: PromoDataCardProps) {
+    this.selectedPromo = selectedPromo;
+  }
+
+  clearSelectedPromo() {
+    this.selectedPromo = null;
   }
 }
 
