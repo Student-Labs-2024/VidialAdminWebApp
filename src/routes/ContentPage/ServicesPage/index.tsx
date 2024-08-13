@@ -23,9 +23,9 @@ const ServicesPage = () => {
   const [openModal, setOpenModal] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
-  const [selectedService, setSelectedService] =
-    useState<ServiceDataCardProps | null>(null);
   const [filter, setFilter] = useState<string | null>(null);
+
+  const { selectedService, services } = serviceStore;
 
   useEffect(() => {
     serviceStore.loadServices();
@@ -40,30 +40,30 @@ const ServicesPage = () => {
   };
 
   const handleOpenDeleteWindow = (service: ServiceDataCardProps) => {
-    setSelectedService(service);
+    serviceStore.selectService(service);
     setOpenDeleteModal(true);
   };
 
   const handleCloseDeleteWindow = () => {
     setOpenDeleteModal(false);
-    setSelectedService(null);
+    serviceStore.clearSelectedService();
   };
 
   const handleOpenEditWindow = (service: ServiceDataCardProps) => {
-    setSelectedService(service);
+    serviceStore.selectService(service);
     setOpenEditModal(true);
   };
 
   const handleCloseEditWindow = () => {
     setOpenEditModal(false);
-    setSelectedService(null);
+    serviceStore.clearSelectedService();
   };
 
   const handleConfirmDelete = () => {
     if (selectedService) {
       serviceStore.deleteService(selectedService.id);
       serviceStore.saveServices();
-      setSelectedService(null);
+      serviceStore.clearSelectedService();
       toast.success('Услуга удалена!', { transition: Slide });
     }
   };
@@ -73,8 +73,8 @@ const ServicesPage = () => {
   };
 
   const filteredServices = filter
-    ? serviceStore.services.filter((service) => service.tag === filter)
-    : serviceStore.services;
+    ? services.filter((service) => service.tag === filter)
+    : services;
 
   return (
     <Box className="root">

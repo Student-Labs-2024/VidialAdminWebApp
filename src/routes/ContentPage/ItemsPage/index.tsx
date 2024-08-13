@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 
 import itemStore from 'stores/ItemStore';
@@ -63,18 +63,22 @@ const useStyles = makeStyles()((theme) => ({
 
 const ItemPage = () => {
   const { classes } = useStyles();
-  const [selectedItem, setSelectedItem] = useState<ItemsCardProps | null>(null);
+  const { selectedItem, items } = itemStore;
 
   const handleOpen = (item: ItemsCardProps) => {
-    setSelectedItem(item);
+    itemStore.selectItem(item);
   };
 
   const handleClose = () => {
-    setSelectedItem(null);
+    itemStore.clearSelectedItem();
   };
 
   useEffect(() => {
     itemStore.loadItems();
+
+    return () => {
+      itemStore.resetItems();
+    };
   }, []);
 
   return (
@@ -83,7 +87,7 @@ const ItemPage = () => {
         <InputSearch />
       </Box>
       <Grid container spacing={3}>
-        {itemStore.items.map((item) => (
+        {items.map((item) => (
           <Grid item xs={12} sm={6} lg={4} key={item.index}>
             <Box className={classes.ItemCard}>
               <Box

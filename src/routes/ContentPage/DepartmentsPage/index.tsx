@@ -59,14 +59,18 @@ const DepartmentsPage = () => {
   const [openAddCoordinatesModal, setOpenAddCoordinatesModal] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
 
+  const { selectedDepartment, departments } = departmentStore;
+
+  useEffect(() => {
+    departmentStore.loadDepartments();
+  }, []);
+
   const handleConfirmDelete = () => {
-    if (departmentStore.selectedDepartment) {
-      departmentStore.deleteDepartmentCoordinates(
-        departmentStore.selectedDepartment.id,
-      );
+    if (selectedDepartment) {
+      departmentStore.deleteDepartmentCoordinates(selectedDepartment.id);
       departmentStore.saveDepartments();
       departmentStore.clearSelectedDepartment();
-      toast.success('Координаты филиалы удалены!', { transition: Slide });
+      toast.success('Координаты удалены!', { transition: Slide });
     }
     setOpenModalDelete(false);
   };
@@ -100,14 +104,10 @@ const DepartmentsPage = () => {
     departmentStore.clearSelectedDepartment();
   };
 
-  useEffect(() => {
-    departmentStore.loadDepartments();
-  }, []);
-
   return (
     <Box>
       <Grid container spacing={3}>
-        {departmentStore.departments.map((department) => (
+        {departments.map((department) => (
           <Grid item xs={12} sm={12} lg={6} key={department.id}>
             <Box className={classes.departmentCard}>
               <Typography className={classes.departmentCardName}>
@@ -160,11 +160,11 @@ const DepartmentsPage = () => {
           open={openAddCoordinatesModal}
           handleClose={handleCloseAddCoordinatesModal}
         />
-        {departmentStore.selectedDepartment && (
+        {selectedDepartment && (
           <DepartmentEditForm
             open={openModalEdit}
             handleClose={handleCloseModalEdit}
-            department={departmentStore.selectedDepartment!}
+            department={selectedDepartment!}
           />
         )}
       </Grid>

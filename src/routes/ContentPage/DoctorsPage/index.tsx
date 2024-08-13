@@ -45,9 +45,11 @@ const DoctorsPage = () => {
   const [openAddPhotoModal, setOpenAddPhotoModal] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
 
+  const { selectedDoctor, doctors } = doctorStore;
+
   const handleConfirmDelete = () => {
-    if (doctorStore.selectedDoctor) {
-      doctorStore.deleteDoctorPhoto(doctorStore.selectedDoctor.id);
+    if (selectedDoctor) {
+      doctorStore.deleteDoctorPhoto(selectedDoctor.id);
       doctorStore.saveDoctors();
       doctorStore.clearSelectedDoctor();
       toast.success('Фото доктора удалено!', { transition: Slide });
@@ -91,7 +93,7 @@ const DoctorsPage = () => {
   return (
     <Box>
       <Grid container spacing={3}>
-        {doctorStore.doctors.map((doctor) => (
+        {doctors.map((doctor) => (
           <Grid item xs={12} sm={6} lg={4} key={doctor.id}>
             <Box className={classes.doctorCard}>
               <Avatar
@@ -143,11 +145,11 @@ const DoctorsPage = () => {
           open={openAddPhotoModal}
           handleClose={handleCloseAddPhotoModal}
         />
-        {doctorStore.selectedDoctor && (
+        {selectedDoctor && (
           <DoctorEditForm
             open={openModalEdit}
             handleClose={handleCloseModalEdit}
-            doctor={doctorStore.selectedDoctor!}
+            doctor={selectedDoctor!}
           />
         )}
       </Grid>

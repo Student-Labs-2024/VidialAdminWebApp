@@ -109,10 +109,6 @@ class DoctorStore {
     }
   }
 
-  getDoctorById(id: number): DoctorCardProps | undefined {
-    return this.doctors.find((doctor) => doctor.id === id);
-  }
-
   selectDoctor(selectedDoctor: DoctorCardProps) {
     this.selectedDoctor = selectedDoctor;
   }

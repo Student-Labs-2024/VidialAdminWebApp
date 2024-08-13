@@ -31,26 +31,30 @@ const PromoNewForm = () => {
   const { isLoading } = promoStore;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      if (!['image/jpeg', 'image/png'].includes(file.type)) {
-        setImageError('Только файлы JPG и PNG допустимы');
-
-        return;
-      }
-      const img = new Image();
-      img.src = URL.createObjectURL(file);
-      img.onload = () => {
-        if (img.width !== 1024 || img.height !== 1024) {
-          setImageError('Рекомендуемый размер изображения: 1024x1024');
-        } else {
-          setImage(file);
-          setImageURL(img.src);
-          setImageError('');
-          formik.setFieldValue('img', img.src);
-        }
-      };
+    if (!e.target.files || !e.target.files[0]) {
+      return;
     }
+
+    const file = e.target.files[0];
+
+    if (!['image/jpeg', 'image/png'].includes(file.type)) {
+      setImageError('Только файлы JPG и PNG допустимы');
+
+      return;
+    }
+
+    const img = new Image();
+    img.src = URL.createObjectURL(file);
+    img.onload = () => {
+      if (img.width !== 1024 || img.height !== 1024) {
+        setImageError('Рекомендуемый размер изображения: 1024x1024');
+      } else {
+        setImage(file);
+        setImageURL(URL.createObjectURL(file));
+        setImageError('');
+        formik.setFieldValue('img', URL.createObjectURL(file));
+      }
+    };
   };
 
   const handleImageDelete = () => {
