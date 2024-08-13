@@ -8,7 +8,10 @@ class AuthStore {
   }
 
   login(username: string, password: string) {
-    if (username === 'admin' && password === 'admin') {
+    const ADMIN_LOGIN = import.meta.env.VITE_ADMIN_LOGIN;
+    const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD;
+
+    if (username === ADMIN_LOGIN && password === ADMIN_PASSWORD) {
       this.isAuthenticated = true;
     } else {
       this.isAuthenticated = false;
