@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react';
-import { Box, Button, Divider, Grid, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Typography,
+  Skeleton,
+} from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from 'tss-react/mui';
 
 import departmentStore from 'stores/DepartmentStore';
 import { Call } from '@mui/icons-material';
-import { Slide, toast } from 'react-toastify';
+
 import DepartmentCardProps from 'types/Department/DepartmentCardProps';
 import WarningWindowDelete from 'components/WarningWindowDelete';
 import DepartmentNewForm from 'forms/Department/DepartmentNewForm';
 import DepartmentEditForm from 'forms/Department/DepartmentEditForm';
+import ErrorContentComponent from 'components/ErrorContentComponent';
 
 const useStyles = makeStyles()((theme) => ({
   departmentCard: {
@@ -59,18 +67,16 @@ const DepartmentsPage = () => {
   const [openAddCoordinatesModal, setOpenAddCoordinatesModal] = useState(false);
   const [openModalEdit, setOpenModalEdit] = useState(false);
 
-  const { selectedDepartment, departments } = departmentStore;
+  const { selectedDepartment, departments, isLoading, error } = departmentStore;
 
   useEffect(() => {
     departmentStore.loadDepartments();
   }, []);
 
-  const handleConfirmDelete = () => {
+  const handleConfirmDelete = async () => {
     if (selectedDepartment) {
-      departmentStore.deleteDepartmentCoordinates(selectedDepartment.id);
-      departmentStore.saveDepartments();
+      await departmentStore.deleteDepartmentCoords(selectedDepartment.id!);
       departmentStore.clearSelectedDepartment();
-      toast.success('Координаты удалены!', { transition: Slide });
     }
     setOpenModalDelete(false);
   };
@@ -107,49 +113,86 @@ const DepartmentsPage = () => {
   return (
     <Box>
       <Grid container spacing={3}>
-        {departments.map((department) => (
-          <Grid item xs={12} sm={12} lg={6} key={department.id}>
-            <Box className={classes.departmentCard}>
-              <Typography className={classes.departmentCardName}>
-                {department.name}
-              </Typography>
-              <Divider className="cardDivider" />
-              <Typography className={classes.departmentCardAddress}>
-                {department.address}
-              </Typography>
-              <Box className={classes.departmentCardTel}>
-                <Call className={classes.departmentCardTelIcon} />
-                <Typography>{`Телефон: ${department.tel}`}</Typography>
-              </Box>
-              {department.longitude && department.latitude ? (
-                <>
-                  <Button
-                    className={classes.departmentCardEditBtn}
-                    variant="contained"
-                    onClick={() => handleOpenModalEdit(department)}
-                  >
-                    Изменить координаты
-                  </Button>
-                  <Button
-                    className={classes.departmentCardEditBtn}
-                    variant="contained"
-                    onClick={() => handleOpenModalDelete(department)}
-                  >
-                    Удалить координаты
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  className={classes.departmentCardEditBtn}
-                  variant="contained"
-                  onClick={() => handleOpenAddCoordinatesModal(department)}
-                >
-                  Добавить координаты
-                </Button>
-              )}
-            </Box>
+        {error && (
+          <Grid item xs={12}>
+            <ErrorContentComponent />
           </Grid>
-        ))}
+        )}
+        {isLoading
+          ? Array.from(new Array(6)).map((_, index) => (
+              <Grid item xs={12} sm={12} lg={6} key={index}>
+                <Box className={classes.departmentCard}>
+                  <Skeleton
+                    variant="rectangular"
+                    className={classes.departmentCardName}
+                    sx={{ bgcolor: 'grey.300' }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    sx={{ bgcolor: 'grey.300', width: '80%' }}
+                  />
+                  <Divider className="cardDivider" />
+                  <Skeleton
+                    variant="text"
+                    sx={{ bgcolor: 'grey.300', width: '60%' }}
+                  />
+                  <Skeleton
+                    variant="text"
+                    height={64}
+                    width="60%"
+                    sx={{ bgcolor: 'grey.300' }}
+                  />
+                </Box>
+              </Grid>
+            ))
+          : departments.map((department) => (
+              <Grid item xs={12} sm={12} lg={6} key={department.id!}>
+                <Box className={classes.departmentCard}>
+                  <Typography className={classes.departmentCardName}>
+                    {department.name}
+                  </Typography>
+                  <Divider className="cardDivider" />
+                  <Typography className={classes.departmentCardAddress}>
+                    {department.address}
+                  </Typography>
+                  <Typography className={classes.departmentCardAddress}>
+                    {department.city}
+                  </Typography>
+                  {department.tel && (
+                    <Box className={classes.departmentCardTel}>
+                      <Call className={classes.departmentCardTelIcon} />
+                      <Typography>{`Телефон: ${department.tel}`}</Typography>
+                    </Box>
+                  )}
+                  {department.longitude && department.latitude ? (
+                    <>
+                      <Button
+                        className={classes.departmentCardEditBtn}
+                        variant="contained"
+                        onClick={() => handleOpenModalEdit(department)}
+                      >
+                        Изменить координаты
+                      </Button>
+                      <Button
+                        className={classes.departmentCardEditBtn}
+                        variant="contained"
+                        onClick={() => handleOpenModalDelete(department)}
+                      >
+                        Удалить координаты
+                      </Button>
+                    </>
+                  ) : (
+                    <Button
+                      className={classes.departmentCardEditBtn}
+                      variant="contained"
+                      onClick={() => handleOpenAddCoordinatesModal(department)}
+                    >
+                      Добавить координаты
+                    </Button>
+                  )}
+                </Box>
+              </Grid>
+            ))}
         <WarningWindowDelete
           open={openModalDelete}
           handleClose={handleCloseModalDelete}

@@ -7,12 +7,13 @@ import {
   Modal,
   TextField,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 import { makeStyles } from 'tss-react/mui';
+
 import departmentStore from 'stores/DepartmentStore';
 import DepartmentCardProps from 'types/Department/DepartmentCardProps';
 
@@ -88,24 +89,22 @@ const DepartmentEditForm = ({
 }: DepartmentEditFormProps) => {
   const { classes } = useStyles();
   const [mapUrl, setMapUrl] = useState('');
+  const { isLoading } = departmentStore;
 
   const formik = useFormik({
     initialValues: {
-      latitude: department.latitude || '',
-      longitude: department.longitude || '',
+      latitude: department.latitude || null,
+      longitude: department.longitude || null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const updatedDepartment = {
-        ...department,
-        latitude: values.latitude,
-        longitude: values.longitude,
+        id: department.id,
+        latitude: Number(values.latitude!),
+        longitude: Number(values.longitude!),
       };
 
-      departmentStore.editDepartment(updatedDepartment);
-      toast.success('Координаты обновлены!', {
-        transition: Slide,
-      });
+      await departmentStore.editDepartmentCoords(updatedDepartment);
       handleClose();
     },
   });
@@ -188,7 +187,11 @@ const DepartmentEditForm = ({
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty}
               >
-                Сохранить
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
+                ) : (
+                  'Сохранить'
+                )}
               </Button>
               <Button
                 className={classes.button}
