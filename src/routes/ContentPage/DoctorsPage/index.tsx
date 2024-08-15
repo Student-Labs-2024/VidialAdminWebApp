@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from 'tss-react/mui';
-import { Slide, toast } from 'react-toastify';
 
 import doctorStore from 'stores/DoctorStore';
 import { DoctorCardProps } from 'types/Doctor/DoctorCardProps';
@@ -49,10 +48,8 @@ const DoctorsPage = () => {
 
   const handleConfirmDelete = () => {
     if (selectedDoctor) {
-      doctorStore.deleteDoctorPhoto(selectedDoctor.id);
-      doctorStore.saveDoctors();
+      doctorStore.deleteDoctorImg(selectedDoctor.id);
       doctorStore.clearSelectedDoctor();
-      toast.success('Фото доктора удалено!', { transition: Slide });
     }
     setOpenModalDelete(false);
   };

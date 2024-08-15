@@ -30,7 +30,7 @@ const Router = createBrowserRouter([
     errorElement: <ErrorAuthComponent />,
   },
   {
-    element: <PrivateRoute />,
+    // element: <PrivateRoute />,
     children: [
       {
         element: <Layout />,

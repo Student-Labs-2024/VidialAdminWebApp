@@ -5,12 +5,13 @@ export interface DoctorTimeSlot {
 }
 
 export interface DoctorCardProps {
-  id: number;
-  name: string;
-  family_name: string;
-  first_name: string;
-  patronymic_name: string;
-  category: string;
-  time: DoctorTimeSlot[];
-  portrait: string;
+  id?: number;
+  name?: string;
+  family_name?: string;
+  first_name?: string;
+  patronymic_name?: string;
+  category?: string;
+  time?: DoctorTimeSlot[];
+  portrait?: string;
+  link?: string;
 }
