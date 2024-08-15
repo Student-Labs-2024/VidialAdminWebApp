@@ -93,7 +93,13 @@ const DoctorsPage = () => {
   };
 
   useEffect(() => {
-    doctorStore.loadDoctors();
+    const controller = new AbortController();
+
+    doctorStore.loadDoctors({ signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

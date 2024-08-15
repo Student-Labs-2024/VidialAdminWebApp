@@ -14,15 +14,19 @@ class DoctorStore {
     makeAutoObservable(this);
   }
 
-  async loadDoctors() {
+  async loadDoctors(options?: { signal?: AbortSignal }) {
     this.isLoading = true;
     this.error = null;
 
     try {
-      const data = await api.getDoctors();
+      const data = await api.getDoctors(options);
       this.doctors = data;
     } catch (error) {
-      this.error = (error as Error).message;
+      if (error === 'AbortError') {
+        console.log('Request aborted');
+      } else {
+        this.error = (error as Error).message;
+      }
     } finally {
       setTimeout(() => {
         this.isLoading = false;
@@ -51,7 +55,9 @@ class DoctorStore {
         transition: Slide,
       });
     } finally {
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
     }
   }
 
@@ -94,7 +100,9 @@ class DoctorStore {
       this.error = (error as Error).message;
       toast.error('Не удалось удалить фото!', { transition: Slide });
     } finally {
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1000);
     }
   }
 

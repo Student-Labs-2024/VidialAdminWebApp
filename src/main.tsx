@@ -11,11 +11,11 @@ import Toast from 'components/Toast';
 
 ReactDOM.createRoot(document.getElementById('admin-panel-vidial')!).render(
   <ThemeProvider theme={DefaultTheme}>
-    <React.StrictMode>
+    <React.Fragment>
       <GlobalStylesComponent />
       <Toast />
       <CssBaseline />
       <RouterProvider router={Router} />
-    </React.StrictMode>
+    </React.Fragment>
   </ThemeProvider>,
 );
