@@ -1,9 +1,12 @@
 import DepartmentCardProps from 'types/Department/DepartmentCardProps';
 import { instance } from 'api/helpers/axios';
 
-export const getDepartments = async () => {
+export const getDepartments = async (options?: { signal?: AbortSignal }) => {
   const response = await instance.get<DepartmentCardProps[]>(
     `/appointments/departments`,
+    {
+      signal: options?.signal,
+    },
   );
 
   return response.data;

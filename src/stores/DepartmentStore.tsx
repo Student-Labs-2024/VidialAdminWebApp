@@ -14,12 +14,12 @@ class DepartmentStore {
     makeAutoObservable(this);
   }
 
-  async loadDepartments() {
+  async loadDepartments(options?: { signal?: AbortSignal }) {
     this.isLoading = true;
     this.error = null;
 
     try {
-      const data = await api.getDepartments();
+      const data = await api.getDepartments(options);
       this.departments = data;
     } catch (error) {
       this.error = (error as Error).message;

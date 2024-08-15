@@ -70,7 +70,13 @@ const DepartmentsPage = () => {
   const { selectedDepartment, departments, isLoading, error } = departmentStore;
 
   useEffect(() => {
-    departmentStore.loadDepartments();
+    const controller = new AbortController();
+
+    departmentStore.loadDepartments({ signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   const handleConfirmDelete = async () => {
