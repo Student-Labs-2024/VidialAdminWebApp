@@ -34,7 +34,7 @@ class DoctorStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const doctor = await api.addDoctorPhoto(updatedDoctor)
+      const doctor = await api.addDoctorPhoto(updatedDoctor);
       const index = this.doctors.findIndex(
         (doctor) => doctor.id === updatedDoctor.id,
       );

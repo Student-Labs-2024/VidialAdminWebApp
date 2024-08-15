@@ -4,5 +4,5 @@ const API_URL = '/api';
 
 export const instance = axios.create({
   baseURL: API_URL,
-  timeout: 2000,
+  timeout: 3000,
 });

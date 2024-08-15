@@ -117,6 +117,12 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
     },
   });
 
+  useEffect(() => {
+    if (!open) {
+      formik.resetForm();
+    }
+  }, [open]);
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"

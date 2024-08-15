@@ -4,7 +4,12 @@ import {
   editSinglePromo,
   deleteSinglePromo,
 } from './Promo';
-import { getDoctors, addDoctorPhoto, editDoctorPhoto, deleteDoctorPhoto } from './Doctor';
+import {
+  getDoctors,
+  addDoctorPhoto,
+  editDoctorPhoto,
+  deleteDoctorPhoto,
+} from './Doctor';
 
 const api = {
   getPromos,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -79,6 +79,12 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
       formik.setFieldValue('img', img.src);
     };
   };
+
+  useEffect(() => {
+    if (!open) {
+      formik.resetForm();
+    }
+  }, [open]);
 
   const handleImageDelete = () => {
     setImage(null);
