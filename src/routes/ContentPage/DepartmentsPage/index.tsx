@@ -81,7 +81,7 @@ const DepartmentsPage = () => {
 
   const handleConfirmDelete = async () => {
     if (selectedDepartment) {
-      await departmentStore.deleteDepartmentCoords(selectedDepartment.id!);
+      await departmentStore.deleteDepartmentCoords(selectedDepartment.id);
       departmentStore.clearSelectedDepartment();
     }
     setOpenModalDelete(false);
@@ -119,10 +119,12 @@ const DepartmentsPage = () => {
   return (
     <Box>
       <Grid container spacing={3}>
-        {error && (
+        {error ? (
           <Grid item xs={12}>
             <ErrorContentComponent />
           </Grid>
+        ) : (
+          ''
         )}
         {isLoading
           ? Array.from(new Array(6)).map((_, index) => (

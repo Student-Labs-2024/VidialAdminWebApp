@@ -19,14 +19,12 @@ class DepartmentStore {
     this.error = null;
 
     try {
-      const data = await api.getDepartments(options);
+      const data = await api.department.getDepartments(options);
       this.departments = data;
     } catch (error) {
       this.error = (error as Error).message;
     } finally {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
+      this.isLoading = false;
     }
   }
 
@@ -34,7 +32,8 @@ class DepartmentStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const department = await api.addDepartmentsCoordinates(updatedDepartment);
+      const department =
+        await api.department.addDepartmentCoordinates(updatedDepartment);
       const index = this.departments.findIndex(
         (department) => department.id === updatedDepartment.id,
       );
@@ -59,7 +58,7 @@ class DepartmentStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const department = await api.editDepartmentsCoordinates(
+      const department = await api.department.editDepartmentCoordinates(
         updatedDepartment.id!,
         updatedDepartment,
       );
@@ -87,7 +86,7 @@ class DepartmentStore {
     this.isLoading = true;
     this.error = null;
     try {
-      await api.deleteDepartmentsCoordinates(id);
+      await api.department.deleteDepartmentCoordinates(id);
       this.loadDepartments();
       toast.success('Координаты удалены!', { transition: Slide });
     } catch (error) {

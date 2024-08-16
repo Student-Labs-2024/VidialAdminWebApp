@@ -1,5 +1,5 @@
 export default interface DepartmentCardProps {
-  id?: number;
+  id: number;
   name?: string;
   city?: string;
   address?: string;
