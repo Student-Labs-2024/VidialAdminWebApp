@@ -5,7 +5,7 @@ export interface DoctorTimeSlot {
 }
 
 export interface DoctorCardProps {
-  id?: number;
+  id: number;
   name?: string;
   family_name?: string;
   first_name?: string;

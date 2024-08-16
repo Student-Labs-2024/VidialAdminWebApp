@@ -4,22 +4,14 @@ import {
   editSinglePromo,
   deleteSinglePromo,
 } from './Promo';
-import {
-  getDoctors,
-  addDoctorPhoto,
-  editDoctorPhoto,
-  deleteDoctorPhoto,
-} from './Doctor';
+import { doctor } from './doctor';
 
 const api = {
   getPromos,
   addSinglePromo,
   editSinglePromo,
   deleteSinglePromo,
-  getDoctors,
-  addDoctorPhoto,
-  editDoctorPhoto,
-  deleteDoctorPhoto,
+  doctor,
 };
 
 export default api;

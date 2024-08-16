@@ -19,7 +19,7 @@ class DoctorStore {
     this.error = null;
 
     try {
-      const data = await api.getDoctors(options);
+      const data = await api.doctor.getDoctors(options);
       this.doctors = data;
     } catch (error) {
       if (error === 'AbortError') {
@@ -28,9 +28,7 @@ class DoctorStore {
         this.error = (error as Error).message;
       }
     } finally {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 1000);
+      this.isLoading = false;
     }
   }
 
@@ -38,7 +36,7 @@ class DoctorStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const doctor = await api.addDoctorPhoto(updatedDoctor);
+      const doctor = await api.doctor.addDoctorPhoto(updatedDoctor);
       const index = this.doctors.findIndex(
         (doctor) => doctor.id === updatedDoctor.id,
       );
@@ -57,7 +55,7 @@ class DoctorStore {
     } finally {
       setTimeout(() => {
         this.isLoading = false;
-      }, 1000);
+      }, 1500);
     }
   }
 
@@ -65,7 +63,7 @@ class DoctorStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const doctor = await api.editDoctorPhoto(
+      const doctor = await api.doctor.editDoctorPhoto(
         updatedDoctor.id!,
         updatedDoctor,
       );
@@ -85,7 +83,9 @@ class DoctorStore {
         transition: Slide,
       });
     } finally {
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1500);
     }
   }
 
@@ -93,7 +93,7 @@ class DoctorStore {
     this.isLoading = true;
     this.error = null;
     try {
-      await api.deleteDoctorPhoto(id);
+      await api.doctor.deleteDoctorPhoto(id);
       this.loadDoctors();
       toast.success('Фото доктора удалено!', { transition: Slide });
     } catch (error) {
@@ -102,7 +102,7 @@ class DoctorStore {
     } finally {
       setTimeout(() => {
         this.isLoading = false;
-      }, 1000);
+      }, 1500);
     }
   }
 

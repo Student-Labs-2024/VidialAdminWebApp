@@ -57,7 +57,7 @@ const DoctorsPage = () => {
 
   const handleConfirmDelete = () => {
     if (selectedDoctor) {
-      doctorStore.deleteDoctorImg(selectedDoctor.id!);
+      doctorStore.deleteDoctorImg(selectedDoctor.id);
       doctorStore.clearSelectedDoctor();
     }
     setOpenModalDelete(false);
@@ -105,82 +105,83 @@ const DoctorsPage = () => {
   return (
     <Box>
       <Grid container spacing={3}>
-        {error && (
+        {error ? (
           <Grid item xs={12}>
             <ErrorContentComponent />
           </Grid>
-        )}
-        {isLoading
-          ? Array.from(new Array(6)).map((_, index) => (
-              <Grid item xs={12} sm={6} lg={4} key={index}>
-                <Box className={classes.doctorCard}>
-                  <Skeleton
-                    variant="rectangular"
-                    className={classes.doctorCardImg}
-                    sx={{ bgcolor: 'grey.300', borderRadius: '200px' }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    sx={{ bgcolor: 'grey.300', width: '80%' }}
-                  />
-                  <Divider />
-                  <Skeleton
-                    variant="text"
-                    sx={{ bgcolor: 'grey.300', width: '60%' }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    height={64}
-                    width="80%"
-                    sx={{ bgcolor: 'grey.300' }}
-                  />
-                </Box>
-              </Grid>
-            ))
-          : doctors.map((doctor) => (
-              <Grid item xs={12} sm={6} lg={4} key={doctor.id}>
-                <Box className={classes.doctorCard}>
-                  <Avatar
-                    className={classes.doctorCardImg}
-                    src={doctor.portrait}
-                    alt={doctor.name}
-                  />
-                  <Typography className="doctorCardName">
-                    {doctor.name}
-                  </Typography>
-                  <Divider className="cardDivider" />
-                  <Typography className="doctorCardCategory">
-                    {doctor.category}
-                  </Typography>
-                  {doctor.portrait ? (
-                    <>
-                      <Button
-                        className={classes.doctorCardEditBtn}
-                        variant="contained"
-                        onClick={() => handleOpenModalEdit(doctor)}
-                      >
-                        Редактировать
-                      </Button>
-                      <Button
-                        className={classes.doctorCardEditBtn}
-                        variant="contained"
-                        onClick={() => handleOpenModalDelete(doctor)}
-                      >
-                        Удалить фото
-                      </Button>
-                    </>
-                  ) : (
+        ) : isLoading ? (
+          Array.from(new Array(6)).map((_, index) => (
+            <Grid item xs={12} sm={6} lg={4} key={index}>
+              <Box className={classes.doctorCard}>
+                <Skeleton
+                  variant="rectangular"
+                  className={classes.doctorCardImg}
+                  sx={{ bgcolor: 'grey.300', borderRadius: '200px' }}
+                />
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: 'grey.300', width: '80%' }}
+                />
+                <Divider />
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: 'grey.300', width: '60%' }}
+                />
+                <Skeleton
+                  variant="text"
+                  height={64}
+                  width="80%"
+                  sx={{ bgcolor: 'grey.300' }}
+                />
+              </Box>
+            </Grid>
+          ))
+        ) : (
+          doctors.map((doctor) => (
+            <Grid item xs={12} sm={6} lg={4} key={doctor.id}>
+              <Box className={classes.doctorCard}>
+                <Avatar
+                  className={classes.doctorCardImg}
+                  src={doctor.portrait}
+                  alt={doctor.name}
+                />
+                <Typography className="doctorCardName">
+                  {doctor.name}
+                </Typography>
+                <Divider className="cardDivider" />
+                <Typography className="doctorCardCategory">
+                  {doctor.category}
+                </Typography>
+                {doctor.portrait ? (
+                  <>
                     <Button
                       className={classes.doctorCardEditBtn}
                       variant="contained"
-                      onClick={() => handleOpenAddPhotoModal(doctor)}
+                      onClick={() => handleOpenModalEdit(doctor)}
                     >
-                      Добавить фото
+                      Редактировать
                     </Button>
-                  )}
-                </Box>
-              </Grid>
-            ))}
+                    <Button
+                      className={classes.doctorCardEditBtn}
+                      variant="contained"
+                      onClick={() => handleOpenModalDelete(doctor)}
+                    >
+                      Удалить фото
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className={classes.doctorCardEditBtn}
+                    variant="contained"
+                    onClick={() => handleOpenAddPhotoModal(doctor)}
+                  >
+                    Добавить фото
+                  </Button>
+                )}
+              </Box>
+            </Grid>
+          ))
+        )}
         <WarningWindowDelete
           open={openModalDelete}
           handleClose={handleCloseModalDelete}
