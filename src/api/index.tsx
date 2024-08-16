@@ -4,6 +4,7 @@ import {
   editSinglePromo,
   deleteSinglePromo,
 } from './Promo';
+import { department } from './department';
 import { doctor } from './doctor';
 
 const api = {
@@ -11,6 +12,7 @@ const api = {
   addSinglePromo,
   editSinglePromo,
   deleteSinglePromo,
+  department,
   doctor,
 };
 
