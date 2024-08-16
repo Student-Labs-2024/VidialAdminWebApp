@@ -1,14 +1,22 @@
 import { useEffect, useState } from 'react';
-import { Avatar, Box, Button, Divider, Grid, Typography } from '@mui/material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Grid,
+  Skeleton,
+  Typography,
+} from '@mui/material';
 import { observer } from 'mobx-react-lite';
 import { makeStyles } from 'tss-react/mui';
-import { Slide, toast } from 'react-toastify';
 
 import doctorStore from 'stores/DoctorStore';
 import { DoctorCardProps } from 'types/Doctor/DoctorCardProps';
 import WarningWindowDelete from 'components/WarningWindowDelete';
 import DoctorNewForm from 'forms/Doctor/DoctorNewForm';
 import DoctorEditForm from 'forms/Doctor/DoctorEditForm';
+import ErrorContentComponent from 'components/ErrorContentComponent';
 
 const useStyles = makeStyles()((theme) => ({
   doctorCard: {
@@ -45,14 +53,12 @@ const DoctorsPage = () => {
   const [openAddPhotoModal, setOpenAddPhotoModal] = useState(false);
   const [openModalDelete, setOpenModalDelete] = useState(false);
 
-  const { selectedDoctor, doctors } = doctorStore;
+  const { selectedDoctor, doctors, error, isLoading } = doctorStore;
 
   const handleConfirmDelete = () => {
     if (selectedDoctor) {
-      doctorStore.deleteDoctorPhoto(selectedDoctor.id);
-      doctorStore.saveDoctors();
+      doctorStore.deleteDoctorImg(selectedDoctor.id);
       doctorStore.clearSelectedDoctor();
-      toast.success('Фото доктора удалено!', { transition: Slide });
     }
     setOpenModalDelete(false);
   };
@@ -87,54 +93,95 @@ const DoctorsPage = () => {
   };
 
   useEffect(() => {
-    doctorStore.loadDoctors();
+    const controller = new AbortController();
+
+    doctorStore.loadDoctors({ signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
     <Box>
       <Grid container spacing={3}>
-        {doctors.map((doctor) => (
-          <Grid item xs={12} sm={6} lg={4} key={doctor.id}>
-            <Box className={classes.doctorCard}>
-              <Avatar
-                className={classes.doctorCardImg}
-                src={doctor.portrait}
-                alt={doctor.name}
-              />
-              <Typography className="doctorCardName">{doctor.name}</Typography>
-              <Divider className="cardDivider" />
-              <Typography className="doctorCardCategory">
-                {doctor.category}
-              </Typography>
-              {doctor.portrait ? (
-                <>
-                  <Button
-                    className={classes.doctorCardEditBtn}
-                    variant="contained"
-                    onClick={() => handleOpenModalEdit(doctor)}
-                  >
-                    Редактировать
-                  </Button>
-                  <Button
-                    className={classes.doctorCardEditBtn}
-                    variant="contained"
-                    onClick={() => handleOpenModalDelete(doctor)}
-                  >
-                    Удалить фото
-                  </Button>
-                </>
-              ) : (
-                <Button
-                  className={classes.doctorCardEditBtn}
-                  variant="contained"
-                  onClick={() => handleOpenAddPhotoModal(doctor)}
-                >
-                  Добавить фото
-                </Button>
-              )}
-            </Box>
+        {error ? (
+          <Grid item xs={12}>
+            <ErrorContentComponent />
           </Grid>
-        ))}
+        ) : isLoading ? (
+          Array.from(new Array(6)).map((_, index) => (
+            <Grid item xs={12} sm={6} lg={4} key={index}>
+              <Box className={classes.doctorCard}>
+                <Skeleton
+                  variant="rectangular"
+                  className={classes.doctorCardImg}
+                  sx={{ bgcolor: 'grey.300', borderRadius: '200px' }}
+                />
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: 'grey.300', width: '80%' }}
+                />
+                <Divider />
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: 'grey.300', width: '60%' }}
+                />
+                <Skeleton
+                  variant="text"
+                  height={64}
+                  width="80%"
+                  sx={{ bgcolor: 'grey.300' }}
+                />
+              </Box>
+            </Grid>
+          ))
+        ) : (
+          doctors.map((doctor) => (
+            <Grid item xs={12} sm={6} lg={4} key={doctor.id}>
+              <Box className={classes.doctorCard}>
+                <Avatar
+                  className={classes.doctorCardImg}
+                  src={doctor.portrait}
+                  alt={doctor.name}
+                />
+                <Typography className="doctorCardName">
+                  {doctor.name}
+                </Typography>
+                <Divider className="cardDivider" />
+                <Typography className="doctorCardCategory">
+                  {doctor.category}
+                </Typography>
+                {doctor.portrait ? (
+                  <>
+                    <Button
+                      className={classes.doctorCardEditBtn}
+                      variant="contained"
+                      onClick={() => handleOpenModalEdit(doctor)}
+                    >
+                      Редактировать
+                    </Button>
+                    <Button
+                      className={classes.doctorCardEditBtn}
+                      variant="contained"
+                      onClick={() => handleOpenModalDelete(doctor)}
+                    >
+                      Удалить фото
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    className={classes.doctorCardEditBtn}
+                    variant="contained"
+                    onClick={() => handleOpenAddPhotoModal(doctor)}
+                  >
+                    Добавить фото
+                  </Button>
+                )}
+              </Box>
+            </Grid>
+          ))
+        )}
         <WarningWindowDelete
           open={openModalDelete}
           handleClose={handleCloseModalDelete}

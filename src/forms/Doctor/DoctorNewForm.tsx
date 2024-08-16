@@ -7,11 +7,12 @@ import {
   Backdrop,
   Fade,
   Modal,
+  TextField,
+  CircularProgress,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 import { makeStyles } from 'tss-react/mui';
 
 import doctorStore from 'stores/DoctorStore';
@@ -50,6 +51,8 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(null);
+
+  const { selectedDoctor, isLoading } = doctorStore;
 
   useEffect(() => {
     if (!open) {
@@ -92,29 +95,33 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
   const formik = useFormik({
     initialValues: {
       img: '',
+      link: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!image) {
         setImageError('Фото доктора обязательно');
 
         return;
       }
 
-      if (doctorStore.selectedDoctor) {
+      if (selectedDoctor) {
         const updatedDoctor = {
-          ...doctorStore.selectedDoctor,
-          portrait: values.img,
+          id: selectedDoctor.id,
+          portrait_url: values.link,
         };
 
-        doctorStore.editDoctor(updatedDoctor);
-        toast.success('Фото доктора добавлено!', {
-          transition: Slide,
-        });
+        await doctorStore.addDoctorImg(updatedDoctor);
         handleClose();
       }
     },
   });
+
+  useEffect(() => {
+    if (!open) {
+      formik.resetForm();
+    }
+  }, [open]);
 
   return (
     <Modal
@@ -192,6 +199,19 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
                   </Typography>
                 )}
               </Box>
+              <TextField
+                fullWidth
+                id="link"
+                name="link"
+                label="Ссылка на фото"
+                placeholder="Введите ссылку на фото"
+                variant="standard"
+                value={formik.values.link}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.link && Boolean(formik.errors.link)}
+                helperText={formik.touched.link && formik.errors.link}
+              />
               <Box className="modalBtns">
                 <Button
                   className="modalBtn"
@@ -199,7 +219,11 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
                   type="submit"
                   disabled={!formik.isValid || !formik.dirty || !imageURL}
                 >
-                  Сохранить
+                  {isLoading ? (
+                    <CircularProgress className="loadingBtn" />
+                  ) : (
+                    'Сохранить'
+                  )}
                 </Button>
                 <Button
                   className="modalBtn"

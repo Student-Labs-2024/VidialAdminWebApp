@@ -1,111 +1,108 @@
 import { makeAutoObservable } from 'mobx';
+import { toast, Slide } from 'react-toastify';
+
+import api from 'api/index';
 import { DoctorCardProps } from 'types/Doctor/DoctorCardProps';
 
 class DoctorStore {
   doctors: DoctorCardProps[] = [];
+  isLoading: boolean = false;
+  error: string | null = null;
   selectedDoctor: DoctorCardProps | null = null;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  loadDoctors() {
-    const storedDoctors = localStorage.getItem('doctors');
+  async loadDoctors(options?: { signal?: AbortSignal }) {
+    this.isLoading = true;
+    this.error = null;
 
-    if (storedDoctors) {
-      this.doctors = JSON.parse(storedDoctors);
-    } else {
-      const data: DoctorCardProps[] = [
-        {
-          id: 0,
-          first_name: 'Елена',
-          family_name: 'Чистякова',
-          patronymic_name: 'Алексеевна',
-          name: 'Чистякова Елена Алексеевна',
-          category: 'врач-офтальмолог',
-          portrait:
-            'https://www.vidial.ru/upload/resize_cache/iblock/857/230_250_2/85785b7c6205cf6b45e5a8273e08075c.png',
-          time: [],
-        },
-        {
-          id: 1,
-          first_name: 'Татьяна',
-          family_name: 'Харченко',
-          patronymic_name: 'Николаевна',
-          name: 'Харченко Татьяна Николаевна',
-          category: 'врач-офтальмолог',
-          portrait:
-            'https://www.vidial.ru/upload/resize_cache/iblock/bad/488_473_2/bad2578dea9ae7683b4442c1a3be659e.png',
-          time: [],
-        },
-        {
-          id: 2,
-          first_name: 'Ольга',
-          family_name: 'Артюхова',
-          patronymic_name: 'Юрьевна',
-          name: 'Артюхова Ольга Юрьевна',
-          category: 'врач-офтальмолог',
-          portrait: '',
-          time: [],
-        },
-        {
-          id: 3,
-          first_name: 'Яна',
-          family_name: 'Тарасова',
-          patronymic_name: 'Сергеевна',
-          name: 'Тарасова Яна Сергеевна',
-          category: 'оптометрист',
-          portrait:
-            'https://www.vidial.ru/upload/resize_cache/iblock/351/488_473_2/351af44691b9b3048f006bc4ff3d6260.png',
-          time: [],
-        },
-        {
-          id: 4,
-          first_name: 'Ирина',
-          family_name: 'Галочкина',
-          patronymic_name: 'Михайловна',
-          name: 'Галочкина Ирина Михайловна',
-          category: 'оптометрист',
-          portrait:
-            'https://www.vidial.ru/upload/resize_cache/webp/upload/resize_cache/iblock/259/488_473_2/259ad70703410612d086fe5d7b4ae398.jpeg.webp',
-          time: [],
-        },
-        {
-          id: 5,
-          first_name: 'Татьяна',
-          family_name: 'Полтавец',
-          patronymic_name: 'Геннадьевна',
-          name: 'Полтавец Татьяна Геннадьевна',
-          category: 'оптометрист',
-          portrait: '',
-          time: [],
-        },
-      ];
+    try {
+      const data = await api.doctor.getDoctors(options);
       this.doctors = data;
-      this.saveDoctors();
+    } catch (error) {
+      if (error === 'AbortError') {
+        console.log('Request aborted');
+      } else {
+        this.error = (error as Error).message;
+      }
+    } finally {
+      this.isLoading = false;
     }
   }
 
-  saveDoctors() {
-    localStorage.setItem('doctors', JSON.stringify(this.doctors));
-  }
-
-  editDoctor(updatedDoctor: DoctorCardProps) {
-    const index = this.doctors.findIndex(
-      (doctor) => doctor.id === updatedDoctor.id,
-    );
-
-    if (index !== -1) {
-      this.doctors[index] = updatedDoctor;
-      this.saveDoctors();
+  async addDoctorImg(updatedDoctor: DoctorCardProps) {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      const doctor = await api.doctor.addDoctorPhoto(updatedDoctor);
+      const index = this.doctors.findIndex(
+        (doctor) => doctor.id === updatedDoctor.id,
+      );
+      if (index !== -1) {
+        this.doctors[index] = doctor;
+      }
+      this.loadDoctors();
+      toast.success('Фото доктора добавлено!', {
+        transition: Slide,
+      });
+    } catch (error) {
+      this.error = (error as Error).message;
+      toast.error(`Ошибка при добавлении фото`, {
+        transition: Slide,
+      });
+    } finally {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1500);
     }
   }
 
-  deleteDoctorPhoto(id: number) {
-    const doctor = this.doctors.find((doctor) => doctor.id === id);
-    if (doctor) {
-      doctor.portrait = '';
-      this.saveDoctors();
+  async editDoctorImg(updatedDoctor: DoctorCardProps) {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      const doctor = await api.doctor.editDoctorPhoto(
+        updatedDoctor.id!,
+        updatedDoctor,
+      );
+      this.loadDoctors();
+      const index = this.doctors.findIndex(
+        (doctor) => doctor.id === updatedDoctor.id,
+      );
+      if (index !== -1) {
+        this.doctors[index] = doctor;
+      }
+      toast.success('Фото изменено!', {
+        transition: Slide,
+      });
+    } catch (error) {
+      this.error = (error as Error).message;
+      toast.error(`Ошибка при изменении фото`, {
+        transition: Slide,
+      });
+    } finally {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1500);
+    }
+  }
+
+  async deleteDoctorImg(id: number) {
+    this.isLoading = true;
+    this.error = null;
+    try {
+      await api.doctor.deleteDoctorPhoto(id);
+      this.loadDoctors();
+      toast.success('Фото доктора удалено!', { transition: Slide });
+    } catch (error) {
+      this.error = (error as Error).message;
+      toast.error('Не удалось удалить фото!', { transition: Slide });
+    } finally {
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 1500);
     }
   }
 

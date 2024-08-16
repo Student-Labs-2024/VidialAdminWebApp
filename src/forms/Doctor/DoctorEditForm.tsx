@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -7,11 +7,12 @@ import {
   Backdrop,
   Fade,
   Modal,
+  CircularProgress,
+  TextField,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 import { makeStyles } from 'tss-react/mui';
 
 import doctorStore from 'stores/DoctorStore';
@@ -51,7 +52,9 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
   const { classes } = useStyles();
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
-  const [imageURL, setImageURL] = useState<string | null>(doctor.portrait);
+  const [imageURL, setImageURL] = useState<string | null>(doctor.portrait!);
+
+  const { isLoading, selectedDoctor } = doctorStore;
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) {
@@ -77,6 +80,12 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
     };
   };
 
+  useEffect(() => {
+    if (!open) {
+      formik.resetForm();
+    }
+  }, [open]);
+
   const handleImageDelete = () => {
     setImage(null);
     setImageURL(null);
@@ -86,25 +95,23 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
   const formik = useFormik({
     initialValues: {
       img: doctor.portrait,
+      link: doctor.link,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       if (!image) {
         setImageError('Фото доктора обязательно');
 
         return;
       }
 
-      if (doctorStore.selectedDoctor) {
+      if (selectedDoctor) {
         const updatedDoctor: DoctorCardProps = {
-          ...doctorStore.selectedDoctor,
-          portrait: values.img,
+          id: selectedDoctor.id,
+          portrait: values.link,
         };
 
-        doctorStore.editDoctor(updatedDoctor);
-        toast.success('Фото доктора изменено!', {
-          transition: Slide,
-        });
+        await doctorStore.editDoctorImg(updatedDoctor);
         handleClose();
       }
     },
@@ -186,6 +193,19 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
                   </Typography>
                 )}
               </Box>
+              <TextField
+                fullWidth
+                id="link"
+                name="link"
+                label="Ссылка на фото"
+                placeholder="Введите ссылку на фото"
+                variant="standard"
+                value={formik.values.link}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.link && Boolean(formik.errors.link)}
+                helperText={formik.touched.link && formik.errors.link}
+              />
               <Box className="modalBtns">
                 <Button
                   className="modalBtn"
@@ -193,7 +213,11 @@ const DoctorEditForm = ({ open, handleClose, doctor }: DoctorEditFormProps) => {
                   type="submit"
                   disabled={!formik.isValid || !formik.dirty || !imageURL}
                 >
-                  Сохранить
+                  {isLoading ? (
+                    <CircularProgress className="loadingBtn" />
+                  ) : (
+                    'Сохранить'
+                  )}
                 </Button>
                 <Button
                   className="modalBtn"

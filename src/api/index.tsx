@@ -5,6 +5,7 @@ import {
   deleteSinglePromo,
 } from './Promo';
 import { department } from './department';
+import { doctor } from './doctor';
 
 const api = {
   getPromos,
@@ -12,6 +13,7 @@ const api = {
   editSinglePromo,
   deleteSinglePromo,
   department,
+  doctor,
 };
 
 export default api;
