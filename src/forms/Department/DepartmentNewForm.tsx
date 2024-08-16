@@ -7,12 +7,13 @@ import {
   Modal,
   TextField,
   Typography,
+  CircularProgress,
 } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { observer } from 'mobx-react-lite';
-import { Slide, toast } from 'react-toastify';
 import { makeStyles } from 'tss-react/mui';
+
 import departmentStore from 'stores/DepartmentStore';
 
 const useStyles = makeStyles()((theme) => ({
@@ -82,25 +83,23 @@ interface DepartmentNewFormProps {
 const DepartmentNewForm = ({ open, handleClose }: DepartmentNewFormProps) => {
   const { classes } = useStyles();
   const [mapUrl, setMapUrl] = useState('');
+  const { isLoading, selectedDepartment } = departmentStore;
 
   const formik = useFormik({
     initialValues: {
-      latitude: '',
-      longitude: '',
+      latitude: null,
+      longitude: null,
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      if (departmentStore.selectedDepartment) {
+    onSubmit: async (values) => {
+      if (selectedDepartment) {
         const updatedDepartment = {
-          ...departmentStore.selectedDepartment,
-          latitude: values.latitude,
-          longitude: values.longitude,
+          id: selectedDepartment.id,
+          latitude: Number(values.latitude),
+          longitude: Number(values.longitude),
         };
 
-        departmentStore.editDepartment(updatedDepartment);
-        toast.success('Координаты добавлены!', {
-          transition: Slide,
-        });
+        await departmentStore.addDepartmentCoords(updatedDepartment);
         handleClose();
       }
     },
@@ -174,7 +173,11 @@ const DepartmentNewForm = ({ open, handleClose }: DepartmentNewFormProps) => {
                 type="submit"
                 disabled={!formik.isValid || !formik.dirty}
               >
-                Сохранить
+                {isLoading ? (
+                  <CircularProgress className="loadingBtn" />
+                ) : (
+                  'Сохранить'
+                )}
               </Button>
               <Button
                 className={classes.button}
