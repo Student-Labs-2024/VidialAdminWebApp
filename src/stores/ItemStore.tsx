@@ -142,6 +142,7 @@ class ItemStore {
     const index = this.items.findIndex(
       (item) => item.index === updatedItem.index,
     );
+
     if (index !== -1) {
       this.items[index] = updatedItem;
       this.saveItems();

@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 import DoctorsPage from 'routes/ContentPage/DoctorsPage';
+import DoctorStore from 'stores/DoctorStore';
 
 jest.mock('stores/DoctorStore', () => {
   return {
@@ -43,5 +44,11 @@ describe('DoctorsPage', () => {
 
     const addPhotoButton = screen.getByText(/Добавить фото/);
     expect(addPhotoButton).toBeInTheDocument();
+  });
+
+  test('calls loadDoctors on component render', () => {
+    render(<DoctorsPage />);
+
+    expect(DoctorStore.loadDoctors).toHaveBeenCalled();
   });
 });

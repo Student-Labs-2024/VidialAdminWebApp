@@ -29,6 +29,7 @@ const AuthForm = observer(() => {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       authStore.login(values.name, values.password);
+
       if (authStore.isAuthenticated) {
         navigate('/');
         setLoginError('');

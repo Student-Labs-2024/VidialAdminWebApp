@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Button,
@@ -13,6 +13,7 @@ import { observer } from 'mobx-react-lite';
 
 import promoStore from 'stores/PromoStore';
 import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
+import UploadImageBtn from 'components/UploadImageBtn';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение акции'),
@@ -32,39 +33,6 @@ const PromoEditForm = () => {
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(promo?.photo || null);
   const { isLoading } = promoStore;
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) {
-      return;
-    }
-
-    const file = e.target.files[0];
-
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      setImageError('Только файлы JPG и PNG допустимы');
-
-      return;
-    }
-
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      if (img.width !== 1024 || img.height !== 1024) {
-        setImageError('Рекомендуемый размер изображения: 1024x1024');
-      } else {
-        setImage(file);
-        setImageURL(URL.createObjectURL(file));
-        setImageError('');
-        formik.setFieldValue('img', URL.createObjectURL(file));
-      }
-    };
-  };
-
-  const handleImageDelete = () => {
-    setImage(null);
-    setImageURL(null);
-    formik.setFieldValue('img', '');
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -204,57 +172,20 @@ const PromoEditForm = () => {
             </Box>
           </Box>
           <Box className="uploadButtonContainer">
-            {!imageURL ? (
-              <>
-                <input
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="upload-image"
-                  type="file"
-                  onChange={handleImageChange}
-                />
-                <label htmlFor="upload-image" className="uploadButton">
-                  <Button className="uploadButtonStyle" component="span">
-                    <Box component="img" src="/img/upload.svg" alt="upload" />
-                    <Typography className="uploadBtnText" variant="body2">
-                      Загрузите новое фото акции
-                    </Typography>
-                  </Button>
-                </label>
-                {imageError && (
-                  <Typography className="uploadTextError">
-                    {imageError}
-                  </Typography>
-                )}
-              </>
-            ) : (
-              <Box className="uploadedImageContainer">
-                <Box
-                  className="uploadedImage"
-                  component="img"
-                  src={imageURL}
-                  alt="uploaded"
-                  width="100%"
-                />
-                <Button
-                  className="deleteButton"
-                  onClick={handleImageDelete}
-                  variant="contained"
-                >
-                  Удалить
-                </Button>
-              </Box>
-            )}
-            <Typography
-              className="uploadBtnWarning"
-              variant="body2"
-              color="red"
-            >
-              *Форматы изображений: jpg, png. Рекомендуемый размер: 1024x1024.
-            </Typography>
+            <UploadImageBtn
+              imageUrl={imageURL}
+              setImageUrl={(url) => {
+                setImageURL(url);
+                formik.setFieldValue('img', url);
+              }}
+              setImageFile={setImage}
+              imageError={imageError}
+              setImageError={setImageError}
+              text="Загрузите новое фото акции"
+            />
             {formik.errors.img && (
               <Typography color="error" className="uploadTextError">
-                {String(formik.errors.img)}
+                {formik.errors.img}
               </Typography>
             )}
           </Box>

@@ -60,9 +60,11 @@ class PromoStore {
       const index = this.promos.findIndex(
         (promo) => promo.id === updatedPromo.id,
       );
+
       if (index !== -1) {
         this.promos[index] = promo;
       }
+
       toast.success('Акция отредактирована!', {
         transition: Slide,
       });

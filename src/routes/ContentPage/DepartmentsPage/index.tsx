@@ -84,6 +84,7 @@ const DepartmentsPage = () => {
       await departmentStore.deleteDepartmentCoords(selectedDepartment.id);
       departmentStore.clearSelectedDepartment();
     }
+
     setOpenModalDelete(false);
   };
 

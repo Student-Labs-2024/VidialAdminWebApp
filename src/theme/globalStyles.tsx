@@ -124,7 +124,6 @@ const GlobalStylesComponent = () => {
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
-            gap: '15px',
             width: '400px',
           },
           '.uploadButtonContainer': {
@@ -144,8 +143,9 @@ const GlobalStylesComponent = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',
-            border: `1px solid ${theme.palette.grey[600]}  !important`,
-            padding: '10px',
+            border: `2px dashed ${theme.palette.grey[600]}  !important`,
+            width: '100% !important',
+            padding: '40px !important',
           },
           '.uploadBtnText': {
             color: theme.palette.grey[600],

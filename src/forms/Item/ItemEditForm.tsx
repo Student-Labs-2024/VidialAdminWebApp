@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import itemStore from 'stores/ItemStore';
 import ItemsCardProps from 'types/Items/ItemsCardProps';
 import { Slide, toast } from 'react-toastify';
+import UploadImageBtn from 'components/UploadImageBtn';
 
 const validationSchema = yup.object({
   img: yup.string().required('Загрузите изображение товара'),
@@ -28,39 +29,6 @@ const ItemEditForm = ({ handleClose, item }: ItemEditFormProps) => {
   const [image, setImage] = useState<File | null>(null);
   const [imageError, setImageError] = useState<string>('');
   const [imageURL, setImageURL] = useState<string | null>(item.img);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) {
-      return;
-    }
-
-    const file = e.target.files[0];
-
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      setImageError('Только файлы JPG и PNG допустимы');
-
-      return;
-    }
-
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-    img.onload = () => {
-      if (img.width !== 1024 || img.height !== 1024) {
-        setImageError('Рекомендуемый размер изображения: 1024x1024');
-      } else {
-        setImage(file);
-        setImageURL(URL.createObjectURL(file));
-        setImageError('');
-        formik.setFieldValue('img', URL.createObjectURL(file));
-      }
-    };
-  };
-
-  const handleImageDelete = () => {
-    setImage(null);
-    setImageURL(null);
-    formik.setFieldValue('img', '');
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -161,54 +129,17 @@ const ItemEditForm = ({ handleClose, item }: ItemEditFormProps) => {
             </Box>
           </Box>
           <Box className="uploadButtonContainer">
-            {!imageURL ? (
-              <>
-                <input
-                  accept="image/*"
-                  style={{ display: 'none' }}
-                  id="upload-image"
-                  type="file"
-                  onChange={handleImageChange}
-                />
-                <label htmlFor="upload-image" className="uploadButton">
-                  <Button className="uploadButtonStyle" component="span">
-                    <Box component="img" src="/img/upload.svg" alt="upload" />
-                    <Typography className="uploadBtnText" variant="body2">
-                      Загрузите новое фото товара
-                    </Typography>
-                  </Button>
-                </label>
-                {imageError && (
-                  <Typography className="uploadTextError">
-                    {imageError}
-                  </Typography>
-                )}
-              </>
-            ) : (
-              <Box className="uploadedImageContainer">
-                <Box
-                  className="uploadedImage"
-                  component="img"
-                  src={imageURL}
-                  alt="uploaded"
-                  width="100%"
-                />
-                <Button
-                  className="deleteButton"
-                  onClick={handleImageDelete}
-                  variant="contained"
-                >
-                  Удалить
-                </Button>
-              </Box>
-            )}
-            <Typography
-              className="uploadBtnWarning"
-              variant="body2"
-              color="red"
-            >
-              *Форматы изображений: jpg, png. Рекомендуемый размер: 1024x1024.
-            </Typography>
+            <UploadImageBtn
+              imageUrl={imageURL}
+              setImageUrl={(url) => {
+                setImageURL(url);
+                formik.setFieldValue('img', url);
+              }}
+              setImageFile={setImage}
+              imageError={imageError}
+              setImageError={setImageError}
+              text="Загрузите новое фото товара"
+            />
             {formik.errors.img && (
               <Typography color="error" className="uploadTextError">
                 {String(formik.errors.img)}

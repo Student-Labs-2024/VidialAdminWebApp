@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
   Typography,
-  Avatar,
   Backdrop,
   Fade,
   Modal,
@@ -16,6 +15,7 @@ import { observer } from 'mobx-react-lite';
 import { makeStyles } from 'tss-react/mui';
 
 import doctorStore from 'stores/DoctorStore';
+import UploadImageBtn from 'components/UploadImageBtn';
 
 const useStyles = makeStyles()((theme) => ({
   modalBox: {
@@ -61,36 +61,6 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
       setImageError('');
     }
   }, [open]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || !e.target.files[0]) {
-      return;
-    }
-
-    const file = e.target.files[0];
-
-    if (!['image/jpeg', 'image/png'].includes(file.type)) {
-      setImageError('Только файлы JPG и PNG допустимы');
-
-      return;
-    }
-
-    const img = new Image();
-    img.src = URL.createObjectURL(file);
-
-    img.onload = () => {
-      setImage(file);
-      setImageURL(img.src);
-      setImageError('');
-      formik.setFieldValue('img', img.src);
-    };
-  };
-
-  const handleImageDelete = () => {
-    setImage(null);
-    setImageURL(null);
-    formik.setFieldValue('img', '');
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -141,58 +111,17 @@ const DoctorNewForm = ({ open, handleClose }: DoctorNewFormProps) => {
           <form onSubmit={formik.handleSubmit}>
             <Box display="flex" flexDirection="column" gap="10px">
               <Box className="uploadButtonContainer">
-                {!imageURL ? (
-                  <>
-                    <input
-                      accept="image/*"
-                      style={{ display: 'none' }}
-                      id="upload-image"
-                      type="file"
-                      onChange={handleImageChange}
-                    />
-                    <label htmlFor="upload-image" className="uploadButton">
-                      <Button className="uploadButtonStyle" component="span">
-                        <Box
-                          component="img"
-                          src="/img/upload.svg"
-                          alt="upload"
-                        />
-                        <Typography className="uploadBtnText" variant="body2">
-                          Загрузите новое фото доктора
-                        </Typography>
-                      </Button>
-                    </label>
-                    {imageError && (
-                      <Typography className="uploadTextError">
-                        {imageError}
-                      </Typography>
-                    )}
-                  </>
-                ) : (
-                  <Box className="uploadedImageContainer">
-                    <Avatar
-                      className="uploadedImage"
-                      src={imageURL}
-                      alt="uploaded"
-                      sx={{ width: '300px', height: '300px' }}
-                    />
-                    <Button
-                      className="deleteButton"
-                      onClick={handleImageDelete}
-                      variant="contained"
-                    >
-                      Удалить
-                    </Button>
-                  </Box>
-                )}
-                <Typography
-                  className="uploadBtnWarning"
-                  variant="body2"
-                  color="red"
-                >
-                  *Форматы изображений: jpg, png. Рекомендуемый размер:
-                  1024x1024.
-                </Typography>
+                <UploadImageBtn
+                  imageUrl={imageURL}
+                  setImageUrl={(url) => {
+                    setImageURL(url);
+                    formik.setFieldValue('img', url);
+                  }}
+                  setImageFile={setImage}
+                  imageError={imageError}
+                  setImageError={setImageError}
+                  text="Загрузите новое фото доктора"
+                />
                 {formik.errors.img && (
                   <Typography color="error" className="uploadTextError">
                     {formik.errors.img}

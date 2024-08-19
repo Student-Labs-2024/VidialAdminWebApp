@@ -40,9 +40,11 @@ class DoctorStore {
       const index = this.doctors.findIndex(
         (doctor) => doctor.id === updatedDoctor.id,
       );
+
       if (index !== -1) {
         this.doctors[index] = doctor;
       }
+
       this.loadDoctors();
       toast.success('Фото доктора добавлено!', {
         transition: Slide,
@@ -71,9 +73,11 @@ class DoctorStore {
       const index = this.doctors.findIndex(
         (doctor) => doctor.id === updatedDoctor.id,
       );
+
       if (index !== -1) {
         this.doctors[index] = doctor;
       }
+
       toast.success('Фото изменено!', {
         transition: Slide,
       });
