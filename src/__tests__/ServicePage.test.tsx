@@ -59,6 +59,7 @@ describe('ServicesPage', () => {
         expect(screen.getByText(service.title)).toBeInTheDocument();
         expect(screen.getByText(service.description)).toBeInTheDocument();
         expect(screen.getByText(`${service.price} ₽`)).toBeInTheDocument();
+
         if (service.countProcedures > 0) {
           expect(
             screen.getByText(`${service.countProcedures} процедур`),

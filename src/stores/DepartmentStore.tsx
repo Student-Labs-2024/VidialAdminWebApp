@@ -37,9 +37,11 @@ class DepartmentStore {
       const index = this.departments.findIndex(
         (department) => department.id === updatedDepartment.id,
       );
+
       if (index !== -1) {
         this.departments[index] = department;
       }
+
       this.loadDepartments();
       toast.success('Координаты добавлены!', {
         transition: Slide,
@@ -66,9 +68,11 @@ class DepartmentStore {
       const index = this.departments.findIndex(
         (department) => department.id === updatedDepartment.id,
       );
+
       if (index !== -1) {
         this.departments[index] = department;
       }
+
       toast.success('Координаты изменены!', {
         transition: Slide,
       });

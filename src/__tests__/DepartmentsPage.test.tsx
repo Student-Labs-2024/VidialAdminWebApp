@@ -1,5 +1,7 @@
 import { render, screen } from '@testing-library/react';
+
 import DepartmentsPage from 'routes/ContentPage/DepartmentsPage';
+import departmentStore from 'stores/DepartmentStore';
 
 jest.mock('react-toastify', () => ({
   toast: {
@@ -49,5 +51,11 @@ describe('DepartmentsPage', () => {
     expect(screen.getByText('Телефон: 8 (3812) 20-20-44')).toBeInTheDocument;
     expect(screen.getByText('Авиагородок, 38')).toBeInTheDocument;
     expect(screen.getByText('Телефон: 8 (3812) 552-652')).toBeInTheDocument;
+  });
+
+  test('calls loadDepartments on component render', () => {
+    render(<DepartmentsPage />);
+
+    expect(departmentStore.loadDepartments).toHaveBeenCalled();
   });
 });

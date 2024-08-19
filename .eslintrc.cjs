@@ -17,7 +17,11 @@ module.exports = {
     ],
     'padding-line-between-statements': [
       'error',
-      { blankLine: 'always', prev: 'var', next: 'return' },
+      { blankLine: 'always', prev: 'if', next: '*' },
+    ],
+    'padding-line-between-statements': [
+      'error',
+      { blankLine: 'always', prev: '*', next: 'if' },
     ],
     'newline-before-return': 'error',
   },

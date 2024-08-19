@@ -60,6 +60,7 @@ const DoctorsPage = () => {
       doctorStore.deleteDoctorImg(selectedDoctor.id);
       doctorStore.clearSelectedDoctor();
     }
+
     setOpenModalDelete(false);
   };
 
