@@ -12,7 +12,7 @@ const useStyles = makeStyles()((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignContent: 'center',
-    width: '900px',
+    width: '100%',
     backgroundColor: theme.palette.secondary.main,
     boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10)',
     borderRadius: '20px',

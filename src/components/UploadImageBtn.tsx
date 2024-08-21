@@ -34,7 +34,7 @@ const UploadImageBtn: React.FC<UploadImageBtnProps> = ({
     const img = new Image();
     img.src = URL.createObjectURL(file);
     img.onload = () => {
-      if (img.width !== 1024 || img.height !== 1024) {
+      if (img.width > 1024 || img.height > 1024) {
         setImageError('Рекомендуемый размер изображения: 1024x1024');
       } else {
         setImageFile(file);

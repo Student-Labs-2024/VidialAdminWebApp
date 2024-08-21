@@ -23,9 +23,7 @@ class PromoStore {
     } catch (error) {
       this.error = (error as Error).message;
     } finally {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+      this.isLoading = false;
     }
   }
 

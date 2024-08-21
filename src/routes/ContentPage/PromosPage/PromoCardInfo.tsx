@@ -21,7 +21,7 @@ const useStyles = makeStyles()((theme) => ({
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '550px',
+    width: '600px',
     backgroundColor: theme.palette.secondary.main,
     boxShadow: '5px 4px 4px 0px rgba(0, 0, 0, 0.10)',
     padding: '30px 80px',
@@ -47,6 +47,25 @@ const useStyles = makeStyles()((theme) => ({
   modalBtn: {
     fontSize: theme.typography.h3.fontSize,
     width: '100%',
+  },
+  miniPromo: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '16px',
+    borderRadius: '20px',
+    padding: '15px',
+  },
+  miniPromoTitle: {
+    color: theme.palette.text.secondary,
+  },
+  miniPromoCardImg: {
+    width: '64px',
+    height: 'auto',
+  },
+  promoCardImgs: {
+    display: 'flex',
+    alignItems: 'center',
+    gap: '10px'
   },
   promoCardImg: {
     width: '200px',
@@ -86,6 +105,9 @@ const PromoCardInfo = ({
   description,
   start_date,
   end_date,
+  mini_photo,
+  color,
+  short_title,
 }: PromoCardInfoProps) => {
   const { classes } = useStyles();
   const [openModal, setOpen] = useState(false);
@@ -120,12 +142,23 @@ const PromoCardInfo = ({
       >
         <Fade in={open} timeout={{ enter: 300, exit: 900 }}>
           <Box id="transition-modal-title" className={classes.modalBox}>
-            <Box
-              className={classes.promoCardImg}
-              component="img"
-              src={photo}
-              alt={`${photo}`}
-            />
+            <Box className={classes.promoCardImgs}>
+              <Box
+                className={classes.promoCardImg}
+                component="img"
+                src={photo}
+                alt={`${photo}`}
+              />
+              <Box className={classes.miniPromo} sx={{ backgroundColor: `${color}` }}>
+                <Typography className={classes.miniPromoTitle}>{short_title}</Typography>
+                <Box
+                  className={classes.miniPromoCardImg}
+                  component="img"
+                  src={mini_photo}
+                  alt={`${title}`}
+                />
+              </Box>
+            </Box>
             <Typography className={classes.promoCardTitle}>{title}</Typography>
             <Divider className={classes.promoCardDivider} />
             <Typography className={classes.promoCardFullDescription}>

@@ -126,6 +126,11 @@ const GlobalStylesComponent = () => {
             justifyContent: 'center',
             width: '400px',
           },
+          '.promoImageAndMiniContainer': {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          },
           '.uploadButtonContainer': {
             display: 'flex',
             flexDirection: 'column',
@@ -146,6 +151,13 @@ const GlobalStylesComponent = () => {
             border: `2px dashed ${theme.palette.grey[600]}  !important`,
             width: '100% !important',
             padding: '40px !important',
+          },
+          '.uploadMiniPromoButtonStyle': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            border: `2px dashed ${theme.palette.grey[600]}  !important`,
+            width: '100% !important',
           },
           '.uploadBtnText': {
             color: theme.palette.grey[600],
@@ -242,8 +254,23 @@ const GlobalStylesComponent = () => {
           },
           '.loadingBtn': {
             color: `${theme.palette.secondary.main} !important`,
-            width: '25px',
-            height: '25px',
+            width: '25px !important',
+            height: '25px !important',
+          },
+          '.miniPromoBox': {
+            display: 'flex',
+            gap: '10px',
+            borderRadius: '20px',
+            padding: '15px',
+            alignItems: 'center',
+            maxWidth: '350px'
+          },
+          '.miniPromoText': {
+            width: '70%',
+            color: `${theme.palette.text.secondary} !important`,
+          },
+          '.colorMenuItem': {
+            color: `${theme.palette.text.secondary} !important`,
           },
         }}
       />
