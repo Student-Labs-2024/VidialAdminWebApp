@@ -48,7 +48,7 @@ const PromoEditForm = () => {
     promo?.mini_photo || null,
   );
   const [selectedColor, setSelectedColor] = useState<string>(
-    promo?.color || '#7676801F',
+    promo?.color || '#D7D7D7',
   );
   const { isLoading } = promoStore;
 

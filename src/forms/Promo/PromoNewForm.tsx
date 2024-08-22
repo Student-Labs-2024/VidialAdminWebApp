@@ -31,7 +31,7 @@ const validationSchema = yup.object({
 const colorOptions = [
   { value: '#97001E', label: 'Красный', color: 'white' },
   { value: '#F39998', label: 'Светло-красный' },
-  { value: '#D7D7D7', label: 'Светло-серый' },
+  { value: '#7676801F', label: 'Светло-серый' },
 ];
 
 const PromoNewForm = () => {
@@ -61,6 +61,12 @@ const PromoNewForm = () => {
     onSubmit: async (values) => {
       if (!image) {
         setImageError('Изображение акции обязательно');
+
+        return;
+      }
+
+      if (!miniImage) {
+        setMiniImageError('Мини изображение акции обязательно');
 
         return;
       }

@@ -23,8 +23,7 @@ describe('PromosPage', () => {
         end_date: '2024-03-31',
         mini_photo: '',
         short_title: 'Promo 1',
-        color: ''
-
+        color: '',
       },
       {
         id: 2,
@@ -36,8 +35,7 @@ describe('PromosPage', () => {
         end_date: '2024-04-30',
         mini_photo: '',
         short_title: 'Promo 2',
-        color: ''
-
+        color: '',
       },
     ];
   });

@@ -52,50 +52,48 @@ const UploadMiniImageBtn: React.FC<UploadMiniImageBtnProps> = ({
   };
 
   return (
-    <>
-      <Box>
-        {!imageUrl ? (
-          <>
-            <input
-              accept="image/*"
-              style={{ display: 'none' }}
-              id="upload-mini-image"
-              type="file"
-              onChange={handleImageChange}
-            />
-            <label htmlFor="upload-mini-image">
-              <Tooltip title="Загрузить изображение">
-                <IconButton
-                  className={`miniPromoImageBtn ${selectedColor === '#97001E' ? 'white' : 'not'}`}
-                  component="span"
-                >
-                  <UploadSharp />
-                </IconButton>
-              </Tooltip>
-            </label>
-            {imageError && <Typography color="error">{imageError}</Typography>}
-          </>
-        ) : (
-          <Box sx={{ display: 'flex', gap: '5px' }}>
-            <Box
-              component="img"
-              src={imageUrl}
-              alt="uploaded"
-              width="64px"
-              height="64px"
-            />
-            <Tooltip title="Удалить изображение">
+    <Box>
+      {!imageUrl ? (
+        <>
+          <input
+            accept="image/*"
+            style={{ display: 'none' }}
+            id="upload-mini-image"
+            type="file"
+            onChange={handleImageChange}
+          />
+          <label htmlFor="upload-mini-image">
+            <Tooltip title="Загрузить изображение">
               <IconButton
                 className={`miniPromoImageBtn ${selectedColor === '#97001E' ? 'white' : 'not'}`}
-                onClick={handleImageDelete}
+                component="span"
               >
-                <Delete />
+                <UploadSharp />
               </IconButton>
             </Tooltip>
-          </Box>
-        )}
-      </Box>
-    </>
+          </label>
+          {imageError && <Typography color="error">{imageError}</Typography>}
+        </>
+      ) : (
+        <Box sx={{ display: 'flex', gap: '5px' }}>
+          <Box
+            component="img"
+            src={imageUrl}
+            alt="uploaded"
+            width="64px"
+            height="64px"
+          />
+          <Tooltip title="Удалить изображение">
+            <IconButton
+              className={`miniPromoImageBtn ${selectedColor === '#97001E' ? 'white' : 'not'}`}
+              onClick={handleImageDelete}
+            >
+              <Delete />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      )}
+    </Box>
   );
 };
 
