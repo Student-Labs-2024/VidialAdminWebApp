@@ -242,8 +242,8 @@ const GlobalStylesComponent = () => {
           },
           '.loadingBtn': {
             color: `${theme.palette.secondary.main} !important`,
-            width: '25px',
-            height: '25px',
+            width: '30px !important',
+            height: '30px !important',
           },
         }}
       />

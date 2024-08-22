@@ -85,12 +85,7 @@ const AuthRegisterForm = observer(() => {
         placeholder="Введите пароль"
       />
       <Box display="flex" flexDirection="column" gap="10px">
-        <Button
-          fullWidth
-          variant="contained"
-          type="submit"
-          disabled={isLoading}
-        >
+        <Button fullWidth variant="contained" type="submit">
           {isLoading ? (
             <CircularProgress className="loadingBtn" />
           ) : (

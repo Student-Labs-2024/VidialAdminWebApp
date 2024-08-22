@@ -3,6 +3,7 @@ import { toast, Slide } from 'react-toastify';
 
 import api from 'api/index';
 import axios from 'axios';
+import { AuthErrors } from 'types/Auth/AuthErrors';
 
 class AuthStore {
   isAuthenticated: boolean | null = null;
@@ -63,11 +64,11 @@ class AuthStore {
 
       const responseDetail = error.response?.data?.detail;
 
-      if (responseDetail === 'REGISTER_USER_ALREADY_EXISTS') {
+      if (responseDetail === AuthErrors.REGISTER_USER_ALREADY_EXISTS) {
         toast.error('Пользователь с такой почтой уже существует!', {
           transition: Slide,
         });
-      } else if (responseDetail.code === 'REGISTER_INVALID_PASSWORD') {
+      } else if (responseDetail === AuthErrors.REGISTER_INVALID_PASSWORD) {
         toast.error(`Ошибка регистрации: ${responseDetail.reason}`, {
           transition: Slide,
         });
@@ -104,11 +105,11 @@ class AuthStore {
 
       const responseDetail = error.response?.data?.detail;
 
-      if (responseDetail === 'LOGIN_BAD_CREDENTIALS') {
+      if (responseDetail === AuthErrors.LOGIN_BAD_CREDENTIALS) {
         toast.error('Плохие куки или пользователь неактивен!', {
           transition: Slide,
         });
-      } else if (responseDetail.code === 'LOGIN_USER_NOT_VERIFIED') {
+      } else if (responseDetail === AuthErrors.LOGIN_USER_NOT_VERIFIED) {
         toast.error('Пользователь неактивен', { transition: Slide });
       } else {
         toast.error('Произошла ошибка при входе!', { transition: Slide });
