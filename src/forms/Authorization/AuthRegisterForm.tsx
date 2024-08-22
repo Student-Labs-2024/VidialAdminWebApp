@@ -1,25 +1,24 @@
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Box, CircularProgress } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-
 import authStore from 'stores/AuthStore';
-import { useNavigate } from 'react-router';
 
 const validationSchema = yup.object({
-  name: yup.string().required('Требуется логин'),
-  password: yup.string().required('Требуется пароль'),
+  name: yup
+    .string()
+    .email('Некорректный формат email')
+    .required('Требуется логин'),
+  password: yup
+    .string()
+    .min(6, 'Пароль должен содержать минимум 6 символов')
+    .required('Требуется пароль'),
 });
 
-const AuthForm = observer(() => {
+const AuthRegisterForm = observer(() => {
   const [loginError, setLoginError] = React.useState('');
-  const navigate = useNavigate();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLoginError('');
-    authForm.handleChange(e);
-  };
+  const { isLoading } = authStore;
 
   const authForm = useFormik({
     initialValues: {
@@ -27,17 +26,26 @@ const AuthForm = observer(() => {
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      authStore.login(values.name, values.password);
+    onSubmit: async (values) => {
+      setLoginError('');
+      await authStore.register(
+        values.name,
+        values.password,
+        true,
+        false,
+        false,
+      );
 
-      if (authStore.isAuthenticated) {
-        navigate('/');
-        setLoginError('');
-      } else {
-        setLoginError('Неправильный логин или пароль');
+      if (!authStore.isAuthenticated) {
+        setLoginError('Ошибка регистрации');
       }
     },
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLoginError('');
+    authForm.handleChange(e);
+  };
 
   return (
     <form onSubmit={authForm.handleSubmit}>
@@ -45,7 +53,7 @@ const AuthForm = observer(() => {
         fullWidth
         id="name"
         name="name"
-        label="Логин"
+        label="Email"
         variant="standard"
         value={authForm.values.name}
         onChange={handleChange}
@@ -55,7 +63,7 @@ const AuthForm = observer(() => {
           Boolean(loginError)
         }
         helperText={authForm.touched.name && authForm.errors.name}
-        placeholder="Введите логин"
+        placeholder="Введите email"
       />
       <TextField
         fullWidth
@@ -76,11 +84,22 @@ const AuthForm = observer(() => {
         }
         placeholder="Введите пароль"
       />
-      <Button variant="contained" type="submit">
-        Войти
-      </Button>
+      <Box display="flex" flexDirection="column" gap="10px">
+        <Button
+          fullWidth
+          variant="contained"
+          type="submit"
+          disabled={isLoading}
+        >
+          {isLoading ? (
+            <CircularProgress className="loadingBtn" />
+          ) : (
+            'Зарегистрироваться'
+          )}
+        </Button>
+      </Box>
     </form>
   );
 });
 
-export default AuthForm;
+export default AuthRegisterForm;
