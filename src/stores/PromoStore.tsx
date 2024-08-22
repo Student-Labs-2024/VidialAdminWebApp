@@ -5,27 +5,38 @@ import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import api from 'api';
 
 class PromoStore {
+  allPromos: PromoDataCardProps[] = [];
   promos: PromoDataCardProps[] = [];
   isLoading: boolean = false;
   error: string | null = null;
   selectedPromo: PromoDataCardProps | null = null;
+  currentPage: number = 1;
+  totalPages: number = 1;
+  itemsPerPage: number = 6;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  async loadPromos() {
+  async loadPromos(page: number = 1) {
     this.isLoading = true;
     this.error = null;
     try {
-      const data = await api.getPromos();
-      this.promos = data;
+      const promos = await api.promo.getCurrentPagePromos(
+        page,
+        this.itemsPerPage,
+      );
+      this.allPromos = await api.promo.getAllPromos();
+      this.promos = promos;
+      this.currentPage = page;
+      this.totalPages = Math.ceil(this.allPromos.length / this.itemsPerPage);
     } catch (error) {
       this.error = (error as Error).message;
+      toast.error(`Ошибка загрузки акций: ${this.error}`, {
+        transition: Slide,
+      });
     } finally {
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 2000);
+      this.isLoading = false;
     }
   }
 
@@ -33,7 +44,7 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const newPromo = await api.addSinglePromo(promo);
+      const newPromo = await api.promo.addSinglePromo(promo);
       this.promos.push(newPromo);
       toast.success('Акция добавлена!', {
         transition: Slide,
@@ -53,7 +64,7 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      const promo = await api.editSinglePromo(
+      const promo = await api.promo.editSinglePromo(
         updatedPromo.promo_id,
         updatedPromo,
       );
@@ -82,7 +93,7 @@ class PromoStore {
     this.isLoading = true;
     this.error = null;
     try {
-      await api.deleteSinglePromo(id);
+      await api.promo.deleteSinglePromo(id);
       this.promos = this.promos.filter((promo) => promo.id !== id);
       toast.success('Акция удалена!', { transition: Slide });
     } catch (error) {

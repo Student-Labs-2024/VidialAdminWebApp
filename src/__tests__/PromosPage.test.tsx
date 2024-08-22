@@ -21,6 +21,10 @@ describe('PromosPage', () => {
         link: '',
         start_date: '2024-03-01',
         end_date: '2024-03-31',
+        mini_photo: '',
+        short_title: 'Promo 1',
+        color: ''
+
       },
       {
         id: 2,
@@ -30,6 +34,10 @@ describe('PromosPage', () => {
         link: '',
         start_date: '2024-04-01',
         end_date: '2024-04-30',
+        mini_photo: '',
+        short_title: 'Promo 2',
+        color: ''
+
       },
     ];
   });

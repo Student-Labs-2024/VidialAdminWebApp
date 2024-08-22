@@ -1,18 +1,10 @@
-import {
-  getPromos,
-  addSinglePromo,
-  editSinglePromo,
-  deleteSinglePromo,
-} from './Promo';
+import { promo } from './promo';
 import { department } from './department';
 import { doctor } from './doctor';
 import { auth } from './auth';
 
 const api = {
-  getPromos,
-  addSinglePromo,
-  editSinglePromo,
-  deleteSinglePromo,
+  promo,
   department,
   doctor,
   auth,
