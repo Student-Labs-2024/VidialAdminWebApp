@@ -14,5 +14,6 @@ module.exports = {
     '^types/(.*)$': '<rootDir>/src/types/$1',
     '^layouts/(.*)$': '<rootDir>/src/layouts/$1',
     '^components/(.*)$': '<rootDir>/src/components/$1',
+    '^api/(.*)$': '<rootDir>/src/api/$1',
   },
 };

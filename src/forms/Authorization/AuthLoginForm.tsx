@@ -1,4 +1,4 @@
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Box, CircularProgress } from '@mui/material';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { observer } from 'mobx-react-lite';
@@ -8,13 +8,20 @@ import authStore from 'stores/AuthStore';
 import { useNavigate } from 'react-router';
 
 const validationSchema = yup.object({
-  name: yup.string().required('Требуется логин'),
-  password: yup.string().required('Требуется пароль'),
+  email: yup
+    .string()
+    .email('Некорректный формат email')
+    .required('Требуется email'),
+  password: yup
+    .string()
+    .min(6, 'Пароль должен содержать минимум 6 символов')
+    .required('Требуется пароль'),
 });
 
-const AuthForm = observer(() => {
+const AuthLoginForm = observer(() => {
   const [loginError, setLoginError] = React.useState('');
   const navigate = useNavigate();
+  const { isLoading } = authStore;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setLoginError('');
@@ -23,16 +30,16 @@ const AuthForm = observer(() => {
 
   const authForm = useFormik({
     initialValues: {
-      name: '',
+      email: '',
       password: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
-      authStore.login(values.name, values.password);
+    onSubmit: async (values) => {
+      setLoginError('');
+      await authStore.login(values.email, values.password);
 
       if (authStore.isAuthenticated) {
         navigate('/');
-        setLoginError('');
       } else {
         setLoginError('Неправильный логин или пароль');
       }
@@ -43,19 +50,19 @@ const AuthForm = observer(() => {
     <form onSubmit={authForm.handleSubmit}>
       <TextField
         fullWidth
-        id="name"
-        name="name"
-        label="Логин"
+        id="email"
+        name="email"
+        label="Email"
         variant="standard"
-        value={authForm.values.name}
+        value={authForm.values.email}
         onChange={handleChange}
         onBlur={authForm.handleBlur}
         error={
-          (authForm.touched.name && Boolean(authForm.errors.name)) ||
+          (authForm.touched.email && Boolean(authForm.errors.email)) ||
           Boolean(loginError)
         }
-        helperText={authForm.touched.name && authForm.errors.name}
-        placeholder="Введите логин"
+        helperText={authForm.touched.email && authForm.errors.email}
+        placeholder="Введите email"
       />
       <TextField
         fullWidth
@@ -76,11 +83,13 @@ const AuthForm = observer(() => {
         }
         placeholder="Введите пароль"
       />
-      <Button variant="contained" type="submit">
-        Войти
-      </Button>
+      <Box display="flex" flexDirection="column" gap="10px">
+        <Button fullWidth variant="contained" type="submit">
+          {isLoading ? <CircularProgress className="loadingBtn" /> : 'Войти'}
+        </Button>
+      </Box>
     </form>
   );
 });
 
-export default AuthForm;
+export default AuthLoginForm;

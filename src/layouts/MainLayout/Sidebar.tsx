@@ -16,6 +16,7 @@ import CollapsibleMenuItem from './CollapsibleMenuItem';
 import { ExitToApp } from '@mui/icons-material';
 import WarningWindow from './WarningWindowExit';
 import GlobalStylesComponent from 'theme/globalStyles';
+import authStore from 'stores/AuthStore';
 
 const useStyles = makeStyles()((theme) => ({
   drawerPaper: {
@@ -64,7 +65,8 @@ const Sidebar: React.FC = () => {
   const handleOpen = () => {
     setOpen(true);
   };
-  const handleClose = () => {
+  const handleClose = async () => {
+    await authStore.logout();
     setOpen(false);
   };
 

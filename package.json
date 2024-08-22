@@ -19,7 +19,7 @@
     "@mui/material": "^5.16.1",
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@react-icons/all-files": "^4.1.0",
-    "axios": "^1.7.2",
+    "axios": "^1.7.4",
     "formik": "^2.4.6",
     "mobx": "^6.13.0",
     "mobx-react-lite": "^4.0.7",

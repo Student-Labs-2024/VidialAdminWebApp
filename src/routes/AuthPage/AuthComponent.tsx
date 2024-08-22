@@ -1,7 +1,8 @@
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Container, Tabs, Tab } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-
-import AuthForm from 'forms/AuthForm';
+import { useState } from 'react';
+import AuthLoginForm from 'forms/Authorization/AuthLoginForm';
+import AuthRegisterForm from 'forms/Authorization/AuthRegisterForm';
 
 const useStyles = makeStyles()((theme) => ({
   root: {
@@ -40,20 +41,24 @@ const useStyles = makeStyles()((theme) => ({
     height: 'auto',
   },
   authSignInPart: {
+    display: 'flex',
+    flexDirection: 'column',
     textAlign: 'center',
     padding: '76px 64px',
     width: '50%',
   },
-  authSignInTitle: {
-    color: theme.palette.text.secondary,
-    fontWeight: theme.typography.h1.fontWeight,
-    fontSize: theme.typography.h1.fontSize,
-    marginBottom: '25px',
+  authTabs: {
+    marginBottom: '15px',
   },
 }));
 
 const AuthComponent = () => {
   const { classes } = useStyles();
+  const [tabValue, setTabValue] = useState(0);
+
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   return (
     <Container className={classes.root}>
@@ -73,8 +78,19 @@ const AuthComponent = () => {
           />
         </Box>
         <Box className={classes.authSignInPart}>
-          <Typography className={classes.authSignInTitle}>Вход</Typography>
-          <AuthForm />
+          <Tabs
+            value={tabValue}
+            onChange={handleTabChange}
+            indicatorColor="primary"
+            textColor="primary"
+            centered
+            className={classes.authTabs}
+          >
+            <Tab label="Вход" />
+            <Tab label="Регистрация" />
+          </Tabs>
+          {tabValue === 0 && <AuthLoginForm />}
+          {tabValue === 1 && <AuthRegisterForm />}
         </Box>
       </Box>
     </Container>
