@@ -2,17 +2,24 @@ import PromoDataCardProps from 'types/Promo/PromoDataCardProps';
 import { instance } from 'api/helpers/axios';
 
 export const promo = {
-  getAllPromos: async () => {
-    const response = await instance.get<PromoDataCardProps[]>(`/promos`);
+  getAllPromos: async (options: { signal?: AbortSignal }) => {
+    const response = await instance.get<PromoDataCardProps[]>(`/promos`, {
+      signal: options.signal,
+    });
 
     return response.data;
   },
-  getCurrentPagePromos: async (page: number = 1, per_page: number = 6) => {
+  getCurrentPagePromos: async (
+    page: number = 1,
+    per_page: number = 6,
+    options: { signal?: AbortSignal },
+  ) => {
     const response = await instance.get<PromoDataCardProps[]>(`/promos`, {
       params: {
         page,
         per_page,
       },
+      signal: options.signal,
     });
 
     return response.data;

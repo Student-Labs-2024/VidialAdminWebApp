@@ -98,11 +98,23 @@ const PromosPage = () => {
     _event: React.ChangeEvent<unknown>,
     page: number,
   ) => {
-    promoStore.loadPromos(page);
+    const controller = new AbortController();
+
+    promoStore.loadPromos(page, { signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   };
 
   useEffect(() => {
-    promoStore.loadPromos(currentPage);
+    const controller = new AbortController();
+
+    promoStore.loadPromos(currentPage, { signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -119,10 +131,12 @@ const PromosPage = () => {
         </Tooltip>
       </Box>
       <Grid container spacing={3}>
-        {error && (
+        {error ? (
           <Grid item xs={12}>
             <ErrorContentComponent />
           </Grid>
+        ) : (
+          ''
         )}
         {isLoading ? (
           Array.from(new Array(6)).map((_, index) => (

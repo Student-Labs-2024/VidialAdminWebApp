@@ -18,23 +18,25 @@ class PromoStore {
     makeAutoObservable(this);
   }
 
-  async loadPromos(page: number = 1) {
+  async loadPromos(page: number = 1, options: { signal?: AbortSignal }) {
     this.isLoading = true;
     this.error = null;
     try {
       const promos = await api.promo.getCurrentPagePromos(
         page,
         this.itemsPerPage,
+        options,
       );
-      this.allPromos = await api.promo.getAllPromos();
+      this.allPromos = await api.promo.getAllPromos(options);
       this.promos = promos;
       this.currentPage = page;
       this.totalPages = Math.ceil(this.allPromos.length / this.itemsPerPage);
     } catch (error) {
-      this.error = (error as Error).message;
-      toast.error(`Ошибка загрузки акций: ${this.error}`, {
-        transition: Slide,
-      });
+      if (error === 'AbortError') {
+        console.log('Request aborted');
+      } else {
+        this.error = (error as Error).message;
+      }
     } finally {
       this.isLoading = false;
     }
@@ -45,7 +47,7 @@ class PromoStore {
     this.error = null;
     try {
       const newPromo = await api.promo.addSinglePromo(promo);
-      this.promos.push(newPromo);
+      this.allPromos.push(newPromo);
       toast.success('Акция добавлена!', {
         transition: Slide,
       });
@@ -94,7 +96,7 @@ class PromoStore {
     this.error = null;
     try {
       await api.promo.deleteSinglePromo(id);
-      this.promos = this.promos.filter((promo) => promo.id !== id);
+      this.allPromos = this.allPromos.filter((promo) => promo.id !== id);
       toast.success('Акция удалена!', { transition: Slide });
     } catch (error) {
       this.error = (error as Error).message;

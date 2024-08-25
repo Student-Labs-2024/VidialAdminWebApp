@@ -298,7 +298,7 @@ const PromoEditForm = () => {
                 )}
               </Box>
               <Typography className="uploadBtnWarning" variant="body2">
-                *Форматы изображений: JPG, PNG. Максимальный размер: x64.
+                *Форматы изображений: JPG, PNG. Максимальный размер: 64x64.
               </Typography>
             </Box>
           </Box>

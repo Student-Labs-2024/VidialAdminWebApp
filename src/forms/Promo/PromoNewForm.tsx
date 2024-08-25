@@ -71,12 +71,6 @@ const PromoNewForm = () => {
         return;
       }
 
-      if (!miniImage) {
-        setMiniImageError('Мини изображение акции обязательно');
-
-        return;
-      }
-
       const newPromo: PromoDataCardProps = {
         title: values.title,
         description: values.description,
@@ -295,7 +289,7 @@ const PromoNewForm = () => {
                 )}
               </Box>
               <Typography className="uploadBtnWarning" variant="body2">
-                *Форматы изображений: JPG, PNG. Максимальный размер: x64.
+                *Форматы изображений: JPG, PNG. Максимальный размер: 64x64.
               </Typography>
             </Box>
           </Box>
