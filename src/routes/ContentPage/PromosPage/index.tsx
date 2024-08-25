@@ -8,6 +8,7 @@ import {
   Tooltip,
   IconButton,
   Skeleton,
+  Pagination,
 } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
 import { Add, ArrowRightAltOutlined } from '@mui/icons-material';
@@ -75,7 +76,8 @@ const PromosPage = () => {
   const { classes } = useStyles();
   const navigate = useNavigate();
 
-  const { error, isLoading, promos, selectedPromo } = promoStore;
+  const { error, isLoading, promos, selectedPromo, currentPage, totalPages } =
+    promoStore;
 
   const handleOpenPromo = (promo: PromoDataCardProps) => {
     promoStore.selectPromo(promo);
@@ -92,8 +94,27 @@ const PromosPage = () => {
     }
   };
 
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    page: number,
+  ) => {
+    const controller = new AbortController();
+
+    promoStore.loadPromos(page, { signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
+  };
+
   useEffect(() => {
-    promoStore.loadPromos();
+    const controller = new AbortController();
+
+    promoStore.loadPromos(currentPage, { signal: controller.signal });
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -110,46 +131,50 @@ const PromosPage = () => {
         </Tooltip>
       </Box>
       <Grid container spacing={3}>
-        {error && (
+        {error ? (
           <Grid item xs={12}>
             <ErrorContentComponent />
           </Grid>
+        ) : (
+          ''
         )}
-        {isLoading
-          ? Array.from(new Array(6)).map((_, index) => (
-              <Grid item xs={12} sm={6} lg={4} key={index}>
-                <Box className={classes.promoCard}>
-                  <Skeleton
-                    variant="rectangular"
-                    className={classes.promoCardImg}
-                    height={200}
-                    sx={{ bgcolor: 'grey.300' }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    sx={{ bgcolor: 'grey.300', width: '80%' }}
-                  />
-                  <Divider />
-                  <Skeleton
-                    variant="text"
-                    sx={{ bgcolor: 'grey.300', width: '60%' }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    height={64}
-                    width="60%"
-                    sx={{ bgcolor: 'grey.300' }}
-                  />
-                  <Skeleton
-                    variant="text"
-                    height={64}
-                    width="80%"
-                    sx={{ bgcolor: 'grey.300' }}
-                  />
-                </Box>
-              </Grid>
-            ))
-          : promos.map((promo) => (
+        {isLoading ? (
+          Array.from(new Array(6)).map((_, index) => (
+            <Grid item xs={12} sm={6} lg={4} key={index}>
+              <Box className={classes.promoCard}>
+                <Skeleton
+                  variant="rectangular"
+                  className={classes.promoCardImg}
+                  height={200}
+                  sx={{ bgcolor: 'grey.300' }}
+                />
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: 'grey.300', width: '80%' }}
+                />
+                <Divider />
+                <Skeleton
+                  variant="text"
+                  sx={{ bgcolor: 'grey.300', width: '60%' }}
+                />
+                <Skeleton
+                  variant="text"
+                  height={64}
+                  width="60%"
+                  sx={{ bgcolor: 'grey.300' }}
+                />
+                <Skeleton
+                  variant="text"
+                  height={64}
+                  width="80%"
+                  sx={{ bgcolor: 'grey.300' }}
+                />
+              </Box>
+            </Grid>
+          ))
+        ) : promos?.length > 0 ? (
+          <>
+            {promos.map((promo) => (
               <Grid item xs={12} sm={6} lg={4} key={promo.id}>
                 <Box className={classes.promoCard}>
                   <Box
@@ -183,6 +208,22 @@ const PromosPage = () => {
                 </Box>
               </Grid>
             ))}
+            <Grid item xs={12} className="pagination">
+              <Pagination
+                count={totalPages}
+                page={currentPage}
+                onChange={handlePageChange}
+                color="primary"
+              />
+            </Grid>
+          </>
+        ) : (
+          <Grid item xs={12}>
+            <Typography variant="h6" align="center">
+              Нет доступных акций
+            </Typography>
+          </Grid>
+        )}
       </Grid>
       {selectedPromo && (
         <PromoCardInfo

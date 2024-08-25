@@ -86,6 +86,23 @@ const ExtendedDefaultTheme = createTheme(DefaultTheme, {
         },
       },
     },
+    MuiPaginationItem: {
+      styleOverrides: {
+        root: {
+          color: DefaultTheme.palette.grey[900],
+        },
+      },
+    },
+    MuiBox: {
+      styleOverrides: {
+        root: {
+          color:
+            DefaultTheme.palette.primary.main === '#97001E'
+              ? '#FFFFFF'
+              : DefaultTheme.palette.text.primary,
+        },
+      },
+    },
   },
 });
 

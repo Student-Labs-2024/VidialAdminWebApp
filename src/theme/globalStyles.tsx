@@ -126,6 +126,11 @@ const GlobalStylesComponent = () => {
             justifyContent: 'center',
             width: '400px',
           },
+          '.promoImageAndMiniContainer': {
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          },
           '.uploadButtonContainer': {
             display: 'flex',
             flexDirection: 'column',
@@ -146,6 +151,13 @@ const GlobalStylesComponent = () => {
             border: `2px dashed ${theme.palette.grey[600]}  !important`,
             width: '100% !important',
             padding: '40px !important',
+          },
+          '.uploadMiniPromoButtonStyle': {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            border: `2px dashed ${theme.palette.grey[600]}  !important`,
+            width: '100% !important',
           },
           '.uploadBtnText': {
             color: theme.palette.grey[600],
@@ -244,6 +256,41 @@ const GlobalStylesComponent = () => {
             color: `${theme.palette.secondary.main} !important`,
             width: '30px !important',
             height: '30px !important',
+          },
+          '.miniPromo': {
+            width: '350px',
+          },
+          '.miniPromoBox': {
+            display: 'flex',
+            gap: '10px',
+            borderRadius: '20px',
+            padding: '15px',
+            alignItems: 'center',
+          },
+          '.miniPromoText': {
+            width: '70%',
+            '&.white': {
+              color: `${theme.palette.text.primary} !important`,
+            },
+            '&.not': {
+              color: `${theme.palette.text.secondary} !important`,
+            },
+          },
+          '.miniPromoImageBtn': {
+            '&.white': {
+              color: `${theme.palette.text.primary} !important`,
+            },
+            '&.not': {
+              color: `${theme.palette.text.secondary} !important`,
+            },
+          },
+          '.colorMenuItem': {
+            color: `${theme.palette.text.secondary} !important`,
+          },
+          '.pagination': {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           },
         }}
       />
