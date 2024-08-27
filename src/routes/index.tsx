@@ -7,7 +7,6 @@ import MainPage from './MainPage/MainPage';
 import ItemPage from './ContentPage/ItemsPage';
 import DepartmentPage from './ContentPage/DepartmentsPage';
 import DoctorsPage from './ContentPage/DoctorsPage';
-import UsersPage from './UsersPage/UsersPage';
 import Layout from 'layouts/MainLayout';
 import PromosPage from './ContentPage/PromosPage';
 import PromoNewFormPage from './ContentPage/PromosPage/PromoNewFormPage';
@@ -67,10 +66,6 @@ const Router = createBrowserRouter([
           {
             path: '/doctors',
             element: <DoctorsPage />,
-          },
-          {
-            path: '/users',
-            element: <UsersPage />,
           },
         ],
       },

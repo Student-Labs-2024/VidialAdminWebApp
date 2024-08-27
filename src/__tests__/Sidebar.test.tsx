@@ -25,7 +25,6 @@ describe('Sidebar component', () => {
 
     expect(getByText('Главная панель')).toBeTruthy();
     expect(getByText('Контент')).toBeTruthy();
-    expect(getByText('Пользователи')).toBeTruthy();
     expect(getByText('Выйти')).toBeTruthy();
   });
 

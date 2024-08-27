@@ -1,6 +1,9 @@
 import { Box, Container, Tabs, Tab } from '@mui/material';
 import { makeStyles } from 'tss-react/mui';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { Slide, toast } from 'react-toastify';
+import { useLocation } from 'react-router-dom';
+
 import AuthLoginForm from 'forms/Authorization/AuthLoginForm';
 import AuthRegisterForm from 'forms/Authorization/AuthRegisterForm';
 
@@ -55,10 +58,30 @@ const useStyles = makeStyles()((theme) => ({
 const AuthComponent = () => {
   const { classes } = useStyles();
   const [tabValue, setTabValue] = useState(0);
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const showSnackbar = queryParams.get('showSnackbar');
+
+    if (showSnackbar === 'true') {
+      toast.error('Истекло время авторизации!', { transition: Slide });
+    }
+  }, [location.search]);
 
   const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
   };
+
+  useEffect(() => {
+    const showSnackbar = localStorage.getItem('showAuthTimeoutSnackbar');
+
+    if (showSnackbar === 'true') {
+      toast.error('Истекло время авторизации!', { transition: Slide });
+
+      localStorage.removeItem('showAuthTimeoutSnackbar');
+    }
+  }, []);
 
   return (
     <Container className={classes.root}>
