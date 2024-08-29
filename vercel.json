@@ -1,8 +1,27 @@
 {
-    "rewrites": [
+  "rewrites": [
+    {
+      "source": "/proxy/:path*",
+      "destination": "https://student-labs-2024-vidialbackend-1232.twc1.net/:path*"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/proxy/:path*",
+      "headers": [
         {
-            "source": "/(.*)",
-            "destination": "/index.html"
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET,POST,PUT,DELETE,OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "X-Requested-With, Content-Type, Authorization"
         }
-    ]
+      ]
+    }
+  ]
 }
