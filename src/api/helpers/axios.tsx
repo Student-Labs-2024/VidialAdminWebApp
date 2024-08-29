@@ -1,6 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const API_URL = '/api';
+const API_URL = '/proxy';
 
 export const instance = axios.create({
   baseURL: API_URL,
@@ -16,7 +16,7 @@ instance.interceptors.response.use(
 
       window.location.href = '/auth';
 
-      return new Promise(() => {});
+      return new Promise(() => { });
     }
 
     return Promise.reject(error);
