@@ -16,7 +16,7 @@ instance.interceptors.response.use(
 
       window.location.href = '/auth';
 
-      return new Promise(() => { });
+      return new Promise(() => {});
     }
 
     return Promise.reject(error);

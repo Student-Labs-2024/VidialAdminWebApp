@@ -17,10 +17,11 @@ export default defineConfig({
   },
   server: {
     proxy: {
-      "/proxy": {
+      '/proxy': {
         target: 'https://student-labs-2024-vidialbackend-1232.twc1.net',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/proxy/, '')
+        secure: true,
+        rewrite: (path) => path.replace(/^\/proxy/, ''),
       },
     },
   },
