@@ -1,0 +1,24 @@
+<svg width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="search-svgrepo-com (1) 1" clip-path="url(#clip0_4011_885)">
+<g id="SVGRepo_iconCarrier">
+<g id="Clip path group">
+<mask id="mask0_4011_885" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="3" y="0" width="45" height="45">
+<g id="clip0_15_152">
+<path id="Vector" d="M48 0H3V45H48V0Z" fill="white"/>
+</g>
+</mask>
+<g mask="url(#mask0_4011_885)">
+<g id="Group">
+<path id="Vector_2" d="M19.6875 31.875C26.4185 31.875 31.875 26.4185 31.875 19.6875C31.875 12.9565 26.4185 7.5 19.6875 7.5C12.9565 7.5 7.5 12.9565 7.5 19.6875C7.5 26.4185 12.9565 31.875 19.6875 31.875Z" stroke="#97001E" stroke-width="2.66667" stroke-linejoin="round"/>
+<path id="Vector_3" d="M36.8369 38.163C37.2031 38.529 37.7967 38.529 38.1629 38.163C38.5289 37.7968 38.5289 37.2032 38.1629 36.837L36.8369 38.163ZM38.1629 36.837L28.7879 27.462L27.4619 28.788L36.8369 38.163L38.1629 36.837Z" fill="#97001E"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_4011_885">
+<rect width="45" height="45" fill="white"/>
+</clipPath>
+</defs>
+</svg>
