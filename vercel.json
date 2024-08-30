@@ -3,6 +3,10 @@
     {
       "source": "/proxy/:path*",
       "destination": "https://student-labs-2024-vidialbackend-1232.twc1.net/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/"
     }
   ],
   "headers": [
