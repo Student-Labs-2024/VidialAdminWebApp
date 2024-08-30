@@ -1,4 +1,4 @@
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 const API_URL = '/proxy';
 
@@ -10,8 +10,8 @@ export const instance = axios.create({
 
 instance.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error: AxiosError) => {
-    if (error.response && error.response.status === 401) {
+  (error) => {
+    if (error.response.status === 401) {
       localStorage.setItem('showAuthTimeoutSnackbar', 'true');
 
       window.location.href = '/auth';
